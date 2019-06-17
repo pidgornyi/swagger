@@ -1,0 +1,9 @@
+{
+  "groupId": "com.softcomputer.gene.web",
+  "artifactId": "oe-api",
+  "artifactName": "Order REST API [${project.artifactId}]",
+  "buildFinalName": "web-rest-oe-api",
+  "wbcVersion": "2.0.1-08-SNAPSHOT",
+  "wgcmVersion": "1.0.1-08-SNAPSHOT",
+  "productVersion": "1.0.1.8.7"
+}

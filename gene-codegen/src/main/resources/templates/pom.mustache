@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>{{groupId}}</groupId>
+    <artifactId>{{artifactId}}</artifactId>
+    <!-- This version should not be corrected manually - it is synchronized with config_weboe.txt by misc\propagateConfig ! -->
+    <version>{{appVersion}}</version>
+
+    <parent>
+        <groupId>com.softcomputer.wbc</groupId>
+        <artifactId>base</artifactId>
+        {{#wbcVersion}}<!-- This version should not be corrected manually - it is synchronized with config_weboe.txt by misc\propagateConfig ! -->
+        <version>{{.}}</version>{{/wbcVersion}}
+    </parent>
+
+    <packaging>jar</packaging>
+    <name>{{artifactName}}</name>
+    <description>{{unescapedAppDescription}}</description>
+
+    <properties>
+        <!-- These version should not be corrected manually - they are synchronized
+             with config_weboe.txt by misc\propagateConfig ! -->
+        <product.version>{{productVersion}}</product.version>
+        <!-- SDK WBC version -->
+        <WBC.version>{{wbcVersion}}</WBC.version>
+        <WGCM.version>{{wgcmVersion}}</WGCM.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.softcomputer.wbc</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.softcomputer.gene.web.cmn</groupId>
+            <artifactId>cmn-api</artifactId>
+            <version>${WGCM.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>{{buildFinalName}}</finalName>
+    </build>
+
+</project>

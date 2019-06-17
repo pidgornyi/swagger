@@ -1,0 +1,70 @@
+swagger: "2.0"
+info:
+  title: Setup services
+  version: 1.0.0.0
+paths:
+  /setup/clinics:
+    get:
+      summary: Get all active clinics
+      description: Returns active clinics where any part of code or name corresponds to the given free text criteria
+      operationId: getAllClinicsSetup
+      parameters:
+        - name: "value"
+          in: query
+          description: free text criteria
+          type: string
+        - name: code
+          in: query
+          description: clinic code
+          type: string
+        - name: itemsCount
+          in: query
+          description: limits number of search results
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: List of clinics
+          schema: 
+            type: "array"
+            items: 
+              $ref: '#/definitions/Clinic'
+      tags:
+        - setup
+definitions:
+  Clinic:
+    properties:
+      code:
+        type: string
+      name:
+        type: string  
+      orderingKeypad:
+        type: string  
+      orderingLocationCode:
+        type: string  
+      contact:
+        type: string  
+      phone:
+        type: string  
+      phoneExt:
+        type: string  
+      patientType:
+        type: string
+  Clinic2:
+    properties:
+      code:
+        type: string
+      name:
+        type: string  
+      orderingKeypad:
+        type: string  
+      orderingLocationCode:
+        type: string  
+      contact:
+        type: string  
+      phone:
+        type: string  
+      phoneExt:
+        type: string  
+      patientType:
+        type: string          

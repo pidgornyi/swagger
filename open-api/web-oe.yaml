@@ -1,0 +1,18 @@
+swagger: "2.0"
+info:
+  version: 4.1.12-02-SNAPSHOT
+  title: LIS Web OE Api
+  description: "Contracts for WEB OE rest services"
+host: "lv3.isd.dp.ua:7701"
+basePath: "/gcm/web/app/oe"
+tags:
+- name: setup
+  description: Setup related services
+paths:
+  /setup/clinics:
+    $ref: 'setup.yaml#/paths/~1setup~1clinics'
+definitions:
+  Clinic:
+    $ref: 'setup.yaml#/definitions/Clinic'
+  Clinic2:   
+    $ref: 'setup.yaml#/definitions/Clinic2'  

@@ -1,0 +1,15 @@
+/**
+ * {{#description}}{{.}}{{/description}}{{^description}}{{classname}}{{/description}}
+ */
+public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
+
+  {{#vars}}
+  {{#isContainer}}
+  public {{{datatypeWithEnum}}} {{name}}{{#required}} = {{{defaultValue}}}{{/required}}{{^required}} = null{{/required}};
+  {{/isContainer}}
+  {{^isContainer}}
+  public {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}};
+  {{/isContainer}}
+
+  {{/vars}}
+}
