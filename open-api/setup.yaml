@@ -22,17 +22,22 @@ paths:
           description: limits number of search results
           type: integer
           format: int32
+          default: 20
       responses:
         '200':
-          description: List of clinics
+          description: successful operation
           schema: 
-            type: "array"
+            #$ref: '#/definitions/Clinic'
+            type: array
             items: 
               $ref: '#/definitions/Clinic'
       tags:
         - setup
+
 definitions:
   Clinic:
+    title: Clinic setup model
+    type: object
     properties:
       code:
         type: string
@@ -49,22 +54,4 @@ definitions:
       phoneExt:
         type: string  
       patientType:
-        type: string
-  Clinic2:
-    properties:
-      code:
-        type: string
-      name:
-        type: string  
-      orderingKeypad:
-        type: string  
-      orderingLocationCode:
-        type: string  
-      contact:
-        type: string  
-      phone:
-        type: string  
-      phoneExt:
-        type: string  
-      patientType:
-        type: string          
+        type: string       

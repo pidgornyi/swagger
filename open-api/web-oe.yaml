@@ -5,14 +5,18 @@ info:
   description: "Contracts for WEB OE rest services"
 host: "lv3.isd.dp.ua:7701"
 basePath: "/gcm/web/app/oe"
+produces:
+  - "application/json"
+
 tags:
-- name: setup
-  description: Setup related services
+  - name: setup
+    description: Setup related services
+    x-cache-control: 300
+
 paths:
   /setup/clinics:
     $ref: 'setup.yaml#/paths/~1setup~1clinics'
-definitions:
-  Clinic:
-    $ref: 'setup.yaml#/definitions/Clinic'
-  Clinic2:   
-    $ref: 'setup.yaml#/definitions/Clinic2'  
+
+#definitions:
+#  Clinic:
+#    $ref: 'setup.yaml#/definitions/Clinic'
