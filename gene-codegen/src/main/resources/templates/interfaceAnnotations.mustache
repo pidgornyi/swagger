@@ -1,0 +1,2 @@
+@RestController{{#hasCacheControl}}
+@CacheControl(maxAge = "{{cacheControl}}", directives = { CacheControl.CacheDirectives.PRIVATE }){{/hasCacheControl}}

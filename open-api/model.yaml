@@ -1,0 +1,321 @@
+definitions:
+  AddressInfo:
+    title: AddressInfo model
+    properties:
+      street:
+        type: string
+      suite:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      country:
+        type: object #Dictionary
+        additionalProperties:
+          type: string
+      county:
+        type: string
+      zip:
+        type: string
+      phone:
+        type: string
+      phone2:
+        type: string
+
+  BodySite:
+    title: Body site model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  Clinic:
+    title: Clinic setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      orderingKeypad:
+        type: string
+      orderingLocationCode:
+        type: string
+      contact:
+        type: string
+      phone:
+        type: string
+      phoneExt:
+        type: string
+      patientType:
+        type: string
+
+  Contact:
+    title: Contact model
+    properties:
+      #contactMethod:
+      #  $ref: ContactMethod #Enum
+      phoneNumber:
+        type: string
+      phoneExt:
+        type: string
+
+  Diagnosis:
+    title: Diagnosis setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  Drug:
+    title: Drug model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  IndicationSetup:
+    title: Indication setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  InsuranceCarrierInfo:
+    title:  Insurance carrier info model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      contact:
+        type: string
+      address:
+        $ref: AddressInfo
+      isActive:
+        type: boolean
+      isAux:
+        type: boolean
+      isVisitOnly:
+        type: boolean
+
+  InsuranceGroup:
+    title:  Insurance group model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  Quality:
+    title:  Quality model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      comment:
+        type: string
+      category:
+        type: string
+      richComment:
+        type: string
+
+  MicroMedia:
+    title:  Insurance carrier info model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  Physician:
+    title: Physician setup model
+    properties:
+      id:
+        type: string
+      title:
+        type: string #Dictionary
+      upin:
+        type: string
+      npi:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      active:
+        type: boolean
+      orderingKeypad:
+        type: string
+
+  Priority:
+    title: Priority setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      collectPriority:
+        type: string
+      priorityValue:
+        type: integer
+        format: int32
+
+  Reason:
+    title: Reason model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  Recipient:
+    title: Recipient model
+    properties:
+      #type:
+      #  $ref: RecipientType #Enum
+      contacts:
+        type: array
+        items:
+          $ref: Contact
+      instructions:
+        type: string
+      code:
+        type: string
+      name:
+        type: string
+
+  ResulKeypad:
+    title: ResulKeypad model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      levelslevels:
+        type: array
+        items:
+          $ref: ResulKeypadLevel
+      activeWhenFocused:
+        type: boolean
+      displayAsDropDown:
+        type: boolean
+
+  ResulKeypadLevel:
+    title: ResulKeypad model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      level:
+        type: string
+      type:
+        type:
+          $ref: ResulKeypadType
+      autoMove:
+        type: boolean
+      operation:
+        type: string
+      items:
+        type: array
+        items:
+          $ref: ResulKeypadItem
+
+  Source:
+    title: Specimen model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      keypadCode:
+        type: string
+      acceptanceType:
+        type: string
+      isGeneric:
+        type: boolean
+      bodySites:
+        type: array
+        items:
+          $ref: BodySite
+
+  Specimen:
+    title: Specimen model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      isGeneric:
+        type: boolean
+      system:
+        type: string
+      keypadCode:
+        type: string
+
+  TestDefinition:
+    title: TestDefinition setup model
+    properties:
+      id:
+        type: integer
+        format: int64
+      code:
+        type: string
+      name:
+        type: string
+      codeWithVersion:
+        type: string
+      group:
+        type: boolean
+      individuallyOrdered:
+        type: boolean
+      secondaryId:
+        type: string
+      synonym:
+        type: string
+      components:
+        type: array
+        items:
+          $ref: TestDefinition
+      loinc:
+        type: string
+#      testType:      <--Enum
+#        $ref: TestType
+
+  TestSources:
+    title: Test sources model
+    properties:
+      testCodeVersion:
+        type: string
+      testCode:
+        type: string
+      testName:
+        type: string
+      system:
+        type: string
+      specimens:
+        type: array
+        items:
+          $ref: Source
+      tubes:
+        type: array
+        items:
+          $ref: Source
+      preferableTube:
+        type: string
+      preferableAliquote:
+        type: string
+      checkOnlyNonAccItems:
+        type: boolean
+
+

@@ -15,7 +15,48 @@ tags:
 
 paths:
   /setup/clinics:
-    $ref: 'setup.yaml#/paths/~1setup~1clinics'
+    $ref: 'setup.yaml#/paths/~1clinics'
+  /setup/patient-clients:
+    $ref: 'setup.yaml#/paths/~1patient-clients'
+  /setup/visit-clinics:
+    $ref: 'setup.yaml#/paths/~1visit-clinics'
+  /setup/physicians:
+    $ref: 'setup.yaml#/paths/~1physicians'
+  /setup/diagnoses:
+    $ref: 'setup.yaml#/paths/~1diagnoses'
+  /setup/insurancecarriers:
+    $ref: 'setup.yaml#/paths/~1insurancecarriers'
+  /setup/testdefinitions:
+    $ref: 'setup.yaml#/paths/~1testdefinitions'
+  /setup/indications:
+    $ref: 'setup.yaml#/paths/~1indications'
+  /setup/priorities:
+    $ref: 'setup.yaml#/paths/~1priorities'
+  /setup/body-sites:
+    $ref: 'setup.yaml#/paths/~1body-sites'
+  /setup/specimens:
+    $ref: 'setup.yaml#/paths/~1specimens'
+  /setup/reasons:
+    $ref: 'setup.yaml#/paths/~1reasons'
+  /setup/test-sources:
+    $ref: 'setup.yaml#/paths/~1test-sources'
+  /setup/micro-medias:
+    $ref: 'setup.yaml#/paths/~1micro-medias'
+  /setup/drugs:
+    $ref: 'setup.yaml#/paths/~1drugs'
+  /setup/test-ordering-keypads:
+    $ref: 'setup.yaml#/paths/~1test-ordering-keypads'
+  /setup/specimen-ordering-keypads:
+    $ref: 'setup.yaml#/paths/~1specimen-ordering-keypads'
+  /setup/call-request-recipients:
+    $ref: 'setup.yaml#/paths/~1call-request-recipients'
+  /setup/qualities:
+    $ref: 'setup.yaml#/paths/~1qualities'
+  /setup/bodysite-result-keypad:
+    $ref: 'setup.yaml#/paths/~1bodysite-result-keypad'
+  /setup/insurance-group:
+    $ref: 'setup.yaml#/paths/~1insurance-group'
+
 
 #definitions:
 #  Clinic:

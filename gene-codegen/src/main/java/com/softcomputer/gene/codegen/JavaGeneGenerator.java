@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenConfig {
-  public static final String CONFIG_PACKAGE = "configPackage";
+//  public static final String CONFIG_PACKAGE = "configPackage";
   public static final String BASE_PACKAGE = "basePackage";
   public static final String SINGLE_CONTENT_TYPES = "singleContentTypes";
   public static final String ARTIFACT_NAME = "artifactName";
@@ -24,7 +24,7 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
   public static final String PRODUCT_VERSION = "productVersion";
   public static final String BUILD_FINAL_NAME = "buildFinalName";
 
-  private String configPackage = "com.softcomputer.gene.web.api.configuration";
+//  private String configPackage = "com.softcomputer.gene.web.api.configuration";
   private String basePackage = "com.softcomputer.gene.web.api";
   private String artifactName = "REST API";
   private String buildFinalName = "web-rest-api";
@@ -57,11 +57,11 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     this.artifactId = "api";
     this.artifactDescription = "Contracts for WEB rest services";
 
-    additionalProperties.put(CONFIG_PACKAGE, configPackage);
+//    additionalProperties.put(CONFIG_PACKAGE, configPackage);
     additionalProperties.put(BASE_PACKAGE, basePackage);
 //    this.additionalProperties.put("jackson", "true");
 
-    cliOptions.add(new CliOption(CONFIG_PACKAGE, "configuration package for generated code"));
+//    cliOptions.add(new CliOption(CONFIG_PACKAGE, "configuration package for generated code"));
     cliOptions.add(new CliOption(BASE_PACKAGE, "base package (invokerPackage) for generated code"));
     cliOptions.add(new CliOption(ARTIFACT_NAME, "Artifact name in generated pom.xml"));
     cliOptions.add(new CliOption(WBC_VERSION, "WBC version in generated pom.xml"));
@@ -87,9 +87,9 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     SupportingFile pom = new SupportingFile("pom.mustache", "", "pom.xml");
     this.supportingFiles.add(pom);
 
-    if (additionalProperties.containsKey(CONFIG_PACKAGE)) {
-      this.setConfigPackage((String) additionalProperties.get(CONFIG_PACKAGE));
-    }
+//    if (additionalProperties.containsKey(CONFIG_PACKAGE)) {
+//      this.setConfigPackage((String) additionalProperties.get(CONFIG_PACKAGE));
+//    }
 
     if (additionalProperties.containsKey(BASE_PACKAGE)) {
       this.setBasePackage((String) additionalProperties.get(BASE_PACKAGE));
@@ -172,12 +172,12 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     this.singleContentTypes = singleContentTypes;
   }
 
-  public void setConfigPackage(String configPackage) {
-    this.configPackage = configPackage;
-  }
+//  public void setConfigPackage(String configPackage) {
+//    this.configPackage = configPackage;
+//  }
 
-  public void setBasePackage(String configPackage) {
-    this.basePackage = configPackage;
+  public void setBasePackage(String basePackage) {
+    this.basePackage = basePackage;
   }
 
   @Override
