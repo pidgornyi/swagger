@@ -1,0 +1,97 @@
+swagger: "2.0"
+info:
+  title: Setup services
+  version: 1.0.0.0
+
+parameters:
+  employeeValue:
+    name: value
+    description: employee code, firstName or lastName
+    type: string
+    in: query
+
+paths:
+  /collectors:
+    get:
+      summary: Get a list of collecting employees
+      operationId: getCollectingEmployees
+      parameters:
+        - $ref: 'setup-employee.yaml#/parameters/employeeValue'
+        - $ref: 'commons.yaml#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Employee'
+      tags:
+        - employee setup
+
+  /receivers:
+    get:
+      summary: Get a list of receiving employees
+      operationId: getReceivingEmployees
+      parameters:
+        - $ref: 'setup-employee.yaml#/parameters/employeeValue'
+        - $ref: 'commons.yaml#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Employee'
+      tags:
+        - employee setup
+
+  /for-media-plating:
+    get:
+      summary: Get a list of plating employees
+      operationId: getPlatingEmployees
+      parameters:
+        - $ref: 'setup-employee.yaml#/parameters/employeeValue'
+        - $ref: 'commons.yaml#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Employee'
+      tags:
+        - employee setup
+
+  /residents:
+    get:
+      summary: Get a list of residents
+      operationId: getResidents
+      parameters:
+        - $ref: 'setup-employee.yaml#/parameters/employeeValue'
+        - $ref: 'commons.yaml#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Employee'
+      tags:
+        - employee setup
+
+  /pathologists:
+    get:
+      summary: Get a list of pathologists
+      operationId: getPathologists
+      parameters:
+        - $ref: 'setup-employee.yaml#/parameters/employeeValue'
+        - $ref: 'commons.yaml#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Employee'
+      tags:
+        - employee setup

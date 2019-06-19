@@ -31,6 +31,17 @@ definitions:
       name:
         type: string
 
+  Choice:
+    title: Choice setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      choiceID:
+        type: integer
+        format: int64
+
   Clinic:
     title: Clinic setup model
     properties:
@@ -54,12 +65,20 @@ definitions:
   Contact:
     title: Contact model
     properties:
-      #contactMethod:
-      #  $ref: ContactMethod #Enum
+      contactMethod:
+        $ref: ContactMethod
       phoneNumber:
         type: string
       phoneExt:
         type: string
+
+  ContactMethod:
+    type: string
+    enum:
+      - PRIMARY_PHONE
+      - ALTERNATIVE_PHONE
+      - FAX
+      - PAGER
 
   Diagnosis:
     title: Diagnosis setup model
@@ -75,6 +94,18 @@ definitions:
       code:
         type: string
       name:
+        type: string
+
+  Employee:
+    title: Employee model
+    properties:
+      code:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      type:
         type: string
 
   IndicationSetup:
@@ -135,13 +166,15 @@ definitions:
       name:
         type: string
 
-  Physician:
+  PhysicianSetup:
     title: Physician setup model
     properties:
       id:
         type: string
       title:
-        type: string #Dictionary
+        type: object #Dictionary
+        additionalProperties:
+          type: string
       upin:
         type: string
       npi:
@@ -181,8 +214,8 @@ definitions:
   Recipient:
     title: Recipient model
     properties:
-      #type:
-      #  $ref: RecipientType #Enum
+      type:
+        $ref: RecipientType
       contacts:
         type: array
         items:
@@ -193,6 +226,21 @@ definitions:
         type: string
       name:
         type: string
+
+  RecipientType:
+    type: string
+    enum:
+      - REQUESTING_DOCTOR
+      - ATTENDING_DOCTOR
+      - OTHER_DOCTOR
+      - ORDERING_CLINIC
+      - OTHER_CLINIC
+      - PATIENT_CLINIC
+      - GROUP_OF_EMPLOYEES
+      - REFERENCE_LAB
+      - MEDICAL_SERVICE
+      - EMPLOYEE
+      - OTHER
 
   ResulKeypad:
     title: ResulKeypad model
@@ -210,6 +258,55 @@ definitions:
       displayAsDropDown:
         type: boolean
 
+  ResulKeypadActionType:
+    type: string
+    enum:
+      - Text
+      - Test
+      - CannedMessage
+      - NextKeypad
+      - BenchTest
+      - RapidTest
+      - Media
+      - Isolate
+      - Workup
+      - FocusLastAdded
+      - PrevKeypad
+      - PurityMedia
+      - DrugInterpretation
+
+  ResulKeypadAction:
+    title: ResulKeypadAction model
+    properties:
+      value:
+        type: string
+      displayValue:
+        type: string
+      type:
+        $ref: ResulKeypadActionType
+      visible:
+        type: boolean
+
+  ResulKeypadItem:
+    title: ResulKeypadItem model
+    properties:
+      keyCode:
+        type: string
+      title:
+        type: string
+      preview:
+        type: string
+      actions:
+        type: array
+        items:
+          $ref: ResulKeypadAction
+      addKeyText:
+        type: boolean
+      separator:
+        type: string
+      separatorManual:
+        type: string
+
   ResulKeypadLevel:
     title: ResulKeypad model
     properties:
@@ -220,8 +317,7 @@ definitions:
       level:
         type: string
       type:
-        type:
-          $ref: ResulKeypadType
+        $ref: ResulKeypadType
       autoMove:
         type: boolean
       operation:
@@ -230,6 +326,22 @@ definitions:
         type: array
         items:
           $ref: ResulKeypadItem
+
+  ResulKeypadType:
+    type: string
+    enum:
+      - DrugResult
+      - DrugInterpretation
+      - TestComment
+      - BatchResulting
+      - MediaResulting
+      - WorkupResulting
+      - WorkupQuantity
+      - IsolateQuantity
+      - WorkupColony
+      - BenchTest
+      - RapidTest
+      - Workup
 
   Source:
     title: Specimen model
@@ -289,8 +401,8 @@ definitions:
           $ref: TestDefinition
       loinc:
         type: string
-#      testType:      <--Enum
-#        $ref: TestType
+      testType:
+        $ref: TestType
 
   TestSources:
     title: Test sources model
@@ -318,4 +430,45 @@ definitions:
       checkOnlyNonAccItems:
         type: boolean
 
-
+  TestType:
+    type: string
+    enum:
+      - A
+      - N
+      - S
+      - B
+      - C
+      - P
+      - O
+      - G
+      - R
+      - M
+      - U
+      - K
+      - E
+      - D
+      - Y
+      - CLINICAL
+      - ICR
+      - MICROBIOLOGY
+      - MIC_PANEL
+    x-enumNames:
+      - ANALISIS
+      - ANALYTE
+      - STAIN
+      - PROBE
+      - CULTURE_REQUEST
+      - PANEL
+      - SEND_OUT
+      - GROUP
+      - PROCESSING_ONLY
+      - MARKER
+      - SUPERPANEL
+      - MARKERSET
+      - RESULT_ELEMENT
+      - DIFFERENTIAL
+      - ARRAY
+      - CLINICAL
+      - ICR
+      - MICROBIOLOGY
+      - MIC_PANEL

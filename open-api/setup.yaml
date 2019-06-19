@@ -3,8 +3,6 @@ info:
   title: Setup services
   version: 1.0.0.0
 
-# Note: Paths should be
-#
 paths:
   /clinics:
     get:
@@ -24,6 +22,8 @@ paths:
             type: array
             items: 
               $ref: 'model.yaml#/definitions/Clinic'
+      tags:
+        - setup
 
   /patient-clients:
     get:
@@ -98,7 +98,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: 'model.yaml#/definitions/Physician'
+              $ref: 'model.yaml#/definitions/PhysicianSetup'
       tags:
         - setup
 

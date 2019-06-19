@@ -11,6 +11,8 @@ import io.swagger.models.parameters.BodyParameter;
 import io.swagger.models.parameters.FormParameter;
 import io.swagger.models.parameters.Parameter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -271,12 +273,59 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     }
   }
 
-//  private void addCacheControl(Map<String, Object> operations, Object value) {
-//    operations.putIfAbsent("hasCacheControl", true);
-//    operations.putIfAbsent("cacheControl", value);
-//
-//    List<Map<String, String>> imports = (List<Map<String, String>> imports)operations.get("imports");
-//    operations.put("hasImport", true);
-//  }
+  // Override standard implementation to avoid to upper case formatting
+  @Override
+  public String toEnumVarName(String value, String datatype) {
+    if (value.length() == 0) {
+      return "EMPTY";
+    }
 
+    // for symbol, e.g. $, #
+    if (getSymbolName(value) != null) {
+      return getSymbolName(value);
+    }
+
+    // number
+    if ("Integer".equals(datatype) || "Long".equals(datatype) ||
+        "Float".equals(datatype) || "Double".equals(datatype)) {
+      String varName = "NUMBER_" + value;
+      varName = varName.replaceAll("-", "MINUS_");
+      varName = varName.replaceAll("\\+", "PLUS_");
+      varName = varName.replaceAll("\\.", "_DOT_");
+      return varName;
+    }
+
+    // string
+    String var = value.replaceAll("\\W+", "_");
+    if (var.matches("\\d.*")) {
+      return "_" + var;
+    } else {
+      return var;
+    }
+  }
+
+  // Override standard implementation to add support x-enumNames vendor extension
+  // It allows to have different name-value in Enums
+  @Override
+  public Map<String, Object> postProcessModelsEnum(Map<String, Object> objs) {
+    objs = super.postProcessModelsEnum(objs);
+    List<Object> models = (List<Object>) objs.get("models");
+    for (Object _mo : models) {
+      Map<String, Object> mo = (Map<String, Object>) _mo;
+      CodegenModel cm = (CodegenModel) mo.get("model");
+
+      if (Boolean.TRUE.equals(cm.isEnum) && cm.allowableValues != null) {
+        Map<String, Object> allowableValues = cm.allowableValues;
+        List<Map<String, String>> enumVars = (List<Map<String, String>>) allowableValues.get("enumVars");
+        int index = 0;
+        for (Map<String, String> enumVar : enumVars) {
+          if(cm.vendorExtensions.containsKey("x-enumNames")) {
+            Object enumName = ((List)cm.vendorExtensions.get("x-enumNames")).get(index++);
+            enumVar.put("x-enumName", (String)enumName);
+          }
+        }
+      }
+    }
+    return objs;
+  }
 }
