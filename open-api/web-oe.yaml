@@ -20,6 +20,8 @@ tags:
   - name: choice
     description: Choice services
     x-cache-control: 86400
+  - name: test catalog setup
+    description: Test catalog setup services
 
 paths:
   /setup/clinics:
@@ -64,6 +66,7 @@ paths:
     $ref: 'setup.yaml#/paths/~1bodysite-result-keypad'
   /setup/insurance-group:
     $ref: 'setup.yaml#/paths/~1insurance-group'
+
   /setup/employees/collectors:
     $ref: 'setup-employee.yaml#/paths/~1collectors'
   /setup/employees/receivers:
@@ -74,3 +77,47 @@ paths:
     $ref: 'setup-employee.yaml#/paths/~1residents'
   /setup/employees/pathologists:
     $ref: 'setup-employee.yaml#/paths/~1pathologists'
+
+  /setup/choices/countries:
+    $ref: 'setup-choices.yaml#/paths/~1countries'
+  /setup/choices/languages:
+    $ref: 'setup-choices.yaml#/paths/~1languages'
+  /setup/choices/relation-to-insured:
+    $ref: 'setup-choices.yaml#/paths/~1relation-to-insured'
+  /setup/choices/relation-to-emergency:
+    $ref: 'setup-choices.yaml#/paths/~1relation-to-emergency'
+  /setup/choices/maritals:
+    $ref: 'setup-choices.yaml#/paths/~1maritals'
+  /setup/choices/ethnicities:
+    $ref: 'setup-choices.yaml#/paths/~1ethnicities'
+  /setup/choices/sex:
+    $ref: 'setup-choices.yaml#/paths/~1sex'
+  /setup/choices/races:
+    $ref: 'setup-choices.yaml#/paths/~1races'
+  /setup/choices/species:
+    $ref: 'setup-choices.yaml#/paths/~1species'
+  /setup/choices/religions:
+    $ref: 'setup-choices.yaml#/paths/~1religions'
+  /setup/choices/patient-types:
+    $ref: 'setup-choices.yaml#/paths/~1patient-types'
+  /setup/choices/admission-types:
+    $ref: 'setup-choices.yaml#/paths/~1admission-types'
+  /setup/choices/draw-types:
+    $ref: 'setup-choices.yaml#/paths/~1draw-types'
+  /setup/choices/proffesional-suffixes:
+    $ref: 'setup-choices.yaml#/paths/~1proffesional-suffixes'
+  /setup/choices/counties:
+    $ref: 'setup-choices.yaml#/paths/~1counties'
+  /setup/choices/employments:
+    $ref: 'setup-choices.yaml#/paths/~1employments'
+  /setup/choices/family-plans:
+    $ref: 'setup-choices.yaml#/paths/~1family-plans'
+  /setup/choices/payments:
+    $ref: 'setup-choices.yaml#/paths/~1payments'
+
+  /tsearch/single-test:
+    $ref: 'test-catalog-setup.yaml#/paths/~1single-test'
+  /tsearch/tests:
+    $ref: 'test-catalog-setup.yaml#/paths/~1tests'
+
+

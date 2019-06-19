@@ -25,6 +25,7 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
   public static final String WGCM_VERSION = "wgcmVersion";
   public static final String PRODUCT_VERSION = "productVersion";
   public static final String BUILD_FINAL_NAME = "buildFinalName";
+  public static final String CODEGEN_ACCESSORS = "x-codegen-accessors";
 
 //  private String configPackage = "com.softcomputer.gene.web.api.configuration";
   private String basePackage = "com.softcomputer.gene.web.api";
@@ -139,6 +140,10 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
   public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
     model.imports.remove("ApiModel");
     model.imports.remove("ApiModelProperty");
+
+    if (model.vendorExtensions.containsKey(CODEGEN_ACCESSORS)) {
+      property.vendorExtensions.putIfAbsent(CODEGEN_ACCESSORS, model.vendorExtensions.containsKey(CODEGEN_ACCESSORS));
+    }
   }
 
   public String toApiName(String name) {

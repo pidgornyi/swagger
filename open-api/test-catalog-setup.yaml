@@ -1,0 +1,42 @@
+swagger: "2.0"
+info:
+  title: Setup services
+  version: 1.0.0.0
+
+paths:
+  /single-test:
+    get:
+      operationId: getTestSetupForCatalog
+      parameters:
+        - name: code
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/CatalogTestSetup'
+      tags:
+        - employee setup
+
+  /tests:
+    get:
+      operationId: getTestSetups
+      parameters:
+        - name: code
+          in: query
+          type: string
+          required: true
+        - name: type
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            #$ref: 'model.yaml#/definitions/TestSearchResult'
+            $ref: 'model.yaml#/definitions/CatalogTestSetup'
+      tags:
+        - employee setup

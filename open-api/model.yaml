@@ -11,9 +11,7 @@ definitions:
       state:
         type: string
       country:
-        type: object #Dictionary
-        additionalProperties:
-          type: string
+        $ref: Dictionary
       county:
         type: string
       zip:
@@ -30,6 +28,15 @@ definitions:
         type: string
       name:
         type: string
+
+  CatalogTestSetup:
+    title: Catalog Test Setup model
+    properties:
+      testDefinitions:
+        type: array
+        items:
+          $ref: TestDefinition
+    x-codegen-accessors: true
 
   Choice:
     title: Choice setup model
@@ -84,6 +91,14 @@ definitions:
     title: Diagnosis setup model
     properties:
       code:
+        type: string
+      name:
+        type: string
+
+  Dictionary:
+    title: Dictionary model
+    properties:
+      id:
         type: string
       name:
         type: string
@@ -172,9 +187,7 @@ definitions:
       id:
         type: string
       title:
-        type: object #Dictionary
-        additionalProperties:
-          type: string
+        $ref: Dictionary
       upin:
         type: string
       npi:

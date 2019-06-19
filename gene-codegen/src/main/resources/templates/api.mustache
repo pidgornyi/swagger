@@ -53,8 +53,7 @@ public interface {{classname}} {
       */
     @RequestMapping(value = "{{{path}}}", method = RequestMethod.{{httpMethod}}{{#singleContentTypes}}{{#hasProduces}}, produces = "{{{vendorExtensions.x-accepts}}}"{{/hasProduces}}{{#hasConsumes}}, consumes = "{{{vendorExtensions.x-contentType}}}"{{/hasConsumes}}{{/singleContentTypes}}{{^singleContentTypes}}{{#hasProduces}}, produces = { {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} }{{/hasProduces}}{{#hasConsumes}}, consumes = { {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} }{{/hasConsumes}}{{/singleContentTypes}})
     {{>returnTypes}} {{operationId}}({{#allParams}}
-        {{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}}
-    );
+        {{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}});
     {{/operation}}
 }
 {{/operations}}

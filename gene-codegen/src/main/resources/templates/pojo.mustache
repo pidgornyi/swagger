@@ -5,11 +5,61 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
 
   {{#vars}}
   {{#isContainer}}
-  public {{{datatypeWithEnum}}} {{name}}{{#required}} = {{{defaultValue}}}{{/required}}{{^required}} = null{{/required}};
+  {{#vendorExtensions.x-codegen-accessors}}private{{/vendorExtensions.x-codegen-accessors}}{{^vendorExtensions.x-codegen-accessors}}public{{/vendorExtensions.x-codegen-accessors}} {{{datatypeWithEnum}}} {{name}}{{#required}} = {{{defaultValue}}}{{/required}}{{^required}} = null{{/required}};
   {{/isContainer}}
   {{^isContainer}}
-  public {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}};
+  {{#vendorExtensions.x-codegen-accessors}}private{{/vendorExtensions.x-codegen-accessors}}{{^vendorExtensions.x-codegen-accessors}}public{{/vendorExtensions.x-codegen-accessors}} {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}};
   {{/isContainer}}
 
   {{/vars}}
+  {{#vendorExtensions.x-codegen-accessors}}
+  {{#vars}}
+  {{#isListContainer}}
+
+  public {{classname}} add{{nameInCamelCase}}Item({{{items.datatypeWithEnum}}} {{name}}Item) {
+    {{^required}}
+    if (this.{{name}} == null) {
+      this.{{name}} = {{{defaultValue}}};
+    }
+    {{/required}}
+    this.{{name}}.add({{name}}Item);
+    return this;
+  }
+  {{/isListContainer}}
+  {{#isMapContainer}}
+
+  public {{classname}} put{{nameInCamelCase}}Item(String key, {{{items.datatypeWithEnum}}} {{name}}Item) {
+    {{^required}}
+    if (this.{{name}} == null) {
+      this.{{name}} = {{{defaultValue}}};
+    }
+    {{/required}}
+    this.{{name}}.put(key, {{name}}Item);
+    return this;
+  }
+  {{/isMapContainer}}
+
+  /**
+  {{#description}}
+   * {{{description}}}
+  {{/description}}
+  {{^description}}
+   * Get {{name}}
+  {{/description}}
+  {{#minimum}}
+   * minimum: {{minimum}}
+  {{/minimum}}
+  {{#maximum}}
+   * maximum: {{maximum}}
+  {{/maximum}}
+   **/
+  public {{{datatypeWithEnum}}} {{#isBoolean}}is{{/isBoolean}}{{getter}}() {
+    return {{name}};
+  }
+
+  public void {{setter}}({{{datatypeWithEnum}}} {{name}}) {
+    this.{{name}} = {{name}};
+  }
+  {{/vars}}
+  {{/vendorExtensions.x-codegen-accessors}}
 }

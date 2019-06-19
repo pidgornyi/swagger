@@ -3,12 +3,14 @@ order/Physician => Physician
 setup/Physician => PhysicianSetup
 
 #2
-Dictionary -> MAP
-	PhysicianSetup.title
-	AddressInfo.country
+Dictionary(String id, String name) => constructor removed
 	
 #3
 TestType enum
 getValue() => toString()
 getByValue() => fromValue()
+
+#4
+countItems
+Short => Integer
 

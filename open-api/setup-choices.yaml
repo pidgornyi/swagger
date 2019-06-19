@@ -1,0 +1,263 @@
+swagger: "2.0"
+info:
+  title: Setup services
+  version: 1.0.0.0
+
+parameters:
+  employeeValue:
+    name: value
+    description: employee code, firstName or lastName
+    type: string
+    in: query
+
+paths:
+  /countries:
+    get:
+      operationId: getCountries
+      summary: Get required countries
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /languages:
+    get:
+      operationId: getLanguages
+      summary: Get required languages
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /relation-to-insured:
+    get:
+      operationId: getRelationshipsToInsured
+      summary: Get relationships to insured
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /relation-to-emergency:
+    get:
+      operationId: getRelationshipsToEmergency
+      summary: Get required relationships to emergency
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /maritals:
+    get:
+      operationId: getMaritals
+      summary: Get required maritals
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /ethnicities:
+    get:
+      operationId: getEthnicities
+      summary: Get required ethnicities
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /sex:
+    get:
+      operationId: getSex
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /races:
+    get:
+      operationId: getRaces
+      summary: Get required races
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /species:
+    get:
+      operationId: getSpecies
+      summary: Get required species
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /religions:
+    get:
+      operationId: getReligions
+      summary: Get required religions
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /patient-types:
+    get:
+      operationId: getPatientTypes
+      summary: Get required patient types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /admission-types:
+    get:
+      operationId: getAdmissionTypes
+      summary: Get required admission types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /draw-types:
+    get:
+      operationId: getDrawTypes
+      summary: Get required draw types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /proffesional-suffixes:
+    get:
+      operationId: getProffesionalSuffixes
+      summary: Get required proffesional suffixes
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /counties:
+    get:
+      operationId: getCounties
+      summary: Get required counties
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /employments:
+    get:
+      operationId: getEmployments
+      summary: Get required employment types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /family-plans:
+    get:
+      operationId: getFamilyPlans
+      summary: Get active family plan types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
+
+  /payments:
+    get:
+      operationId: getPayments
+      summary: Get active payment types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Choice'
+      tags:
+        - choice
