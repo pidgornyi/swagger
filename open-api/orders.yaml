@@ -12,14 +12,84 @@ paths:
         - name: dtoOrder
           in: body
           schema:
-#            $ref: 'model.yaml#/definitions/Case'
-            $ref: 'model.yaml#/definitions/Modifier'
+            $ref: 'model.yaml#/definitions/Case'
       responses:
         '200':
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: 'model.yaml#/definitions/OperationResult'
+            $ref: 'model.yaml#/definitions/OperationResult'
       tags:
         - orders
+
+  /preprocess:
+    post:
+      summary: Preprocess order
+      operationId: preprocessOrder
+      parameters:
+        - name: dtoRequisition
+          in: body
+          schema:
+            $ref: 'model.yaml#/definitions/Case'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/ProcessResult'
+      tags:
+        - orders
+
+  /{number}:
+    get:
+      summary: open order
+      operationId: openOrder
+      parameters:
+        - name: number
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/ProcessResult'
+      tags:
+        - orders
+
+  /{number}/details:
+    get:
+      summary: Get order detailed info
+      operationId: getOrderDetailedInfo
+      parameters:
+        - name: number
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/OrderDetailedInfo'
+      tags:
+        - orders
+
+  /{number}/move:
+    post:
+      summary: Move order
+      operationId: orderMoveToVisit
+      parameters:
+        - name: number
+          in: path
+          type: string
+          required: true
+        - name: billing
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/ResultOperation'
+      tags:
+        - orders
+

@@ -64,6 +64,10 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     additionalProperties.put(BASE_PACKAGE, basePackage);
 //    this.additionalProperties.put("jackson", "true");
 
+    reservedWords.remove("case"); // Case model is the key entity in the api
+
+    setDateLibrary("joda");
+
 //    cliOptions.add(new CliOption(CONFIG_PACKAGE, "configuration package for generated code"));
     cliOptions.add(new CliOption(BASE_PACKAGE, "base package (invokerPackage) for generated code"));
     cliOptions.add(new CliOption(ARTIFACT_NAME, "Artifact name in generated pom.xml"));

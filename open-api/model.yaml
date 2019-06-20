@@ -32,6 +32,37 @@ definitions:
       phone2:
         type: string
 
+  Antibiotic:
+    title: Antibiotic model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      code:
+        type: string
+      name:
+        type: string
+
+  BaseEntity:
+    title: Base Entity model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      requisitionId:
+        type: integer
+        format: int64
+      previousOperation:
+        $ref: Operation
+      operation:
+        $ref: Operation
+      operationReason:
+        type: string
+      operationComment:
+        type: string
+      isOperationPerformed:
+        type: boolean
+      itemStatus:
+        type: string
+
   BodySite:
     title: Body site model
     properties:
@@ -79,11 +110,11 @@ definitions:
       orderingLocation:
         $ref: Location
       orderingPhysician:
-        $ref: Physician
+        $ref: PhysicianSetup
       reportToDoctors:
         type: array
         items:
-          $ref: Physician
+          $ref: PhysicianSetup
       auxNumber:
         type: string
       priority:
@@ -187,6 +218,20 @@ definitions:
       patientType:
         type: string
 
+  Collector:
+    title: Contact model
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      active:
+        type: boolean
+
   Contact:
     title: Contact model
     properties:
@@ -195,6 +240,30 @@ definitions:
       phoneNumber:
         type: string
       phoneExt:
+        type: string
+
+  ContactInfo:
+    title: Contact Info model
+    properties:
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      relationship:
+        $ref: Dictionary
+      title:
+        type: string
+      suffix:
+        type: string
+      profSuffix:
+        type: string
+      language:
+        $ref: Dictionary
+      address:
+        $ref: AddressInfo
+      alternativeContact:
         type: string
 
   ContactMethod:
@@ -250,6 +319,19 @@ definitions:
       type:
         type: string
 
+  Indication:
+    title: Indication model
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      position:
+        type: integer
+        format: int64
+      type:
+        $ref: IndicationType
+
   IndicationSetup:
     title: Indication setup model
     properties:
@@ -257,6 +339,15 @@ definitions:
         type: string
       name:
         type: string
+
+  IndicationType:
+    type: string
+    enum:
+      - P
+      - A
+    x-enumNames:
+      - PRIMARY
+      - ADDITIONAL
 
   Insurance:
     title: Insurance model
@@ -291,6 +382,144 @@ definitions:
         type: string
       name:
         type: string
+
+  InsuranceInfo:
+    title:  Insurance info model
+    properties:
+      carrier:
+        $ref: InsuranceCarrierInfo
+      accountNumber:
+        type: string
+      groupId:
+        type: string
+      position:
+        type: integer
+        format: int64
+      comment:
+        type: string
+      policyHolder:
+        $ref: PolicyHolderInfo
+      active:
+        type: boolean
+      deleted:
+        type: boolean
+      auxCarrierUsed:
+        type: boolean
+      auxId:
+        type: integer
+        format: int32
+      prefix:
+        type: string
+      memberId:
+        type: string
+      effectiveDate:
+        type: string
+        format: date-time
+      expiryDate:
+        type: string
+        format: date-time
+
+  Location:
+    titile: Location model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      address:
+        $ref: AddressInfo
+      isColCenter:
+        type: boolean
+      isLocation:
+        type: boolean
+      primaryForTestRouting:
+        type: boolean
+
+  Media:
+    title: Media model
+    allOf:
+      - $ref: BaseEntity
+      - type: "object"
+        properties:
+          caseIdentifier:
+            type: integer
+            format: int64
+          attachedTestsIds:
+            type: array
+            items:
+              type: integer
+              format: int64
+          tubeType:
+            type: string
+          tubeName:
+            type: string
+          micType:
+            $ref: MicType
+          micCode:
+            type: string
+          addedDT:
+            type: string
+            format: date-time
+          addedTechID:
+            type: string
+          platedDT:
+            type: string
+            format: date-time
+          platedTechID:
+            type: string
+          generatedDT:
+            type: string
+            format: date-time
+          generatedBy:
+            type: string
+          mediaTubeNumber:
+            type: string
+          parentMedia:
+            type: integer
+            format: int64
+          bodySite:
+            type: string
+          statusDisp:
+            type: string
+          status:
+            type: string
+          mediaStatusDT:
+            type: string
+            format: date-time
+          mediaStatusTechID:
+            type: string
+          barcode:
+            type: string
+          generationType:
+            $ref: MediaGenerationType
+          workupCode:
+            type: string
+          isolateNumber:
+            type: string
+          organismCode:
+            type: string
+          workupStatus:
+            type: string
+          workupStatusDT:
+            type: string
+            format: date-time
+          workupStatusTechID:
+            type: string
+          microResultEntry:
+            type: string
+
+  MediaGenerationType:
+    type: string
+    enum:
+      - A
+      - M
+      - P
+      - R
+    x-enumNames:
+      - AUTOMATICALLY
+      - MANUALLY
+      - POSTED
+      - REFLEXED
 
   MedicalNecessity:
     title:  Medical necessity model
@@ -342,6 +571,14 @@ definitions:
       cptCode:
         type: string
 
+  MicComment:
+    title:  Mic model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      comment:
+        type: string
+
   MicroMedia:
     title:  Micro Media model
     properties:
@@ -365,6 +602,23 @@ definitions:
         type: array
         items:
           type: string
+
+  MicType:
+    type: string
+    enum:
+      - M
+      - I
+      - P
+      - D
+      - R
+      - W
+    x-enumNames:
+      - MEDIA
+      - ISOLATE
+      - PANEL
+      - DRUG
+      - RAPID_TEST
+      - WORKUP
 
   MncStatus:
     type: string
@@ -396,6 +650,59 @@ definitions:
         type: integer
         format: int64
 
+  Note:
+    title:  Note model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      text:
+        title: Note's text
+        type: string
+      at:
+        title: Date when entered
+        type: string
+        format: date-time
+      by:
+        title: Note's author.
+        type: string
+      active:
+        title: Is note active
+        type: boolean
+      ownerType:
+        title: Type of note owner
+        type: string
+      requestedFrom:
+        title: Requested from value
+        type: string
+      operation:
+        title: Operation
+        type: string
+
+  Operation:
+    type: string
+    enum:
+      - None
+      - Update
+      - Reject
+      - UnReject
+      - Cancel
+      - Add
+      - Delete
+      - InternalDelete
+      - Discard
+      - Reordered
+    x-enumNames:
+      - NONE
+      - UPDATE
+      - REJECT
+      - UN_REJECT
+      - CANCEL
+      - ADD
+      - DELETE
+      - INTERNAL_DELETE
+      - DISCARD
+      - REORDERED
+
   OperationResult:
     title:  Operation result model
     allOf:
@@ -407,6 +714,117 @@ definitions:
             items:
               type: string
               $ref: PrintItem
+
+  OrderDetailedInfo:
+    title:  Order Detailed Info model
+    properties:
+      orderNumber:
+        type: string
+      standing:
+        type: boolean
+      requisitionId:
+        type: string
+      orderedDttm:
+        type: string
+        format: date
+      priority:
+        type: string
+      status:
+        type: string
+      orderingPhysician:
+        type: string
+      orderingLocation:
+        type: string
+      enteredBy:
+        type: string
+      tests:
+        type: array
+        items:
+          $ref: OrderedTestDetailedInfo
+      priorityName:
+        type: string
+      orderingPhysicianName:
+        type: string
+      orderingLocationName:
+        type: string
+      enteredByName:
+        type: string
+      requisitionNumbers:
+        type: string
+      auxNumber:
+        type: string
+      clinicCode:
+        type: string
+      clinicName:
+        type: string
+      billingNumber:
+        type: string
+
+  OrderedTestDetailedInfo:
+    title:  Ordered Test Detailed Info model
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      tubeTypeIdsString:
+        type: string
+      collectedDttm:
+        type: string
+        format: date-time
+      isCancelled:
+        type: boolean
+      testCode:
+        type: string
+      priority:
+        type: string
+      priorityName:
+        type: string
+
+  PatientAlert:
+    title:  Patient Alert model
+    properties:
+      auxId:
+        type: string
+      alert:
+        $ref: Dictionary
+      dateTime:
+        type: string
+        format: date-time
+      enteredBy:
+        type: string
+      active:
+        type: boolean
+      text:
+        type: string
+
+  PatientDetailedInfo:
+    title:  Patient Detailed Info model
+    properties:
+      phone:
+        type: string
+      race:
+        $ref: Dictionary
+      species:
+        $ref: Dictionary
+      emergencyContact:
+        $ref: ContactInfo
+      primaryInsurance:
+        $ref: InsuranceInfo
+      dvaNumber:
+        type: string
+      pensionNumber:
+        type: string
+      alerts:
+        type: array
+        items:
+          $ref: PatientAlert
+      comment:
+        type: string
+      notes:
+        type: array
+        items:
+          $ref: Note
 
   PatientMaintenanceOptions:
     title: Requisition options model
@@ -502,6 +920,41 @@ definitions:
       orderingKeypad:
         type: string
 
+  PolicyHolderInfo:
+    title: Policy Holder Info model
+    properties:
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      dob:
+        type: string
+        format: date
+      relationship:
+        $ref: Dictionary
+      sex:
+        $ref: Dictionary
+      title:
+        type: string
+      suffix:
+        type: string
+      language:
+        $ref: Dictionary
+      address:
+        $ref: AddressInfo
+      ssn:
+        type: string
+      employerName:
+        type: string
+      payment:
+        type: string
+      familyPlan:
+        type: string
+      employment:
+        type: string
+
   PrintItem:
     x-codegen-import-mapping: com.softcomputer.gene.web.api.printing.PrintItem
 
@@ -570,6 +1023,12 @@ definitions:
       name:
         type: string
 
+  ResultOperation:
+    title: Result operation model
+    properties:
+      operationDone:
+        type: boolean
+
   Quality:
     title:  Quality model
     properties:
@@ -616,6 +1075,14 @@ definitions:
       - MEDICAL_SERVICE
       - EMPLOYEE
       - OTHER
+
+  RequisitionModeEnum:
+    type: string
+    enum:
+      - Standard
+      - Standing
+      - Child
+      - AddOn
 
   RequisitionOptions:
     title: Requisition options model
@@ -802,6 +1269,17 @@ definitions:
       keypadCode:
         type: string
 
+  SpecimenCollectionRequest:
+    title: Specimen Collection Schedule Option model
+    properties:
+      collectNow:
+        type: boolean
+      toBeCollectedDateTime:
+        type: string
+        format: date-time
+      toBeCollectedBy:
+        $ref: Collector
+
   SpecimenCollectionScheduleOption:
     title: Specimen Collection Schedule Option model
     properties:
@@ -813,6 +1291,92 @@ definitions:
         type: boolean
       collectionTimes:
         type: string
+
+  Test:
+    title: Test model
+    allOf:
+      - $ref: ProcessResult
+      - type: "object"
+        properties:
+          caseIdentifier:
+            type: integer
+            format: int64
+          testCode:
+            type: string
+          testName:
+            type: string
+          testCodeVersion:
+            type: string
+          testType:
+            $ref: TestType
+    #      testStatus:
+    #        $ref: TestStatus
+          extensionNumber:
+            type: integer
+            format: int32
+          performingDepId:
+            type: integer
+            format: int64
+          parentId:
+            type: integer
+            format: int64
+          components:
+            type: array
+            items:
+              $ref: Test
+          parentOrderNumber:
+            type: string
+          isCancelled:
+            type: boolean
+          cancellationReason:
+            type: string
+          cancellationComment:
+            type: string
+          testPriority:
+            $ref: Priority
+          reportToDoctors:
+            type: array
+            items:
+              $ref: PhysicianSetup
+          orderingDoctors:
+            type: array
+            items:
+              $ref: PhysicianSetup
+          position:
+            type: integer
+            format: int64
+          duplicationTest:
+            type: integer
+            format: int64
+          absorptionTest:
+            type: integer
+            format: int64
+          parentSwapped:
+            type: boolean
+          reflexPanel:
+            type: integer
+            format: int64
+          requisitionReflexPanel:
+            type: integer
+            format: int64
+          systemType:
+            type: string
+          micReflexStatus:
+            type: string
+          cancelBy:
+            type: string
+          testLevelIndications:
+            type: array
+            items:
+              $ref: Indication
+          mediaList:
+            type: array
+            items:
+              $ref: Media
+          diagnoses:
+            type: array
+            items:
+              $ref: Diagnosis
 
   TestDefinition:
     title: TestDefinition setup model
@@ -894,6 +1458,16 @@ definitions:
       checkOnlyNonAccItems:
         type: boolean
 
+  TestSpecimenAttach:
+    title: Test specimen attach model
+    properties:
+      testId:
+        type: integer
+        format: int64
+      specimenId:
+        type: integer
+        format: int64
+
   TestType:
     type: string
     enum:
@@ -936,3 +1510,210 @@ definitions:
       - ICR
       - MICROBIOLOGY
       - MIC_PANEL
+
+  UserChoice:
+    title: User choice model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      userChoiceItemList:
+        type: array
+        items:
+          $ref: UserChoiceItem
+
+  UserChoiceItem:
+    title: User choice item model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      active:
+        type: boolean
+
+  UserDefinedField:
+    title: User Defined Field model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      orderRecid:
+        type: integer
+        format: int64
+      orderNumber:
+        type: string
+      patientRecid:
+        type: integer
+        format: int64
+      fieldSetup:
+        $ref: UserDefinedFieldSetup
+      requisitionRecid:
+        type: integer
+        format: int64
+      visitRecid:
+        type: integer
+        format: int64
+      ownerType:
+        $ref: UserDefinedFieldOwnerType
+      ownerRecid:
+        type: integer
+        format: int64
+      fieldValues:
+        type: array
+        items:
+          $ref: UserDefinedFieldOwnerType
+      variations:
+        type: array
+        items:
+          $ref: UserDefinedField
+
+  UserDefinedFieldLevel:
+    type: string
+    enum:
+      - T
+      - O
+    x-enumNames:
+      - TEST
+      - ORDER
+
+  UserDefinedFieldOwnerType:
+    type: string
+    enum:
+      - P
+      - O
+      - R
+      - RP
+      - S
+      - RS
+      - V
+      - RV
+      - T
+      - RT
+    x-enumNames:
+      - PATIENT
+      - ORDER
+      - REQUISITION
+      - REQUISITION_PATIENT
+      - SPECIMEN
+      - REQUISITION_SPECIMEN
+      - VISIT
+      - REQUISITION_VISIT
+      - TEST
+      - REQUISITION_TEST
+
+  UserDefinedFieldPromptType:
+    type: string
+    enum:
+      - NONE
+      - MANDATORY_ACC
+      - MANDATORY_RELEASE
+      - MANDATORY_COLLECT
+      - MANDATORY_RECEIVE
+      - PROMPT_ACC
+      - PROMPT_RELEASE
+      - PROMPT_COLLECT
+      - PROMPT_RECEIVE
+
+  UserDefinedFieldSetup:
+    title: User Defined Field setup model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      code:
+        type: string
+      refCode:
+        type: string
+      name:
+        type: string
+      level:
+        $ref: UserDefinedFieldLevel
+      userChoice:
+        $ref: UserChoice
+      fieldType:
+        $ref: UserDefinedFieldType
+      promptType:
+        $ref: UserDefinedFieldPromptType
+      choices:
+        type: array
+        items:
+          type: string
+      reportableFrom:
+        type: number
+        format: double
+      reportableTo:
+        type: number
+        format: double
+      decimalPlaces:
+        type: integer
+        format: int32
+      defaultValue:
+        type: string
+      dateTime:
+        type: boolean
+
+  UserDefinedFieldType:
+    type: string
+    enum:
+      - N
+      - B
+      - L
+      - A
+      - D
+      - S
+      - Z
+      - IN
+      - R
+      - RM
+      - TQ
+      - C
+      - T
+    x-enumNames:
+      - NUMERIC
+      - CHECK_BOX
+      - CHOICE_FIELD
+      - USER_DEFINED_CHOICE
+      - DATE
+      - SHORT_TEXT
+      - MULTILINE_TEXT
+      - INSTOTUTIONS
+      - BROWSER
+      - MULTI_SELECTION_BROWSER
+      - TQC
+      - CALCULATED_FIELD
+      - RTF
+
+  UserDefinedFieldValue:
+    title: User Defined Field value model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      stringValue:
+        type: string
+      position:
+        type: integer
+        format: int32
+      data:
+        type: string
+
+  VisitBriefInfo:
+    title: Visit Brief Info model
+    properties:
+      billingNumber:
+        type: string
+      admissionDateTime:
+        type: string
+        format: date-time
+      visitClinic:
+        type: string
+      attendingDoctor:
+        type: string
+      patientType:
+        type: string
+      comment:
+        type: string
+      dischargeDateTime:
+        type: string
+        format: date-time
+
+

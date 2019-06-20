@@ -141,14 +141,14 @@ paths:
   /options/patient-maintenance:
     $ref: 'options.yaml#/paths/~1patient-maintenance'
 
-  /orders/:
+  /orders:
     $ref: 'orders.yaml#/paths/~1'
-#  /orders/preprocess:
-#    $ref: 'orders.yaml#/paths/~1patient-maintenance'
-#  /orders/{number}:
-#    $ref: 'orders.yaml#/paths/~1{number}'
-#  /orders/{number}/details:
-#    $ref: 'orders.yaml#/paths/~1{number}~1details'
-#  /orders/{number}/move:
-#    $ref: 'orders.yaml#/paths/~1{number}~1move'
+  /orders/preprocess:
+    $ref: 'orders.yaml#/paths/~1preprocess'
+  /orders/{number}:
+    $ref: 'orders.yaml#/paths/~1{number}'
+  /orders/{number}/details:
+    $ref: 'orders.yaml#/paths/~1{number}~1details'
+  /orders/{number}/move:
+    $ref: 'orders.yaml#/paths/~1{number}~1move'
 

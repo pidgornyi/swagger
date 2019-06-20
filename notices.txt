@@ -6,9 +6,18 @@ setup/Physician => PhysicianSetup
 Dictionary(String id, String name) => constructor removed
 	
 #3
-TestType enum
+IndicationType enum
+getByValue() => fromValue()
+
+TestType, MicType, MediaGenerationType
 getValue() => toString()
 getByValue() => fromValue()
+
+UserDefinedFieldOwnerType, UserDefinedFieldLevel, UserDefinedFieldType
+value() => toString()
+
+UserDefinedFieldType
+in() => removed
 
 #4
 countItems
@@ -25,3 +34,15 @@ public Diagnosis[] testLevelDiagnoses = new Diagnosis[4]; => List<Diagnosis> , -
 OrderingKeypad<TSetup>
 
 #8
+Case
+Set<String> parentOrderNumbers;
+Test
+    public Collection<Physician> reportToDoctors;
+    public Collection<Physician> orderingDoctors;
+
+#9
+TestStatus - enum with name-value-description
+
+#10
+/order
+ResponseEntity<ProcessResult> openOrder(
