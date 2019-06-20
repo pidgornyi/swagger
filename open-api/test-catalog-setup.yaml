@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  title: Setup services
+  title: Test catalog services
   version: 1.0.0.0
 
 paths:
@@ -18,7 +18,7 @@ paths:
           schema:
             $ref: 'model.yaml#/definitions/CatalogTestSetup'
       tags:
-        - employee setup
+        - test catalog setup
 
   /tests:
     get:
@@ -36,7 +36,6 @@ paths:
         '200':
           description: successful operation
           schema:
-            #$ref: 'model.yaml#/definitions/TestSearchResult'
-            $ref: 'model.yaml#/definitions/CatalogTestSetup'
+            $ref: 'model.yaml#/definitions/TestSearchResult'
       tags:
-        - employee setup
+        - test catalog setup

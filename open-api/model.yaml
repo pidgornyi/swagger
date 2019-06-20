@@ -1,4 +1,15 @@
 definitions:
+  AbnStatus:
+    type: string
+    enum:
+      - T
+      - N
+      - P
+    x-enumNames:
+      - TO_PRINT
+      - NOT_REQUIRED
+      - PRINTED
+
   AddressInfo:
     title: AddressInfo model
     properties:
@@ -28,6 +39,113 @@ definitions:
         type: string
       name:
         type: string
+
+  Case:
+    properties:
+      caseIdentifier:
+        type: integer
+        format: int64
+      mergedRequisitionsIds:
+        type: array
+        items:
+          type: integer
+          format: int64
+      mergedRequisitionsNumbers:
+        type: array
+        items:
+          type: string
+      orderId:
+        type: integer
+        format: int64
+      requisitionId:
+        type: integer
+        format: int64
+      orderNumber:
+        type: string
+      foreignAccNumber:
+        type: string
+      requisitionNumber:
+        type: string
+      mode:
+        $ref: RequisitionModeEnum
+      parentOrderNumbers:
+        type: array
+        items:
+          type: string
+      visit:
+        $ref: VisitBriefInfo
+      orderingClinic:
+        $ref: Clinic
+      orderingLocation:
+        $ref: Location
+      orderingPhysician:
+        $ref: Physician
+      reportToDoctors:
+        type: array
+        items:
+          $ref: Physician
+      auxNumber:
+        type: string
+      priority:
+        $ref: Priority
+      patient:
+        $ref: PatientDetailedInfo
+      specimenCollectionRequest:
+        $ref: SpecimenCollectionRequest
+      orderingLocationSelectedByDefault:
+        type: boolean
+      reviewSummaryNeeded:
+        type: boolean
+      testList:
+        type: array
+        items:
+          $ref: Test
+      specimenList:
+        type: array
+        items:
+          $ref: Specimen
+      userDefinedFieldList:
+        type: array
+        items:
+          $ref: UserDefinedField
+      diagnoses:
+        type: array
+        items:
+          $ref: Diagnosis
+      comment:
+        type: string
+      clinicalHistory:
+        type: string
+      internalNotes:
+        type: array
+        items:
+          $ref: Note
+      insurances:
+        type: array
+        items:
+          $ref: Insurance
+      microCultureComment:
+        $ref: MicComment
+      micAntibioticList:
+        type: array
+        items:
+          $ref: Antibiotic
+      pathologist:
+        $ref: Employee
+      resident:
+        $ref: Employee
+      orderLevelIndications:
+        type: array
+        items:
+          $ref: Indication
+      testSpecimenAttachments:
+        type: array
+        items:
+          $ref: TestSpecimenAttach
+      medicalNecessityItems:
+        type: array
+        items:
+          $ref: MedicalNecessityItem
 
   CatalogTestSetup:
     title: Catalog Test Setup model
@@ -95,6 +213,15 @@ definitions:
       name:
         type: string
 
+  DiagnosisAssigningStatus:
+    type: string
+    enum:
+      - U
+      - C
+    x-enumNames:
+      - DIAGNOSIS_ASSIGNED_BY_USER
+      - DIAGNOSIS_ASSIGNED_BY_SOFT_COMPLIANCE
+
   Dictionary:
     title: Dictionary model
     properties:
@@ -131,6 +258,14 @@ definitions:
       name:
         type: string
 
+  Insurance:
+    title: Insurance model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
   InsuranceCarrierInfo:
     title:  Insurance carrier info model
     properties:
@@ -157,28 +292,192 @@ definitions:
       name:
         type: string
 
-  Quality:
-    title:  Quality model
+  MedicalNecessity:
+    title:  Medical necessity model
     properties:
       code:
         type: string
       name:
         type: string
-      type:
+
+  MedicalNecessityItem:
+    title:  medical necessity item model
+    properties:
+      recid:
+        type: integer
+        format: int64
+      test:
         type: string
-      comment:
+      childTests:
+        type: array
+        items:
+          type: string
+      billableTest:
         type: string
-      category:
+      billableTestName:
         type: string
-      richComment:
+      itemsCount:
+        type: integer
+        format: int32
+      usedPayor:
+        type: string
+      mncStatus:
+        $ref: MncStatus
+      abnStatus:
+        $ref: AbnStatus
+      performingLaboratory:
+        type: string
+      testLevelDiagnoses:
+        type: array
+        items:
+          $ref: Diagnosis
+      diagnosisAssigningStatus:
+        $ref: DiagnosisAssigningStatus
+      modifiers:
+        type: array
+        items:
+          $ref: Modifier
+      price:
+        type: number
+      cptCode:
         type: string
 
   MicroMedia:
-    title:  Insurance carrier info model
+    title:  Micro Media model
     properties:
+      insurances:
+        type: array
+        items:
+          $ref: Insurance
+      usedPayor:
+        type: string
+      medicalNecessityItems:
+        type: array
+        items:
+          $ref: MedicalNecessityItem
+      orderLevelDiagnoses:
+        type: array
+        items:
+          $ref: Diagnosis
+      patientType:
+        type: string
+      warnings:
+        type: array
+        items:
+          type: string
+
+  MncStatus:
+    type: string
+    enum:
+      - F
+      - FE
+      - FF
+      - FS
+      - P
+      - E
+    x-enumNames:
+      - FAILED
+      - FAILED_EXPERIMENTAL
+      - FAILED_FREQUENT
+      - FAILED_STATUTORY
+      - PASSED
+      - PROBLEM
+
+  Modifier:
+    title:  Quality model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
       code:
         type: string
-      name:
+      isAbnModifier:
+        type: boolean
+      position:
+        type: integer
+        format: int64
+
+  OperationResult:
+    title:  Operation result model
+    allOf:
+      - $ref: ProcessResult
+      - type: "object"
+        properties:
+          itemsToPrint:
+            type: array
+            items:
+              type: string
+              $ref: PrintItem
+
+  PatientMaintenanceOptions:
+    title: Requisition options model
+    properties:
+      G_DOB_HOUR_MIN:
+        type: boolean
+        x-codegen-option-info:
+          valueType: boolean
+          optionType: option
+          customSetter: MicroSourceGroupRuleSetter.class
+          isGlobal: true
+      G_OE_PAT_SEC_ID:
+        type: boolean
+      G_OE_SRCH_PAT_EXT_ID:
+        type: boolean
+      G_PRE_MRN:
+        type: string
+      G_REQ_PAT_NAME:
+        type: string
+      G_DOB_REQ:
+        type: string
+      G_PRE_BILLING:
+        type: string
+      G_REQ_ADM_PHYS:
+        type: boolean
+      G_AE_DEF_EMPTYDOC:
+        type: string
+      G_ALLOW_EDIT_MED_SERVICE:
+        type: boolean
+      G_LOWERCASE_PAT:
+        type: boolean
+      G_REQ_ATT_PHYS:
+        type: boolean
+      G_PARTIAL_SSN:
+        type: boolean
+      HCNTitle:
+        type: boolean
+      EthnicityAsEthnicGroup:
+        type: boolean
+      EnterNewMRN:
+        type: boolean
+      Multiethnicity:
+        type: boolean
+      EnterNewBillNum:
+        type: boolean
+      CanEditChartNumber:
+        type: boolean
+      CheckSumUsedInAcc:
+        type: boolean
+      SSNMask:
+        type: string
+      TimeFormatOnScreens:
+        type: string
+      DateFormatOnScreens:
+        type: string
+      AgeInDaysNum:
+        type: integer
+        format: int32
+      AgeInMonthsNum:
+        type: integer
+        format: int32
+      AgeInWeeksNum:
+        type: integer
+        format: int32
+      PhoneMask:
+        type: string
+      StateMask:
+        type: string
+      ProvinceTitle:
+        type: boolean
+      ProvinceMask:
         type: string
 
   PhysicianSetup:
@@ -203,6 +502,9 @@ definitions:
       orderingKeypad:
         type: string
 
+  PrintItem:
+    x-codegen-import-mapping: com.softcomputer.gene.web.api.printing.PrintItem
+
   Priority:
     title: Priority setup model
     properties:
@@ -216,12 +518,72 @@ definitions:
         type: integer
         format: int32
 
+  ProcessResult:
+    title:  Process result model
+    properties:
+      cases:
+        type: array
+        items:
+          $ref: Case
+      processStatus:
+        $ref: ProcessStatus
+
+  ProcessStatus:
+    title:  Process Status model
+    properties:
+      status:
+        type: boolean
+      savedStatus:
+        type: boolean
+      statusNumber:
+        type: integer
+        format: int32
+      problems:
+        type: array
+        items:
+          $ref: ProblemInfo
+
+  ProblemInfo:
+    title:  Problem Info model
+    required:
+      - orderNumber
+      - critical
+    properties:
+      system:
+        description: SoftGene order number. It can be empty when order wasn't created.
+        type: string
+      orderNumber:
+        description: Problem description. (Required)
+        type: string
+      critical:
+        description: Is problem critical. Critical problems interrupt request processing. (Required)
+        type: boolean
+      problemId:
+        description: Problem id(Needed only for portal)
+        type: string
+
   Reason:
     title: Reason model
     properties:
       code:
         type: string
       name:
+        type: string
+
+  Quality:
+    title:  Quality model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      comment:
+        type: string
+      category:
+        type: string
+      richComment:
         type: string
 
   Recipient:
@@ -254,6 +616,58 @@ definitions:
       - MEDICAL_SERVICE
       - EMPLOYEE
       - OTHER
+
+  RequisitionOptions:
+    title: Requisition options model
+    properties:
+      G_REQ_REQ_DR:
+        type: boolean
+      G_DEF_REQ_DR:
+        type: boolean
+      G_NOT_UPD_ORD_DOC:
+        type: boolean
+      G_TEST_ORDDR_UPD:
+        type: boolean
+      G_DEF_COLBY:
+        type: boolean
+      G_DEF_RECBY:
+        type: boolean
+      G_VALID_COLBY:
+        type: boolean
+      G_DEF_COLDT:
+        type: string
+      G_DEF_RECDT:
+        type: string
+      DateFormatOnScreens:
+        type: string
+      TimeFormatOnScreens:
+        type: string
+      G_DEF_COL_EXPECT:
+        type: array
+        items:
+          $ref: SpecimenCollectionScheduleOption
+      G_AUTO_SPEC_LAB:
+        type: boolean
+      G_AUTO_MLABEL_SHOW_DLG_OE:
+        type: boolean
+      G_DONT_CANCEL_RFLX:
+        type: boolean
+      G_VAL_PLATE_BY:
+        type: string
+      G_DEF_PLATETECH:
+        type: boolean
+      G_DEF_PLATEDATE:
+        type: boolean
+      G_DEF_PLATETIME:
+        type: boolean
+      G_AE_FILTER_NON_ACCEPTABLE:
+        type: boolean
+      G_AE_SOURCE_MIC:
+        type: string
+      UsedWordInsteadOfDuplicate:
+        type: string
+      CheckMedicalNecessity:
+        type: boolean
 
   ResulKeypad:
     title: ResulKeypad model
@@ -388,6 +802,18 @@ definitions:
       keypadCode:
         type: string
 
+  SpecimenCollectionScheduleOption:
+    title: Specimen Collection Schedule Option model
+    properties:
+      daysOfMonth:
+        type: string
+      months:
+        type: string
+      daysOfWeek:
+        type: boolean
+      collectionTimes:
+        type: string
+
   TestDefinition:
     title: TestDefinition setup model
     properties:
@@ -416,6 +842,31 @@ definitions:
         type: string
       testType:
         $ref: TestType
+
+  TestSearchResult:
+    title: Test search result model
+    properties:
+      testCodeVersion:
+        type: array
+        items:
+          $ref: TestSetupIdentifier
+      totalCount:
+        type: integer
+        format: int32
+    x-codegen-accessors: true
+
+  TestSetupIdentifier:
+    title: Test setup identifier model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      codeversion:
+        type: string
+      codeVersion:
+        type: string
+    x-codegen-accessors: true
 
   TestSources:
     title: Test sources model

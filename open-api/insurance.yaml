@@ -1,0 +1,33 @@
+swagger: "2.0"
+info:
+  title: Insurance services
+  version: 1.0.0.0
+
+paths:
+  /patient-insurances:
+    get:
+      operationId: getPatientInsurances
+      description: active insurances from Patient or Visit levels
+      parameters:
+        - name: mrn
+          description: patient mrn
+          in: query
+          type: string
+          required: true
+        - name: billing-number
+          descrpiption: visit billing number
+          in: query
+          type: string
+        - name: items-count
+          descrpiption: limits number of search results
+          type: string
+          in: query
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Insurance'
+      tags:
+        - insurance

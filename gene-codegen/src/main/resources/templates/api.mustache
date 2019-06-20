@@ -43,12 +43,12 @@ public interface {{classname}} {
     {{#operation}}
 
     /**
-    {{#summary}}  * {{summary}}{{#notes}}
+{{#summary}}      * {{summary}}{{#notes}}
       * {{notes}}{{/notes}}
       *
     {{/summary}}
     {{#allParams}}
-      * @param {{paramName}} - {{description}}
+      * @param {{paramName}}{{#description}} - {{description}}{{/description}}
     {{/allParams}}
       */
     @RequestMapping(value = "{{{path}}}", method = RequestMethod.{{httpMethod}}{{#singleContentTypes}}{{#hasProduces}}, produces = "{{{vendorExtensions.x-accepts}}}"{{/hasProduces}}{{#hasConsumes}}, consumes = "{{{vendorExtensions.x-contentType}}}"{{/hasConsumes}}{{/singleContentTypes}}{{^singleContentTypes}}{{#hasProduces}}, produces = { {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} }{{/hasProduces}}{{#hasConsumes}}, consumes = { {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} }{{/hasConsumes}}{{/singleContentTypes}})

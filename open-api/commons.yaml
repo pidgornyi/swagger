@@ -1,11 +1,9 @@
 parameters:
-
   value:
     in: query
     name: value
     type: string
     description: free text criteria
-
   itemsCount:
     in: query
     name: itemsCount
@@ -14,3 +12,8 @@ parameters:
     format: int32
     default: 20
 
+definitions:
+  recid:
+    title: record identifier
+    type: integer
+    format: int64

@@ -14,3 +14,14 @@ getByValue() => fromValue()
 countItems
 Short => Integer
 
+#5
+MedicalNecessityItem
+public Diagnosis[] testLevelDiagnoses = new Diagnosis[4]; => List<Diagnosis> , - null (initialization removed)
+
+#6
+ @OptionInfo
+ 
+#7
+OrderingKeypad<TSetup>
+
+#8

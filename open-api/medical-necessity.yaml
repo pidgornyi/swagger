@@ -1,0 +1,37 @@
+swagger: "2.0"
+info:
+  title: Medical necessity services
+  version: 1.0.0.0
+
+paths:
+  /:
+    get:
+      operationId: readMedicalNecessity
+      parameters:
+        - name: order-number
+          type: string
+          in: query
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/MedicalNecessity'
+      tags:
+        - medical necessity
+
+  /calculate:
+    post:
+      operationId: calculateMedicalNecessity
+      parameters:
+        - name: medicalNecessity
+          in: body
+          schema:
+            $ref: 'model.yaml#/definitions/MedicalNecessity'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/MedicalNecessity'
+      tags:
+        - medical necessity
