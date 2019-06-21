@@ -36,9 +36,13 @@ OrderingKeypad<TSetup>
 #8
 Case
 Set<String> parentOrderNumbers;
+
 Test
     public Collection<Physician> reportToDoctors;
     public Collection<Physician> orderingDoctors;
+
+ProcessPatientResult
+public Collection<Message> messages;
 
 #9
 TestStatus - enum with name-value-description
@@ -46,3 +50,9 @@ TestStatus - enum with name-value-description
 #10
 /order
 ResponseEntity<ProcessResult> openOrder(
+PatientService
+   ResponseEntity<PatientInfo> getPatientInfo
+  ResponseEntity<Case> initiateRequisition
+
+#11
+VisitsBatch(List<Visit> visits, boolean hasMoreItems){ - model constructor removed

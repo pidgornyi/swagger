@@ -1,0 +1,214 @@
+swagger: "2.0"
+info:
+  title: Patient services
+  version: 1.0.0.0
+
+paths:
+  /:
+    put:
+      summary: Save patient
+      operationId: savePatient
+      parameters:
+        - name: patientsToSave
+          in: body
+          schema:
+            $ref: 'model.yaml#/definitions/PatientInfo'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/ProcessPatientResult'
+      tags:
+        - patient
+
+  /{mrn}:
+    get:
+      summary: Get patient info
+      operationId: getPatientInfo
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/PatientInfo'
+      tags:
+        - patient
+
+  /{mrn}/orders:
+    get:
+      summary: Get patient orders
+      operationId: getPatientOrders
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/ReleasedOrders'
+      tags:
+        - patient
+
+  /{mrn}/orders/per-visit:
+    get:
+      summary: Get patient orders per visit
+      operationId: getOrdersInfo
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/VisitOrderInfo'
+      tags:
+        - patient
+
+  /{mrn}/requisitions:
+    get:
+      summary: Get patient requisitions
+      operationId: getPatientRequisitions
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/PatientRequisitions'
+      tags:
+        - patient
+
+  /{mrn}/requisitions/initiate:
+    get:
+      summary: Initiate requisition
+      operationId: initiateRequisition
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/Case'
+      tags:
+        - patient
+
+  /{mrn}/visits:
+    get:
+      summary: Get all visits
+      operationId: getAllVisits
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/VisitBriefInfo'
+      tags:
+        - patient
+
+  /{mrn}/visits/available:
+    get:
+      summary: Get available visits
+      operationId: getAvailableVisits
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/VisitBriefInfo'
+      tags:
+        - patient
+
+  /{mrn}/visits/{billing}/move:
+    post:
+      summary: Get available visits
+      operationId: moveVisitToPatient
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+        - name: billing
+          in: path
+          type: string
+          required: true
+        - name: mrn
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: boolean
+      tags:
+        - patient
+
+  /{mrn}/visits/range:
+    get:
+      summary: Get visits range
+      operationId: getVisitsRange
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+        - name: from
+          in: query
+          type: string
+          required: false
+        - name: count
+          in: query
+          type: string
+          required: false
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/VisitsBatch'
+      tags:
+        - patient
+
+  /{mrn}/visits/count:
+    get:
+      summary: Get visits count
+      operationId: getVisitsCount
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: integer
+            format: int32
+      tags:
+        - patient
+

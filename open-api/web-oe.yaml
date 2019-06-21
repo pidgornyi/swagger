@@ -30,6 +30,8 @@ tags:
     description: Options Service
   - name: order
     description: Order Service
+  - name: patient
+    description: Patients Service
 
 paths:
   /setup/clinics:
@@ -152,3 +154,25 @@ paths:
   /orders/{number}/move:
     $ref: 'orders.yaml#/paths/~1{number}~1move'
 
+  /patients:
+    $ref: 'patient.yaml#/paths/~1'
+  /patients/{mrn}:
+    $ref: 'patient.yaml#/paths/~1{mrn}'
+  /patients/{mrn}/orders:
+    $ref: 'patient.yaml#/paths/~1{mrn}~1orders'
+  /{mrn}/orders/per-visit:
+    $ref: 'patient.yaml#/paths/~1{mrn}~1orders~1per-visit'
+  /{mrn}/requisitions:
+    $ref: 'patient.yaml#/paths/~1{mrn}~1requisitions'
+  /{mrn}/requisitions/initiate:
+    $ref: 'patient.yaml#/paths/~1{mrn}~1requisitions~1initiate'
+  /{mrn}/visits:
+    $ref: 'patient.yaml#/paths/~1{mrn}~1visits'
+  /{mrn}/visits/available:
+    $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1available'
+  /{mrn}/visits/{billing}/move:
+    $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1{billing}~1move'
+  /{mrn}/visits/range:
+    $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1range'
+  /{mrn}/visits/count:
+    $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1count'
