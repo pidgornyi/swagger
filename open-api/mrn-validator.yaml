@@ -1,0 +1,22 @@
+swagger: "2.0"
+info:
+  title: MRN validator
+  version: 1.0.0.0
+
+paths:
+  /is-available:
+    get:
+      summary: is mrn available
+      operationId: isAvailableMRN
+      tags:
+        - mrn validator
+      parameters:
+        - name: mrn
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: boolean

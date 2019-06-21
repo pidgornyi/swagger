@@ -1,0 +1,94 @@
+swagger: "2.0"
+info:
+  title: Requisitions services
+  version: 1.0.0.0
+
+paths:
+  /:
+    put:
+      summary: Save requisition
+      operationId: save
+      parameters:
+        - name: dtoRequisition
+          in: body
+          schema:
+            $ref: 'model.yaml#/definitions/Case'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/ProcessResult'
+      tags:
+        - requisition
+
+  /preprocess:
+    post:
+      summary: preprocess requisition
+      operationId: preprocessRequisition
+      parameters:
+        - name: dtoRequisition
+          in: body
+          schema:
+            $ref: 'model.yaml#/definitions/Case'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/ProcessResult'
+      tags:
+        - requisition
+
+  /release:
+    put:
+      summary: release requisition
+      operationId: release
+      parameters:
+        - name: requisitionList
+          in: body
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/Case'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/OperationResult'
+      tags:
+        - requisition
+
+  /merge:
+    post:
+      summary: merge requisition
+      operationId: mergeRequisitions
+      parameters:
+        - name: requisitionsParts
+          in: body
+          schema:
+            type: array
+            items:
+              $ref: 'model.yaml#/definitions/RequisitionPart'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/ProcessResult'
+      tags:
+        - requisition
+
+  /{number}/details:
+    get:
+      summary: get requisition detailed info
+      operationId: getRequisitionDetailedInfo
+      parameters:
+        - name: number
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/OrderDetailedInfo'
+      tags:
+        - requisition

@@ -44,6 +44,9 @@ Test
 ProcessPatientResult
 public Collection<Message> messages;
 
+OperationResult release(@RequestBody Case[] requisitionList);
+ProcessResult mergeRequisitions(@RequestBody RequisitionPart[] requisitionsParts);
+
 #9
 TestStatus - enum with name-value-description
 
@@ -56,3 +59,18 @@ PatientService
 
 #11
 VisitsBatch(List<Visit> visits, boolean hasMoreItems){ - model constructor removed
+
+#12
+Fix enum to string
+readTestLevelUserDefinedField
+
+#13
+MrnValidator => MrnValidatorService
+BillingValidator => BillingValidatorService
+
+#14
+Fix RestSpringFactory
+
+
+
+

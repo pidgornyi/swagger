@@ -32,6 +32,20 @@ tags:
     description: Order Service
   - name: patient
     description: Patients Service
+  - name: visit
+    description: Visit Service
+  - name: requisition
+    description: Requisition Service
+  - name: search
+    description: Search Service
+  - name: user defined field
+    description: User defined field Service
+  - name: user defined field setup
+    description: User defined field setup Service
+  - name: billing validator
+    description: Billing validator service
+  - name: mrn validator
+    description: MRN validator service
 
 paths:
   /setup/clinics:
@@ -176,3 +190,39 @@ paths:
     $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1range'
   /{mrn}/visits/count:
     $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1count'
+
+  /requisitions:
+    $ref: 'requisition.yaml#/paths/~1'
+  /requisitions/preprocess:
+    $ref: 'requisition.yaml#/paths/~1preprocess'
+  /requisitions/release:
+    $ref: 'requisition.yaml#/paths/~1release'
+  /requisitions/merge:
+    $ref: 'requisition.yaml#/paths/~1merge'
+  /requisitions/{number}/details:
+    $ref: 'requisition.yaml#/paths/~1{number}~1details'
+
+  /search/pm:
+    $ref: 'search.yaml#/paths/~1pm'
+  /search/ord:
+    $ref: 'search.yaml#/paths/~1ord'
+  /search/advanced:
+    $ref: 'search.yaml#/paths/~1advanced'
+
+  /visits/{billing}/header:
+    $ref: 'visits.yaml#/paths/~1{billing}~1header'
+  /visits/{billing}/merge:
+    $ref: 'visits.yaml#/paths/~1{billing}~1merge'
+
+  /user-defined-field/test-level:
+    $ref: 'user-defined-field.yaml#/paths/~1test-level'
+
+  /user-defined-field-setup:
+    $ref: 'user-defined-field-setup.yaml#/paths/~1'
+
+  /validator/billing/is-available:
+    $ref: 'billing-validator.yaml#/paths/~1is-available'
+
+  /validator/mrn/is-available:
+    $ref: 'mrn-validator.yaml#/paths/~1is-available'
+

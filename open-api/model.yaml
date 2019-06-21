@@ -866,6 +866,33 @@ definitions:
       text:
         type: string
 
+  PatientData:
+    title:  Patient data model
+    properties:
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      suffix:
+        type: string
+      dateOfBirth:
+        type: string
+        format: date
+      chartNumber:
+        type: string
+      mrn:
+        type: string
+      ssn:
+        type: string
+      age:
+        type: string
+      sex:
+        type: string
+      isCalculatedDob:
+        type: boolean
+
   PatientDetailedInfo:
     title:  Patient Detailed Info model
     properties:
@@ -1543,6 +1570,18 @@ definitions:
       - RapidTest
       - Workup
 
+  SingleSearchResults:
+    title: Single Search Results model
+    properties:
+      patientsData:
+        type: array
+        items:
+          $ref: PatientData
+      orderNumber:
+        type: string
+      isTooManyRecordsFound:
+        type: boolean
+
   Source:
     title: Specimen model
     properties:
@@ -2119,6 +2158,23 @@ definitions:
       dischargeDateTime:
         type: string
         format: date-time
+
+  VisitHeader:
+    title: Visit header model
+    properties:
+      billingNumber:
+        type: string
+      admissionDateTime:
+        type: string
+        format: date-time
+      clinicName:
+        type: string
+      doctorFirstName:
+        type: string
+      doctorLastName:
+        type: string
+      patientType:
+        type: string
 
   VisitOrderInfo:
     title: Visit order info model
