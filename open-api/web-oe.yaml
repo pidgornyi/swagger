@@ -3,11 +3,8 @@ info:
   version: 4.1.12-02-SNAPSHOT
   title: LIS Web OE Api
   description: "Contracts for WEB OE rest services"
-
 host: "lv3.isd.dp.ua:7701"
-
 basePath: "/gcm/web/app/oe"
-
 produces:
   - "application/json"
 
@@ -68,7 +65,9 @@ parameters:
     type: string
     in: query
     
-    
+
+
+
 paths:
   /setup/clinics:
     get:
@@ -223,7 +222,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/TestDefinitionSetup'
+              $ref: '#/definitions/SetupTestDefinition'
       tags:
         - setup
 
@@ -397,7 +396,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/TestDefinitionSetup' #List<OrderingKeypad<TestDefinition>>
+              $ref: '#/definitions/SetupTestDefinition' #List<OrderingKeypad<TestDefinition>>
       tags:
         - setup
 
@@ -587,6 +586,47 @@ paths:
       tags:
         - employee setup
 
+  /setup/departments/redirection:
+    post:
+      operationId: getDepartmentsByTestCodeVersions
+      summary: Get departments by test code versions
+      parameters:
+        - name: testCodeVersionsAndStatus
+          in: body
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TestCodeVersionWithStatus'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Department'
+      tags:
+        - setup
+
+  /setup/workstations/redirection:
+    post:
+      operationId: getWorkstationsByTestCodeVersions
+      summary: Get workstations by test code versions
+      parameters:
+        - name: testCodeVersionsAndStatus
+          in: body
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TestCodeVersionWithStatus'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Workstation'
+      tags:
+        - setup
 
   /setup/choices/setup/choices/countries:
     get:
@@ -1585,11 +1625,13 @@ paths:
           schema:
             type: boolean
 
+
 x-common-columns:
   recid:
     title: record identifier
     type: integer
     format: int64
+
 
 definitions:
   AbnStatus:
@@ -1791,13 +1833,154 @@ definitions:
         items:
           $ref: '#/definitions/MedicalNecessityItem'
 
+  CatalogSpecimenSetup:
+    title: Specimen setup model
+    x-codegen-accessors: true
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  CatalogTestDefinition:
+    title: Catalog TestDefinition model
+    x-codegen-accessors: true
+    properties:
+      code:
+        type: string
+      secondaryCode:
+        type: string
+      thirdCode:
+        type: string
+      name:
+        type: string
+      technology:
+        type: string
+      technologyCode:
+        type: string
+      technologyEntity:
+        $ref: '#/definitions/CodeName'
+      methodology:
+        type: string
+      methodologySeq:
+        type: integer
+        format: int32
+      instructions:
+        type: string
+      comments:
+        type: string
+      timeBetweenOrders:
+        type: integer
+        format: int32
+      synonyms:
+        type: array
+        items:
+          type: string
+      orderableIndividually:
+        type: boolean
+      orderableAsStat:
+        type: boolean
+      orderableAsUrgent:
+        type: boolean
+      requiredICDAtOrdering:
+        type: boolean
+      preferableSpecimen:
+        $ref: '#/definitions/CatalogSpecimenSetup'
+      preferableTube:
+        $ref: '#/definitions/TubeSetup'
+      acceptableSpecimens:
+        type: array
+        items:
+          $ref: '#/definitions/CatalogSpecimenSetup'
+      acceptableTubes:
+        type: array
+        items:
+          $ref: '#/definitions/TubeSetup'
+      realVolume:
+        type: number
+        format: double
+      addupVolume:
+        type: number
+        format: double
+      specimenMinVolume:
+        type: number
+        format: double
+      volumeUnit:
+        type: string
+      components:
+        type: array
+        items:
+          $ref: '#/definitions/TestSetupIdentifier'
+      partOfPanels:
+        type: array
+        items:
+          $ref: '#/definitions/TestSetupIdentifier'
+      sameOeCategoryTests:
+        type: array
+        items:
+          $ref: '#/definitions/TestSetupIdentifier'
+      resultFields:
+        type: array
+        items:
+          $ref: '#/definitions/TestResultFieldSetup'
+      collectionInstruction:
+        type: string
+      aliquoteInstruction:
+        type: string
+      collectionLabelText:
+        type: string
+      collectionType:
+        type: string
+      separateTube:
+        type: boolean
+      separateAliquotTube:
+        type: boolean
+      preferableAliquotTube:
+        $ref: '#/definitions/TubeSetup'
+      specialCases:
+        type: array
+        items:
+          $ref: '#/definitions/TestSpecialCasesSetup'
+      stability:
+        type: string
+      transport:
+        type: string
+      storage:
+        type: string
+      preservation:
+        type: string
+      laboratory:
+        type: string
+      department:
+        type: string
+      frequency:
+        type: string
+      message:
+        type: string
+      minVolumeComments:
+        type: string
+      departments:
+        type: array
+        items:
+          $ref: '#/definitions/DepartmentSetup'
+      referenceLabFee:
+        type: string
+      hospitalCharge:
+        type: string
+      mnemonic:
+        type: string
+      workstations:
+        type: array
+        items:
+          type: string
+
   CatalogTestSetup:
     title: Catalog Test Setup model
     properties:
       testDefinitions:
         type: array
         items:
-          $ref: '#/definitions/TestDefinitionCatalog'
+          $ref: '#/definitions/CatalogTestDefinition'
     x-codegen-accessors: true
 
   Choice:
@@ -1931,6 +2114,14 @@ definitions:
       previousValue:
         type: string
       abnFlag:
+        type: string
+
+  Department:
+    title: Department setup model
+    properties:
+      code:
+        type: string
+      name:
         type: string
 
   DepartmentSetup:
@@ -2227,6 +2418,8 @@ definitions:
       performingDepartmentCode:
         type: string
       performingLaboratory:
+        type: string
+      performingLaboratoryName:
         type: string
       testLevelDiagnoses:
         type: array
@@ -3155,60 +3348,65 @@ definitions:
 
   RequisitionSpecimen:
     title: Requisition specimen model
-    properties:
-      caseIdentifier:
-        type: integer
-        format: int64
-      collectionPlace:
-        type: integer
-        format: int64
-      type:
-        type: string
-      typeName:
-        type: string
-      collectedDate:
-        type: string
-        format: date-time
-      collectedBy:
-        type: string
-      receivedDate:
-        type: string
-        format: date-time
-      receivedBy:
-        type: string
-      status:
-        type: string
-      priority:
-        $ref: '#/definitions/Priority'
-      tubeList:
-        type: array
-        items:
-          $ref: '#/definitions/Tube'
-      drawType:
-        type: string
-      drawTypeName:
-        type: string
-      labToCollect:
-        type: string
-      bodySite:
-        type: string
-      bodySiteName:
-        type: string
-      isToBeCollectedDate:
-        type: boolean
-      isCollected:
-        type: boolean
-      isGeneric:
-        type: boolean
-      collectedVolume:
-        type: number
-        format: double
-      collectedUnit:
-        type: string
-      collectionLocation:
-        $ref: '#/definitions/CodedEntity'
-      drawTypeData:
-        $ref: '#/definitions/CodedEntity'
+    allOf:
+      - $ref: '#/definitions/BaseEntity'
+      - type: "object"
+        properties:
+          caseIdentifier:
+            type: integer
+            format: int64
+          collectionPlace:
+            type: integer
+            format: int64
+          type:
+            type: string
+          typeName:
+            type: string
+          collectedDate:
+            type: string
+            format: date-time
+          collectedBy:
+            type: string
+          receivedDate:
+            type: string
+            format: date-time
+          receivedBy:
+            type: string
+          status:
+            type: string
+          priority:
+            $ref: '#/definitions/Priority'
+          tubeList:
+            type: array
+            items:
+              $ref: '#/definitions/Tube'
+          drawType:
+            type: string
+          drawTypeName:
+            type: string
+          labToCollect:
+            type: string
+          keypadCode:
+            type: string
+          bodySite:
+            type: string
+          bodySiteName:
+            type: string
+          isToBeCollectedDate:
+            type: boolean
+          isCollected:
+            type: boolean
+          isGeneric:
+            type: boolean
+          collectedVolume:
+            type: number
+            format: double
+          collectedUnit:
+            type: string
+          collectionLocation:
+            $ref: '#/definitions/CodedEntity'
+          drawTypeData:
+            $ref: '#/definitions/CodedEntity'
 
   ResulKeypad:
     title: ResulKeypad model
@@ -3364,7 +3562,6 @@ definitions:
           items:
             type: string
 
-
   SingleSearchResults:
     title: Single Search Results model
     properties:
@@ -3409,6 +3606,35 @@ definitions:
       keypadCode:
         type: string
 
+  SetupTestDefinition:
+    title: TestDefinition setup model
+    properties:
+      id:
+        type: integer
+        format: int64
+      code:
+        type: string
+      name:
+        type: string
+      codeWithVersion:
+        type: string
+      group:
+        type: boolean
+      individuallyOrdered:
+        type: boolean
+      secondaryId:
+        type: string
+      synonym:
+        type: string
+      components:
+        type: array
+        items:
+          $ref: '#/definitions/SetupTestDefinition'
+      loinc:
+        type: string
+      testType:
+        $ref: '#/definitions/TestType'
+
   SpecimenCollectionRequest:
     title: Specimen Collection Schedule Option model
     properties:
@@ -3430,15 +3656,6 @@ definitions:
       daysOfWeek:
         type: boolean
       collectionTimes:
-        type: string
-
-  CatalogSpecimenSetup:
-    title: Specimen setup model
-    x-codegen-accessors: true
-    properties:
-      code:
-        type: string
-      name:
         type: string
 
   Test:
@@ -3531,166 +3748,13 @@ definitions:
             type: integer
             format: int64
 
-  TestDefinitionCatalog:
-    title: Catalog TestDefinition model
-    x-codegen-accessors: true
+  TestCodeVersionWithStatus:
+    title: Test code version with status model
     properties:
-      code:
+      testCodeVersion:
         type: string
-      secondaryCode:
-        type: string
-      thirdCode:
-        type: string
-      name:
-        type: string
-      technology:
-        type: string
-      technologyCode:
-        type: string
-      technologyEntity:
-        $ref: '#/definitions/CodeName'
-      methodology:
-        type: string
-      methodologySeq:
-        type: integer
-        format: int32
-      instructions:
-        type: string
-      comments:
-        type: string
-      timeBetweenOrders:
-        type: integer
-        format: int32
-      synonyms:
-        type: array
-        items:
-          type: string
-      orderableIndividually:
-        type: boolean
-      orderableAsStat:
-        type: boolean
-      orderableAsUrgent:
-        type: boolean
-      requiredICDAtOrdering:
-        type: boolean
-      preferableSpecimen:
-        $ref: '#/definitions/CatalogSpecimenSetup'
-      preferableTube:
-        $ref: '#/definitions/TubeSetup'
-      acceptableSpecimens:
-        type: array
-        items:
-          $ref: '#/definitions/CatalogSpecimenSetup'
-      acceptableTubes:
-        type: array
-        items:
-          $ref: '#/definitions/TubeSetup'
-      realVolume:
-        type: number
-        format: double
-      addupVolume:
-        type: number
-        format: double
-      specimenMinVolume:
-        type: number
-        format: double
-      volumeUnit:
-        type: string
-      components:
-        type: array
-        items:
-          $ref: '#/definitions/TestSetupIdentifier'
-      partOfPanels:
-        type: array
-        items:
-          $ref: '#/definitions/TestSetupIdentifier'
-      sameOeCategoryTests:
-        type: array
-        items:
-          $ref: '#/definitions/TestSetupIdentifier'
-      resultFields:
-        type: array
-        items:
-          $ref: '#/definitions/TestResultFieldSetup'
-      collectionInstruction:
-        type: string
-      aliquoteInstruction:
-        type: string
-      collectionLabelText:
-        type: string
-      collectionType:
-        type: string
-      separateTube:
-        type: boolean
-      separateAliquotTube:
-        type: boolean
-      preferableAliquotTube:
-        $ref: '#/definitions/TubeSetup'
-      specialCases:
-        type: array
-        items:
-          $ref: '#/definitions/TestSpecialCasesSetup'
-      stability:
-        type: string
-      transport:
-        type: string
-      storage:
-        type: string
-      preservation:
-        type: string
-      laboratory:
-        type: string
-      department:
-        type: string
-      frequency:
-        type: string
-      message:
-        type: string
-      minVolumeComments:
-        type: string
-      departments:
-        type: array
-        items:
-          $ref: '#/definitions/DepartmentSetup'
-      referenceLabFee:
-        type: string
-      hospitalCharge:
-        type: string
-      mnemonic:
-        type: string
-      workstations:
-        type: array
-        items:
-          type: string
-
-  TestDefinitionSetup:
-    title: TestDefinition setup model
-    properties:
-      id:
-        type: integer
-        format: int64
-      code:
-        type: string
-      name:
-        type: string
-      codeWithVersion:
-        type: string
-      group:
-        type: boolean
-      individuallyOrdered:
-        type: boolean
-      secondaryId:
-        type: string
-      synonym:
-        type: string
-      components:
-        type: array
-        items:
-          $ref: '#/definitions/TestDefinitionSetup'
-      loinc:
-        type: string
-      testType:
-        $ref: '#/definitions/TestType'
+#      testStatus:
+#        $ref: '#/definitions/TestStatus' #TestStatus enum
 
   TestRedirectionData:
     title: Test redirection data model
@@ -3840,7 +3904,6 @@ definitions:
       preferableSpecimen:
         $ref: '#/definitions/CatalogSpecimenSetup'
 
-
   TestSpecimenAttach:
     title: Test specimen attach model
     properties:
@@ -3971,6 +4034,10 @@ definitions:
       ownerRecid:
         type: integer
         format: int64
+      testCodeVersions:
+        type: array
+        items:
+          type: string
       fieldValues:
         type: array
         items:
@@ -4248,4 +4315,14 @@ definitions:
         type: string
         format: date-time
       orderedTests:
+        type: string
+
+  Workstation:
+    title: Workstation setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      departmentCode:
         type: string
