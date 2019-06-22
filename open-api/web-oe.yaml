@@ -167,6 +167,8 @@ paths:
     $ref: 'orders.yaml#/paths/~1{number}~1details'
   /orders/{number}/move:
     $ref: 'orders.yaml#/paths/~1{number}~1move'
+  /orders/redirect-tests:
+    $ref: 'orders.yaml#/paths/~1redirect-tests'
 
   /patients:
     $ref: 'patient.yaml#/paths/~1'
@@ -226,3 +228,2661 @@ paths:
   /validator/mrn/is-available:
     $ref: 'mrn-validator.yaml#/paths/~1is-available'
 
+definitions:
+  AbnStatus:
+    type: string
+    enum:
+      - T
+      - N
+      - P
+    x-enumNames:
+      - TO_PRINT
+      - NOT_REQUIRED
+      - PRINTED
+
+  AddressInfo:
+    title: AddressInfo model
+    properties:
+      street:
+        type: string
+      suite:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      country:
+        $ref: '#/definitions/Dictionary'
+      county:
+        type: string
+      zip:
+        type: string
+      phone:
+        type: string
+      phone2:
+        type: string
+
+  AddHocUserPrefs:
+    title: AddHocUserPrefs model
+    properties:
+      preferableSpecimen:
+        type: string
+      bodySite:
+        type: string
+      bodySiteDescription:
+        type: string
+
+  Antibiotic:
+    title: Antibiotic model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      code:
+        type: string
+      name:
+        type: string
+
+  AssigningInfo:
+    title: Antibiotic model
+    properties:
+      namespaceId:
+        type: string
+      universalId:
+        type: string
+      universalIdType:
+        $ref: '#/definitions/Dictionary'
+
+  BaseEntity:
+    title: Base Entity model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      requisitionId:
+        type: integer
+        format: int64
+      previousOperation:
+        $ref: '#/definitions/Operation'
+      operation:
+        $ref: '#/definitions/Operation'
+      operationReason:
+        type: string
+      operationComment:
+        type: string
+      isOperationPerformed:
+        type: boolean
+      itemStatus:
+        type: string
+
+  BodySite:
+    title: Body site model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  Case:
+    properties:
+      caseIdentifier:
+        type: integer
+        format: int64
+      mergedRequisitionsIds:
+        type: array
+        items:
+          type: integer
+          format: int64
+      mergedRequisitionsNumbers:
+        type: array
+        items:
+          type: string
+      orderId:
+        type: integer
+        format: int64
+      requisitionId:
+        type: integer
+        format: int64
+      orderNumber:
+        type: string
+      foreignAccNumber:
+        type: string
+      requisitionNumber:
+        type: string
+      mode:
+        $ref: '#/definitions/RequisitionModeEnum'
+      parentOrderNumbers:
+        type: array
+        items:
+          type: string
+      visit:
+        $ref: '#/definitions/VisitBriefInfo'
+      orderingClinic:
+        $ref: '#/definitions/Clinic'
+      orderingLocation:
+        $ref: '#/definitions/Location'
+      orderingPhysician:
+        $ref: '#/definitions/PhysicianSetup'
+      reportToDoctors:
+        type: array
+        items:
+          $ref: '#/definitions/PhysicianSetup'
+      auxNumber:
+        type: string
+      priority:
+        $ref: '#/definitions/Priority'
+      patient:
+        $ref: '#/definitions/PatientDetailedInfo'
+      specimenCollectionRequest:
+        $ref: '#/definitions/SpecimenCollectionRequest'
+      orderingLocationSelectedByDefault:
+        type: boolean
+      reviewSummaryNeeded:
+        type: boolean
+      testList:
+        type: array
+        items:
+          $ref: '#/definitions/Test'
+      specimenList:
+        type: array
+        items:
+          $ref: '#/definitions/RequisitionSpecimen'
+      userDefinedFieldList:
+        type: array
+        items:
+          $ref: '#/definitions/UserDefinedField'
+      diagnoses:
+        type: array
+        items:
+          $ref: '#/definitions/Diagnosis'
+      comment:
+        type: string
+      clinicalHistory:
+        type: string
+      internalNotes:
+        type: array
+        items:
+          $ref: '#/definitions/Note'
+      insurances:
+        type: array
+        items:
+          $ref: '#/definitions/Insurance'
+      microCultureComment:
+        $ref: '#/definitions/MicComment'
+      micAntibioticList:
+        type: array
+        items:
+          $ref: '#/definitions/Antibiotic'
+      pathologist:
+        $ref: '#/definitions/Employee'
+      resident:
+        $ref: '#/definitions/Employee'
+      orderLevelIndications:
+        type: array
+        items:
+          $ref: '#/definitions/Indication'
+      testSpecimenAttachments:
+        type: array
+        items:
+          $ref: '#/definitions/TestSpecimenAttach'
+      medicalNecessityItems:
+        type: array
+        items:
+          $ref: '#/definitions/MedicalNecessityItem'
+
+  CatalogTestSetup:
+    title: Catalog Test Setup model
+    properties:
+      testDefinitions:
+        type: array
+        items:
+          $ref: '#/definitions/TestDefinitionCatalog'
+    x-codegen-accessors: true
+
+  Choice:
+    title: Choice setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      choiceID:
+        type: integer
+        format: int64
+
+  Clinic:
+    title: Clinic setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      orderingKeypad:
+        type: string
+      orderingLocationCode:
+        type: string
+      contact:
+        type: string
+      phone:
+        type: string
+      phoneExt:
+        type: string
+      patientType:
+        type: string
+
+  CodedEntity:
+    x-codegen-import-mapping: com.softcomputer.gene.web.api.common.CodedEntity
+
+  CodeName:
+    title: CodeName model
+    x-codegen-accessors: true
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  Collector:
+    title: Contact model
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      active:
+        type: boolean
+
+  Contact:
+    title: Contact model
+    properties:
+      contactMethod:
+        $ref: '#/definitions/ContactMethod'
+      phoneNumber:
+        type: string
+      phoneExt:
+        type: string
+
+  ContactInfo:
+    title: Contact Info model
+    properties:
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      relationship:
+        $ref: '#/definitions/Dictionary'
+      title:
+        type: string
+      suffix:
+        type: string
+      profSuffix:
+        type: string
+      language:
+        $ref: '#/definitions/Dictionary'
+      address:
+        $ref: '#/definitions/AddressInfo'
+      alternativeContact:
+        type: string
+
+  ContactMethod:
+    type: string
+    enum:
+      - PRIMARY_PHONE
+      - ALTERNATIVE_PHONE
+      - FAX
+      - PAGER
+
+  DeltaRule:
+    title: Delta rule model
+    x-codegen-accessors: true
+    properties:
+      ageInUnitsTo:
+        type: integer
+        format: int32
+      ageUnitTo:
+        type: string
+      ageInUnitsFrom:
+        type: integer
+        format: int32
+      ageUnitFrom:
+        type: string
+      direction:
+        type: string
+      currentReason:
+        $ref: '#/definitions/CodeName'
+      previousReason:
+        $ref: '#/definitions/CodeName'
+      cannedMessage:
+        $ref: '#/definitions/CodeName'
+      position:
+        type: integer
+        format: int32
+      delta:
+        type: string
+      currentValue:
+        type: string
+      previousValue:
+        type: string
+      abnFlag:
+        type: string
+
+  DepartmentSetup:
+    title: Department setup model
+    x-codegen-accessors: true
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      laboratoryName:
+        type: string
+
+  Diagnosis:
+    title: Diagnosis setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  DiagnosisAssigningStatus:
+    type: string
+    enum:
+      - U
+      - C
+    x-enumNames:
+      - DIAGNOSIS_ASSIGNED_BY_USER
+      - DIAGNOSIS_ASSIGNED_BY_SOFT_COMPLIANCE
+
+  Dictionary:
+    title: Dictionary model
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+
+  Drug:
+    title: Drug model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  Employee:
+    title: Employee model
+    properties:
+      code:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      type:
+        type: string
+
+  Indication:
+    title: Indication model
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      position:
+        type: integer
+        format: int64
+      type:
+        $ref: '#/definitions/IndicationType'
+
+  IndicationSetup:
+    title: Indication setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  IndicationType:
+    type: string
+    enum:
+      - P
+      - A
+    x-enumNames:
+      - PRIMARY
+      - ADDITIONAL
+
+  Insurance:
+    title: Insurance model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  InsuranceCarrierInfo:
+    title:  Insurance carrier info model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      contact:
+        type: string
+      address:
+        $ref: '#/definitions/AddressInfo'
+      isActive:
+        type: boolean
+      isAux:
+        type: boolean
+      isVisitOnly:
+        type: boolean
+
+  InsuranceGroup:
+    title:  Insurance group model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  InsuranceInfo:
+    title:  Insurance info model
+    properties:
+      carrier:
+        $ref: '#/definitions/InsuranceCarrierInfo'
+      accountNumber:
+        type: string
+      groupId:
+        type: string
+      position:
+        type: integer
+        format: int64
+      comment:
+        type: string
+      policyHolder:
+        $ref: '#/definitions/PolicyHolderInfo'
+      active:
+        type: boolean
+      deleted:
+        type: boolean
+      auxCarrierUsed:
+        type: boolean
+      auxId:
+        type: integer
+        format: int32
+      prefix:
+        type: string
+      memberId:
+        type: string
+      effectiveDate:
+        type: string
+        format: date-time
+      expiryDate:
+        type: string
+        format: date-time
+
+  Location:
+    title: Location model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      address:
+        $ref: '#/definitions/AddressInfo'
+      isColCenter:
+        type: boolean
+      isLocation:
+        type: boolean
+      primaryForTestRouting:
+        type: boolean
+
+  Media:
+    title: Media model
+    allOf:
+      - $ref: '#/definitions/BaseEntity'
+      - type: "object"
+        properties:
+          caseIdentifier:
+            type: integer
+            format: int64
+          attachedTestsIds:
+            type: array
+            items:
+              type: integer
+              format: int64
+          tubeType:
+            type: string
+          tubeName:
+            type: string
+          micType:
+            $ref: '#/definitions/MicType'
+          micCode:
+            type: string
+          addedDT:
+            type: string
+            format: date-time
+          addedTechID:
+            type: string
+          platedDT:
+            type: string
+            format: date-time
+          platedTechID:
+            type: string
+          generatedDT:
+            type: string
+            format: date-time
+          generatedBy:
+            type: string
+          mediaTubeNumber:
+            type: string
+          parentMedia:
+            type: integer
+            format: int64
+          bodySite:
+            type: string
+          statusDisp:
+            type: string
+          status:
+            type: string
+          mediaStatusDT:
+            type: string
+            format: date-time
+          mediaStatusTechID:
+            type: string
+          barcode:
+            type: string
+          generationType:
+            $ref: '#/definitions/MediaGenerationType'
+          workupCode:
+            type: string
+          isolateNumber:
+            type: string
+          organismCode:
+            type: string
+          workupStatus:
+            type: string
+          workupStatusDT:
+            type: string
+            format: date-time
+          workupStatusTechID:
+            type: string
+          microResultEntry:
+            type: string
+
+  MediaGenerationType:
+    type: string
+    enum:
+      - A
+      - M
+      - P
+      - R
+    x-enumNames:
+      - AUTOMATICALLY
+      - MANUALLY
+      - POSTED
+      - REFLEXED
+
+  MedicalNecessity:
+    title:  Medical necessity model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  MedicalNecessityItem:
+    title:  medical necessity item model
+    properties:
+      recid:
+        type: integer
+        format: int64
+      test:
+        type: string
+      childTests:
+        type: array
+        items:
+          type: string
+      billableTest:
+        type: string
+      billableTestName:
+        type: string
+      itemsCount:
+        type: integer
+        format: int32
+      usedPayor:
+        type: string
+      mncStatus:
+        $ref: '#/definitions/MncStatus'
+      abnStatus:
+        $ref: '#/definitions/AbnStatus'
+      performingDepartmentCode:
+        type: string
+      performingLaboratory:
+        type: string
+      testLevelDiagnoses:
+        type: array
+        items:
+          $ref: '#/definitions/Diagnosis'
+      diagnosisAssigningStatus:
+        $ref: '#/definitions/DiagnosisAssigningStatus'
+      modifiers:
+        type: array
+        items:
+          $ref: '#/definitions/Modifier'
+      price:
+        type: number
+      cptCode:
+        type: string
+
+  Message:
+    title:  Message model
+    properties:
+      id:
+        type: string
+      severity:
+        type: string
+      key:
+        type: string
+      text:
+        type: string
+      params:
+        type: object
+        additionalProperties:
+          type: string
+
+  MicComment:
+    title:  Mic model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      comment:
+        type: string
+
+  MicroMedia:
+    title:  Micro Media model
+    properties:
+      insurances:
+        type: array
+        items:
+          $ref: '#/definitions/Insurance'
+      usedPayor:
+        type: string
+      medicalNecessityItems:
+        type: array
+        items:
+          $ref: '#/definitions/MedicalNecessityItem'
+      orderLevelDiagnoses:
+        type: array
+        items:
+          $ref: '#/definitions/Diagnosis'
+      patientType:
+        type: string
+      warnings:
+        type: array
+        items:
+          type: string
+
+  MicType:
+    type: string
+    enum:
+      - M
+      - I
+      - P
+      - D
+      - R
+      - W
+    x-enumNames:
+      - MEDIA
+      - ISOLATE
+      - PANEL
+      - DRUG
+      - RAPID_TEST
+      - WORKUP
+
+  MncStatus:
+    type: string
+    enum:
+      - F
+      - FE
+      - FF
+      - FS
+      - P
+      - E
+    x-enumNames:
+      - FAILED
+      - FAILED_EXPERIMENTAL
+      - FAILED_FREQUENT
+      - FAILED_STATUTORY
+      - PASSED
+      - PROBLEM
+
+  Modifier:
+    title:  Quality model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      code:
+        type: string
+      isAbnModifier:
+        type: boolean
+      position:
+        type: integer
+        format: int64
+
+  Note:
+    title:  Note model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      text:
+        title: Note's text
+        type: string
+      at:
+        title: Date when entered
+        type: string
+        format: date-time
+      by:
+        title: Note's author.
+        type: string
+      active:
+        title: Is note active
+        type: boolean
+      ownerType:
+        title: Type of note owner
+        type: string
+      requestedFrom:
+        title: Requested from value
+        type: string
+      operation:
+        title: Operation
+        type: string
+
+  Operation:
+    type: string
+    enum:
+      - None
+      - Update
+      - Reject
+      - UnReject
+      - Cancel
+      - Add
+      - Delete
+      - InternalDelete
+      - Discard
+      - Reordered
+    x-enumNames:
+      - NONE
+      - UPDATE
+      - REJECT
+      - UN_REJECT
+      - CANCEL
+      - ADD
+      - DELETE
+      - INTERNAL_DELETE
+      - DISCARD
+      - REORDERED
+
+  OperationResult:
+    title:  Operation result model
+    allOf:
+      - $ref: '#/definitions/ProcessResult'
+      - type: "object"
+        properties:
+          itemsToPrint:
+            type: array
+            items:
+              type: string
+              $ref: '#/definitions/PrintItem'
+
+  OrderBriefInfo:
+    title:  Order Brief Info model
+    properties:
+      recid:
+        type: string
+      orderNumber:
+        type: string
+      requisitions:
+        type: string
+      orderStatus:
+        type: string
+      orderingClinic:
+        $ref: '#/definitions/Clinic'
+      orderingPhysicians:
+        $ref: '#/definitions/Physician'
+      spesimenCollectedDateTime:
+        type: string
+        format: date-time
+      tubeReceivedDateTime:
+        type: string
+        format: date-time
+      orderedTests:
+        type: array
+        items:
+          $ref: '#/definitions/OrderTest'
+      orderedTubes:
+        type: array
+        items:
+          $ref: '#/definitions/Tube'
+      uncollected:
+        type: boolean
+
+  OrderDetailedInfo:
+    title:  Order Detailed Info model
+    properties:
+      orderNumber:
+        type: string
+      standing:
+        type: boolean
+      requisitionId:
+        type: string
+      orderedDttm:
+        type: string
+        format: date
+      priority:
+        type: string
+      status:
+        type: string
+      orderingPhysician:
+        type: string
+      orderingLocation:
+        type: string
+      enteredBy:
+        type: string
+      tests:
+        type: array
+        items:
+          $ref: '#/definitions/OrderedTestDetailedInfo'
+      priorityName:
+        type: string
+      orderingPhysicianName:
+        type: string
+      orderingLocationName:
+        type: string
+      enteredByName:
+        type: string
+      requisitionNumbers:
+        type: string
+      auxNumber:
+        type: string
+      clinicCode:
+        type: string
+      clinicName:
+        type: string
+      billingNumber:
+        type: string
+
+  OrderedTestDetailedInfo:
+    title:  Ordered Test Detailed Info model
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      tubeTypeIdsString:
+        type: string
+      collectedDttm:
+        type: string
+        format: date-time
+      isCancelled:
+        type: boolean
+      testCode:
+        type: string
+      priority:
+        type: string
+      priorityName:
+        type: string
+
+  OrderTest:
+    title:  Order test model
+    properties:
+      code:
+        type: string
+      isCancelled:
+        type: boolean
+
+  PatientAlert:
+    title:  Patient Alert model
+    properties:
+      auxId:
+        type: string
+      alert:
+        $ref: '#/definitions/Dictionary'
+      dateTime:
+        type: string
+        format: date-time
+      enteredBy:
+        type: string
+      active:
+        type: boolean
+      text:
+        type: string
+
+  PatientData:
+    title:  Patient data model
+    properties:
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      suffix:
+        type: string
+      dateOfBirth:
+        type: string
+        format: date
+      chartNumber:
+        type: string
+      mrn:
+        type: string
+      ssn:
+        type: string
+      age:
+        type: string
+      sex:
+        type: string
+      isCalculatedDob:
+        type: boolean
+
+  PatientDetailedInfo:
+    title:  Patient Detailed Info model
+    properties:
+      phone:
+        type: string
+      race:
+        $ref: '#/definitions/Dictionary'
+      species:
+        $ref: '#/definitions/Dictionary'
+      emergencyContact:
+        $ref: '#/definitions/ContactInfo'
+      primaryInsurance:
+        $ref: '#/definitions/InsuranceInfo'
+      dvaNumber:
+        type: string
+      pensionNumber:
+        type: string
+      alerts:
+        type: array
+        items:
+          $ref: '#/definitions/PatientAlert'
+      comment:
+        type: string
+      notes:
+        type: array
+        items:
+          $ref: '#/definitions/Note'
+
+  PatientDetailsInfo:
+    title:  Patient Details Info model
+    properties:
+      motherMaidenLastName:
+        type: string
+      motherMaidenFirstName:
+        type: string
+      motherMaidenMiddleName:
+        type: string
+
+  PatientInfo:
+    title:  Patient Info model
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      dob:
+        type: string
+        format: date-time
+      dod:
+        type: string
+        format: date-time
+      maritalStatus:
+        $ref: '#/definitions/Dictionary'
+      title:
+        type: string
+      ethnicity:
+        $ref: '#/definitions/Dictionary'
+      mrn:
+        type: string
+      sex:
+        $ref: '#/definitions/Dictionary'
+      chartNumber:
+        type: string
+      suffix:
+        type: string
+      professionalSuffix:
+        type: string
+      language:
+        $ref: '#/definitions/Dictionary'
+      species:
+        $ref: '#/definitions/Dictionary'
+      religion:
+        $ref: '#/definitions/Dictionary'
+      race:
+        $ref: '#/definitions/Dictionary'
+      eso:
+        $ref: '#/definitions/Dictionary'
+      ssn:
+        type: string
+      pensionNumber:
+        type: string
+      dvaNumber:
+        type: string
+      comment:
+        type: string
+      notes:
+        type: array
+        items:
+          $ref: '#/definitions/Note'
+      room:
+        type: string
+      bed:
+        type: string
+      updateDateTime:
+        type: string
+        format: date-time
+      address:
+        $ref: '#/definitions/AddressInfo'
+      isPrivate:
+        type: boolean
+      clientId:
+        type: string
+      locationGroupName:
+        type: string
+      emergencyContact:
+        $ref: '#/definitions/ContactInfo'
+      patientDetails:
+        $ref: '#/definitions/PatientDetailsInfo'
+      insurances:
+        type: array
+        items:
+          $ref: '#/definitions/InsuranceInfo'
+      mrnAssigningAuthority:
+        $ref: '#/definitions/AssigningInfo'
+      mrnAssigningFacility:
+        $ref: '#/definitions/AssigningInfo'
+      ssnAssigningAuthority:
+        $ref: '#/definitions/AssigningInfo'
+      pensionAssigningAuthority:
+        $ref: '#/definitions/AssigningInfo'
+      dvaAssigningAuthority:
+        $ref: '#/definitions/AssigningInfo'
+      alerts:
+        type: array
+        items:
+          $ref: '#/definitions/PatientAlert'
+      visits:
+        type: array
+        items:
+          $ref: '#/definitions/Visit'
+      patientClient:
+        type: string
+      isCalculatedDOB:
+        type: boolean
+      hcnProvince:
+        type: string
+      hcnVersion:
+        type: string
+      externalId:
+        type: string
+      registrationDate:
+        type: string
+        format: date
+      patientUnknownIdentity:
+        type: boolean
+
+  PatientMaintenanceOptions:
+    title: Requisition options model
+    properties:
+      G_DOB_HOUR_MIN:
+        type: boolean
+        x-codegen-option-info:
+          valueType: boolean
+          optionType: option
+          customSetter: MicroSourceGroupRuleSetter.class
+          isGlobal: true
+      G_OE_PAT_SEC_ID:
+        type: boolean
+      G_OE_PAT_CLIENT:
+        type: boolean
+      G_OE_SRCH_PAT_EXT_ID:
+        type: boolean
+      G_PRE_MRN:
+        type: string
+      G_REQ_PAT_NAME:
+        type: string
+      G_DOB_REQ:
+        type: string
+      G_PRE_BILLING:
+        type: string
+      G_REQ_ADM_PHYS:
+        type: boolean
+      G_AE_DEF_EMPTYDOC:
+        type: string
+      G_ALLOW_EDIT_MED_SERVICE:
+        type: boolean
+      G_LOWERCASE_PAT:
+        type: boolean
+      G_REQ_ATT_PHYS:
+        type: boolean
+      G_PARTIAL_SSN:
+        type: boolean
+      HCNTitle:
+        type: boolean
+      EthnicityAsEthnicGroup:
+        type: boolean
+      EnterNewMRN:
+        type: boolean
+      Multiethnicity:
+        type: boolean
+      EnterNewBillNum:
+        type: boolean
+      CanEditChartNumber:
+        type: boolean
+      CheckSumUsedInAcc:
+        type: boolean
+      SSNMask:
+        type: string
+      TimeFormatOnScreens:
+        type: string
+      DateFormatOnScreens:
+        type: string
+      AgeInDaysNum:
+        type: integer
+        format: int32
+      AgeInMonthsNum:
+        type: integer
+        format: int32
+      AgeInWeeksNum:
+        type: integer
+        format: int32
+      PhoneMask:
+        type: string
+      StateMask:
+        type: string
+      ProvinceTitle:
+        type: boolean
+      ProvinceMask:
+        type: string
+
+  PatientRequisitions:
+    title: Patient Requisitions model
+    properties:
+      requisitions:
+        type: array
+        items:
+          $ref: '#/definitions/RequisitionPart'
+
+  Physician:
+    title: Physician model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  PhysicianSetup:
+    title: Physician setup model
+    properties:
+      id:
+        type: string
+      title:
+        $ref: '#/definitions/Dictionary'
+      upin:
+        type: string
+      npi:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      active:
+        type: boolean
+      orderingKeypad:
+        type: string
+
+  PolicyHolderInfo:
+    title: Policy Holder Info model
+    properties:
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      dob:
+        type: string
+        format: date
+      relationship:
+        $ref: '#/definitions/Dictionary'
+      sex:
+        $ref: '#/definitions/Dictionary'
+      title:
+        type: string
+      suffix:
+        type: string
+      language:
+        $ref: '#/definitions/Dictionary'
+      address:
+        $ref: '#/definitions/AddressInfo'
+      ssn:
+        type: string
+      employerName:
+        type: string
+      payment:
+        type: string
+      familyPlan:
+        type: string
+      employment:
+        type: string
+
+  PrintItem:
+    x-codegen-import-mapping: com.softcomputer.gene.web.api.printing.PrintItem
+
+  Priority:
+    title: Priority setup model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      collectPriority:
+        type: string
+      priorityValue:
+        type: integer
+        format: int32
+
+  ProcessPatientResult:
+    title:  Process Patient Result model
+    properties:
+      patientInfo:
+        $ref: '#/definitions/PatientInfo'
+      messages:
+        type: array
+        items:
+          $ref: '#/definitions/Message'
+      billing:
+        type: string
+
+  ProcessResult:
+    title:  Process result model
+    properties:
+      cases:
+        type: array
+        items:
+          $ref: '#/definitions/Case'
+      processStatus:
+        $ref: '#/definitions/ProcessStatus'
+
+  ProcessStatus:
+    title:  Process Status model
+    properties:
+      status:
+        type: boolean
+      savedStatus:
+        type: boolean
+      statusNumber:
+        type: integer
+        format: int32
+      problems:
+        type: array
+        items:
+          $ref: '#/definitions/ProblemInfo'
+
+  ProblemInfo:
+    title:  Problem Info model
+    required:
+      - orderNumber
+      - critical
+    properties:
+      system:
+        description: SoftGene order number. It can be empty when order wasn't created.
+        type: string
+      orderNumber:
+        description: Problem description. (Required)
+        type: string
+      critical:
+        description: Is problem critical. Critical problems interrupt request processing. (Required)
+        type: boolean
+      problemId:
+        description: Problem id(Needed only for portal)
+        type: string
+
+  Quality:
+    title:  Quality model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      comment:
+        type: string
+      category:
+        type: string
+      richComment:
+        type: string
+
+  RangeLinkType:
+    type: string
+    enum:
+      - SPECIMEN
+      - DOCTOR
+      - CLINIC
+      - PATIENT_TYPE
+
+  Reason:
+    title: Reason model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  ReleasedOrders:
+    title: Released Orders model
+    properties:
+      collectedOrders:
+        type: array
+        items:
+          $ref: '#/definitions/OrderBriefInfo'
+      uncollectedOrders:
+        type: array
+        items:
+          $ref: '#/definitions/OrderBriefInfo'
+
+  RequisitionPart:
+    title: Requisition Part model
+    properties:
+      requisitionId:
+        type: integer
+        format: int64
+      requisitionGroupId:
+        type: integer
+        format: int64
+      requisitionNumber:
+        type: string
+      orderingClinicCode:
+        type: string
+      orderingClinicName:
+        type: string
+      orderingPhysicianCode:
+        type: string
+      orderingPhysicianName:
+        type: string
+      billing:
+        type: string
+      orderedTests:
+        type: array
+        items:
+          $ref: '#/definitions/RequisitionTestBriefInfo'
+      orderedSpecimens:
+        type: array
+        items:
+          $ref: '#/definitions/RequisitionSpecBriefInfo'
+      toBeCollectedDateTime:
+        type: integer
+        format: date-time
+      pinned:
+        type: boolean
+      orderingLocation:
+        type: integer
+      patientType:
+        type: integer
+
+  RequisitionSpecBriefInfo:
+    title: Requisition Test Brief Info model
+    properties:
+      specRecid:
+        type: integer
+        format: int64
+      specCode:
+        type: string
+      specName:
+        type: string
+
+  RequisitionTestBriefInfo:
+    title: Requisition Test Brief Info model
+    properties:
+      testRecid:
+        type: integer
+        format: int64
+      testCodeVersion:
+        type: string
+      testCode:
+        type: string
+      testName:
+        type: string
+      testParentRecid:
+        type: integer
+        format: int64
+      hasParent:
+        type: boolean
+      testType:
+        $ref: '#/definitions/TestType'
+      system:
+        type: string
+      addHocUserPrefs:
+        $ref: '#/definitions/AddHocUserPrefs'
+      needSpecimenPrompt:
+        type: boolean
+
+  ResultOperation:
+    title: Result operation model
+    properties:
+      operationDone:
+        type: boolean
+
+  Recipient:
+    title: Recipient model
+    properties:
+      type:
+        $ref: '#/definitions/RecipientType'
+      contacts:
+        type: array
+        items:
+          $ref: '#/definitions/Contact'
+      instructions:
+        type: string
+      code:
+        type: string
+      name:
+        type: string
+
+  RecipientType:
+    type: string
+    enum:
+      - REQUESTING_DOCTOR
+      - ATTENDING_DOCTOR
+      - OTHER_DOCTOR
+      - ORDERING_CLINIC
+      - OTHER_CLINIC
+      - PATIENT_CLINIC
+      - GROUP_OF_EMPLOYEES
+      - REFERENCE_LAB
+      - MEDICAL_SERVICE
+      - EMPLOYEE
+      - OTHER
+
+  RequisitionModeEnum:
+    type: string
+    enum:
+      - Standard
+      - Standing
+      - Child
+      - AddOn
+
+  RequisitionOptions:
+    title: Requisition options model
+    properties:
+      G_REQ_REQ_DR:
+        type: boolean
+      G_DEF_REQ_DR:
+        type: boolean
+      G_NOT_UPD_ORD_DOC:
+        type: boolean
+      G_TEST_ORDDR_UPD:
+        type: boolean
+      G_DEF_COLBY:
+        type: boolean
+      G_DEF_RECBY:
+        type: boolean
+      G_VALID_COLBY:
+        type: boolean
+      G_DEF_COLDT:
+        type: string
+      G_DEF_RECDT:
+        type: string
+      DateFormatOnScreens:
+        type: string
+      TimeFormatOnScreens:
+        type: string
+      G_DEF_COL_EXPECT:
+        type: array
+        items:
+          $ref: '#/definitions/SpecimenCollectionScheduleOption'
+      G_AUTO_SPEC_LAB:
+        type: boolean
+      G_AUTO_MLABEL_SHOW_DLG_OE:
+        type: boolean
+      G_DONT_CANCEL_RFLX:
+        type: boolean
+      G_VAL_PLATE_BY:
+        type: string
+      G_DEF_PLATETECH:
+        type: boolean
+      G_DEF_PLATEDATE:
+        type: boolean
+      G_DEF_PLATETIME:
+        type: boolean
+      G_AE_FILTER_NON_ACCEPTABLE:
+        type: boolean
+      G_AE_SOURCE_MIC:
+        type: string
+      UsedWordInsteadOfDuplicate:
+        type: string
+      CheckMedicalNecessity:
+        type: boolean
+
+  ResultDeltaSetup:
+    title: ResulDelta setup model
+    x-codegen-accessors: true
+    properties:
+      deltaTime:
+        type: integer
+        format: int32
+      deltaUnit:
+        type: string
+      deltaRules:
+        type: array
+        items:
+          $ref: '#/definitions/DeltaRule'
+
+  RequisitionSpecimen:
+    title: Requisition specimen model
+    properties:
+      caseIdentifier:
+        type: integer
+        format: int64
+      collectionPlace:
+        type: integer
+        format: int64
+      type:
+        type: string
+      typeName:
+        type: string
+      collectedDate:
+        type: string
+        format: date-time
+      collectedBy:
+        type: string
+      receivedDate:
+        type: string
+        format: date-time
+      receivedBy:
+        type: string
+      status:
+        type: string
+      priority:
+        $ref: '#/definitions/Priority'
+      tubeList:
+        type: array
+        items:
+          $ref: '#/definitions/Tube'
+      drawType:
+        type: string
+      drawTypeName:
+        type: string
+      labToCollect:
+        type: string
+      bodySite:
+        type: string
+      bodySiteName:
+        type: string
+      isToBeCollectedDate:
+        type: boolean
+      isCollected:
+        type: boolean
+      isGeneric:
+        type: boolean
+      collectedVolume:
+        type: number
+        format: double
+      collectedUnit:
+        type: string
+      collectionLocation:
+        $ref: '#/definitions/CodedEntity'
+      drawTypeData:
+        $ref: '#/definitions/CodedEntity'
+
+  ResulKeypad:
+    title: ResulKeypad model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      levelslevels:
+        type: array
+        items:
+          $ref: '#/definitions/ResulKeypadLevel'
+      activeWhenFocused:
+        type: boolean
+      displayAsDropDown:
+        type: boolean
+
+  ResulKeypadActionType:
+    type: string
+    enum:
+      - Text
+      - Test
+      - CannedMessage
+      - NextKeypad
+      - BenchTest
+      - RapidTest
+      - Media
+      - Isolate
+      - Workup
+      - FocusLastAdded
+      - PrevKeypad
+      - PurityMedia
+      - DrugInterpretation
+
+  ResulKeypadAction:
+    title: ResulKeypadAction model
+    properties:
+      value:
+        type: string
+      displayValue:
+        type: string
+      type:
+        $ref: '#/definitions/ResulKeypadActionType'
+      visible:
+        type: boolean
+
+  ResulKeypadItem:
+    title: ResulKeypadItem model
+    properties:
+      keyCode:
+        type: string
+      title:
+        type: string
+      preview:
+        type: string
+      actions:
+        type: array
+        items:
+          $ref: '#/definitions/ResulKeypadAction'
+      addKeyText:
+        type: boolean
+      separator:
+        type: string
+      separatorManual:
+        type: string
+      nextKeypadCode:
+        type: string
+
+  ResulKeypadLevel:
+    title: ResulKeypad model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      level:
+        type: string
+      type:
+        $ref: '#/definitions/ResulKeypadType'
+      autoMove:
+        type: boolean
+      operation:
+        type: string
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/ResulKeypadItem'
+
+  ResulKeypadType:
+    type: string
+    enum:
+      - DrugResult
+      - DrugInterpretation
+      - TestComment
+      - BatchResulting
+      - MediaResulting
+      - WorkupResulting
+      - WorkupQuantity
+      - IsolateQuantity
+      - WorkupColony
+      - BenchTest
+      - RapidTest
+      - Workup
+
+  ResultRangeCondition:
+    title: Result range condition model
+    x-codegen-accessors: true
+    properties:
+      category:
+        type: string
+      position:
+        type: integer
+        format: int32
+      type:
+        $ref: '#/definitions/CodeName'
+      value:
+        type: string
+      valueFrom:
+        type: number
+        format: double
+      valueTo:
+        type: number
+        format: double
+
+  ResultRangeSetup:
+    title: Result range setup model
+    x-codegen-accessors: true
+    properties:
+      code:
+        type: string
+      gender:
+        type: string
+      ageInUnitsTo:
+        type: integer
+        format: int64
+      ageUnitTo:
+        type: string
+      ageInUnitsFrom:
+        type: integer
+        format: int64
+      ageUnitFrom:
+        type: string
+      reportNormalRange:
+        type: string
+      conditions:
+        type: array
+        items:
+          $ref: '#/definitions/ResultRangeCondition'
+      links:
+        type: object
+        additionalProperties:
+          type: array
+          items:
+            type: string
+
+
+  SingleSearchResults:
+    title: Single Search Results model
+    properties:
+      patientsData:
+        type: array
+        items:
+          $ref: '#/definitions/PatientData'
+      orderNumber:
+        type: string
+      isTooManyRecordsFound:
+        type: boolean
+
+  Source:
+    title: Specimen model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      keypadCode:
+        type: string
+      acceptanceType:
+        type: string
+      isGeneric:
+        type: boolean
+      bodySites:
+        type: array
+        items:
+          $ref: '#/definitions/BodySite'
+
+  SetupSpecimen:
+    title: Setup specimen model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      isGeneric:
+        type: boolean
+      system:
+        type: string
+      keypadCode:
+        type: string
+
+  SpecimenCollectionRequest:
+    title: Specimen Collection Schedule Option model
+    properties:
+      collectNow:
+        type: boolean
+      toBeCollectedDateTime:
+        type: string
+        format: date-time
+      toBeCollectedBy:
+        $ref: '#/definitions/Collector'
+
+  SpecimenCollectionScheduleOption:
+    title: Specimen Collection Schedule Option model
+    properties:
+      daysOfMonth:
+        type: string
+      months:
+        type: string
+      daysOfWeek:
+        type: boolean
+      collectionTimes:
+        type: string
+
+  CatalogSpecimenSetup:
+    title: Specimen setup model
+    x-codegen-accessors: true
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  Test:
+    title: Test model
+    allOf:
+      - $ref: '#/definitions/ProcessResult'
+      - type: "object"
+        properties:
+          caseIdentifier:
+            type: integer
+            format: int64
+          testCode:
+            type: string
+          testName:
+            type: string
+          testCodeVersion:
+            type: string
+          testType:
+            $ref: '#/definitions/TestType'
+          #      testStatus:
+          #        $ref: '#/definitions/TestStatus'
+          extensionNumber:
+            type: integer
+            format: int32
+          performingDepartmentCode:
+            type: string
+          performingWorkstationCode:
+            type: string
+          parentId:
+            type: integer
+            format: int64
+          components:
+            type: array
+            items:
+              $ref: '#/definitions/Test'
+          parentOrderNumber:
+            type: string
+          isCancelled:
+            type: boolean
+          cancellationReason:
+            type: string
+          cancellationComment:
+            type: string
+          testPriority:
+            $ref: '#/definitions/Priority'
+          reportToDoctors:
+            type: array
+            items:
+              $ref: '#/definitions/PhysicianSetup'
+          orderingDoctors:
+            type: array
+            items:
+              $ref: '#/definitions/PhysicianSetup'
+          position:
+            type: integer
+            format: int64
+          duplicationTest:
+            type: integer
+            format: int64
+          absorptionTest:
+            type: integer
+            format: int64
+          parentSwapped:
+            type: boolean
+          reflexPanel:
+            type: integer
+            format: int64
+          requisitionReflexPanel:
+            type: integer
+            format: int64
+          systemType:
+            type: string
+          micReflexStatus:
+            type: string
+          cancelBy:
+            type: string
+          testLevelIndications:
+            type: array
+            items:
+              $ref: '#/definitions/Indication'
+          mediaList:
+            type: array
+            items:
+              $ref: '#/definitions/Media'
+          diagnoses:
+            type: array
+            items:
+              $ref: '#/definitions/Diagnosis'
+          redirectionTest:
+            type: integer
+            format: int64
+
+  TestDefinitionCatalog:
+    title: Catalog TestDefinition model
+    x-codegen-accessors: true
+    properties:
+      code:
+        type: string
+      secondaryCode:
+        type: string
+      thirdCode:
+        type: string
+      name:
+        type: string
+      technology:
+        type: string
+      technologyCode:
+        type: string
+      technologyEntity:
+        $ref: '#/definitions/CodeName'
+      methodology:
+        type: string
+      methodologySeq:
+        type: integer
+        format: int32
+      instructions:
+        type: string
+      comments:
+        type: string
+      timeBetweenOrders:
+        type: integer
+        format: int32
+      synonyms:
+        type: array
+        items:
+          type: string
+      orderableIndividually:
+        type: boolean
+      orderableAsStat:
+        type: boolean
+      orderableAsUrgent:
+        type: boolean
+      requiredICDAtOrdering:
+        type: boolean
+      preferableSpecimen:
+        $ref: '#/definitions/CatalogSpecimenSetup'
+      preferableTube:
+        $ref: '#/definitions/TubeSetup'
+      acceptableSpecimens:
+        type: array
+        items:
+          $ref: '#/definitions/CatalogSpecimenSetup'
+      acceptableTubes:
+        type: array
+        items:
+          $ref: '#/definitions/TubeSetup'
+      realVolume:
+        type: number
+        format: double
+      addupVolume:
+        type: number
+        format: double
+      specimenMinVolume:
+        type: number
+        format: double
+      volumeUnit:
+        type: string
+      components:
+        type: array
+        items:
+          $ref: '#/definitions/TestSetupIdentifier'
+      partOfPanels:
+        type: array
+        items:
+          $ref: '#/definitions/TestSetupIdentifier'
+      sameOeCategoryTests:
+        type: array
+        items:
+          $ref: '#/definitions/TestSetupIdentifier'
+      resultFields:
+        type: array
+        items:
+          $ref: '#/definitions/TestResultFieldSetup'
+      collectionInstruction:
+        type: string
+      aliquoteInstruction:
+        type: string
+      collectionLabelText:
+        type: string
+      collectionType:
+        type: string
+      separateTube:
+        type: boolean
+      separateAliquotTube:
+        type: boolean
+      preferableAliquotTube:
+        $ref: '#/definitions/TubeSetup'
+      specialCases:
+        type: array
+        items:
+          $ref: '#/definitions/TestSpecialCasesSetup'
+      stability:
+        type: string
+      transport:
+        type: string
+      storage:
+        type: string
+      preservation:
+        type: string
+      laboratory:
+        type: string
+      department:
+        type: string
+      frequency:
+        type: string
+      message:
+        type: string
+      minVolumeComments:
+        type: string
+      departments:
+        type: array
+        items:
+          $ref: '#/definitions/DepartmentSetup'
+      referenceLabFee:
+        type: string
+      hospitalCharge:
+        type: string
+      mnemonic:
+        type: string
+      workstations:
+        type: array
+        items:
+          type: string
+
+  TestDefinitionSetup:
+    title: TestDefinition setup model
+    properties:
+      id:
+        type: integer
+        format: int64
+      code:
+        type: string
+      name:
+        type: string
+      codeWithVersion:
+        type: string
+      group:
+        type: boolean
+      individuallyOrdered:
+        type: boolean
+      secondaryId:
+        type: string
+      synonym:
+        type: string
+      components:
+        type: array
+        items:
+          $ref: '#/definitions/TestDefinitionSetup'
+      loinc:
+        type: string
+      testType:
+        $ref: '#/definitions/TestType'
+
+  TestRedirectionData:
+    title: Test redirection data model
+    properties:
+      testId:
+        type: integer
+        format: int64
+      newWksCode:
+        type: string
+      newDepCode:
+        type: string
+
+  TestRedirectionOrder:
+    title: Test redirection order model
+    properties:
+      testRedirectionData:
+        type: array
+        items:
+          $ref: '#/definitions/TestRedirectionData'
+      testList:
+        type: array
+        items:
+          $ref: '#/definitions/Test'
+      specimenList:
+        type: array
+        items:
+          $ref: '#/definitions/RequisitionSpecimen'
+      testSpecimenAttachments:
+        type: array
+        items:
+          $ref: '#/definitions/TestSpecimenAttach'
+      testTubeAttachments:
+        type: array
+        items:
+          $ref: '#/definitions/TestTubeAttach'
+
+  TestResultFieldSetup:
+    title: Test result field setup model
+    x-codegen-accessors: true
+    properties:
+      name:
+        type: string
+      code:
+        type: string
+      type:
+        type: string
+      unit:
+        type: string
+      defaultValue:
+        type: string
+      loincCode:
+        type: string
+      resultRanges:
+        type: array
+        items:
+          $ref: '#/definitions/ResultRangeSetup'
+      deltaSetups:
+        type: array
+        items:
+          $ref: '#/definitions/ResultDeltaSetup'
+      deltaSetup:
+        $ref: '#/definitions/ResultDeltaSetup'
+
+  TestSearchResult:
+    title: Test search result model
+    properties:
+      testCodeVersion:
+        type: array
+        items:
+          $ref: '#/definitions/TestSetupIdentifier'
+      totalCount:
+        type: integer
+        format: int32
+    x-codegen-accessors: true
+
+  TestSetupIdentifier:
+    title: Test setup identifier model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      codeversion:
+        type: string
+      codeVersion:
+        type: string
+    x-codegen-accessors: true
+
+  TestSources:
+    title: Test sources model
+    properties:
+      testCodeVersion:
+        type: string
+      testCode:
+        type: string
+      testName:
+        type: string
+      system:
+        type: string
+      specimens:
+        type: array
+        items:
+          $ref: '#/definitions/Source'
+      tubes:
+        type: array
+        items:
+          $ref: '#/definitions/Source'
+      preferableTube:
+        type: string
+      preferableAliquote:
+        type: string
+      checkOnlyNonAccItems:
+        type: boolean
+
+  TestSpecialCasesSetup:
+    title: Test special cases setup model
+    x-codegen-accessors: true
+    properties:
+      patientType:
+        type: string
+      ageInUnitsTo:
+        type: integer
+        format: int64
+      ageUnitTo:
+        type: string
+      ageInUnitsFrom:
+        type: integer
+        format: int64
+      ageUnitFrom:
+        type: string
+      separateCollectionContainer:
+        type: boolean
+      separateAliquotContainer:
+        type: boolean
+      volumeNeeded:
+        type: number
+        format: double
+      addupVolume:
+        type: number
+        format: double
+      volumeUnit:
+        type: string
+      preferableTube:
+        $ref: '#/definitions/TubeSetup'
+      aliquotTube:
+        $ref: '#/definitions/TubeSetup'
+      preferableSpecimen:
+        $ref: '#/definitions/CatalogSpecimenSetup'
+
+
+  TestSpecimenAttach:
+    title: Test specimen attach model
+    properties:
+      testId:
+        type: integer
+        format: int64
+      specimenId:
+        type: integer
+        format: int64
+
+  TestTubeAttach:
+    title: Test tube attach model
+    properties:
+      testId:
+        type: integer
+        format: int64
+      tubeId:
+        type: integer
+        format: int64
+
+  TestType:
+    type: string
+    enum:
+      - A
+      - N
+      - S
+      - B
+      - C
+      - P
+      - O
+      - G
+      - R
+      - M
+      - U
+      - K
+      - E
+      - D
+      - Y
+      - CLINICAL
+      - ICR
+      - MICROBIOLOGY
+      - MIC_PANEL
+    x-enumNames:
+      - ANALISIS
+      - ANALYTE
+      - STAIN
+      - PROBE
+      - CULTURE_REQUEST
+      - PANEL
+      - SEND_OUT
+      - GROUP
+      - PROCESSING_ONLY
+      - MARKER
+      - SUPERPANEL
+      - MARKERSET
+      - RESULT_ELEMENT
+      - DIFFERENTIAL
+      - ARRAY
+      - CLINICAL
+      - ICR
+      - MICROBIOLOGY
+      - MIC_PANEL
+
+  Tube:
+    title: Tube model
+    properties:
+      recId:
+        type: string
+      type:
+        type: string
+      aliquoted:
+        type: string
+
+  TubeSetup:
+    title: Tube setup model
+    x-codegen-accessors: true
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  UserChoice:
+    title: User choice model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      userChoiceItemList:
+        type: array
+        items:
+          $ref: '#/definitions/UserChoiceItem'
+
+  UserChoiceItem:
+    title: User choice item model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      active:
+        type: boolean
+
+  UserDefinedField:
+    title: User Defined Field model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      orderRecid:
+        type: integer
+        format: int64
+      orderNumber:
+        type: string
+      patientRecid:
+        type: integer
+        format: int64
+      fieldSetup:
+        $ref: '#/definitions/UserDefinedFieldSetup'
+      requisitionRecid:
+        type: integer
+        format: int64
+      visitRecid:
+        type: integer
+        format: int64
+      ownerType:
+        $ref: '#/definitions/UserDefinedFieldOwnerType'
+      ownerRecid:
+        type: integer
+        format: int64
+      fieldValues:
+        type: array
+        items:
+          $ref: '#/definitions/UserDefinedFieldOwnerType'
+      variations:
+        type: array
+        items:
+          $ref: '#/definitions/UserDefinedField'
+
+  UserDefinedFieldLevel:
+    type: string
+    enum:
+      - T
+      - O
+    x-enumNames:
+      - TEST
+      - ORDER
+
+  UserDefinedFieldOwnerType:
+    type: string
+    enum:
+      - P
+      - O
+      - R
+      - RP
+      - S
+      - RS
+      - V
+      - RV
+      - T
+      - RT
+    x-enumNames:
+      - PATIENT
+      - ORDER
+      - REQUISITION
+      - REQUISITION_PATIENT
+      - SPECIMEN
+      - REQUISITION_SPECIMEN
+      - VISIT
+      - REQUISITION_VISIT
+      - TEST
+      - REQUISITION_TEST
+
+  UserDefinedFieldPromptType:
+    type: string
+    enum:
+      - NONE
+      - MANDATORY_ACC
+      - MANDATORY_RELEASE
+      - MANDATORY_COLLECT
+      - MANDATORY_RECEIVE
+      - PROMPT_ACC
+      - PROMPT_RELEASE
+      - PROMPT_COLLECT
+      - PROMPT_RECEIVE
+
+  UserDefinedFieldSetup:
+    title: User Defined Field setup model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      code:
+        type: string
+      refCode:
+        type: string
+      name:
+        type: string
+      level:
+        $ref: '#/definitions/UserDefinedFieldLevel'
+      userChoice:
+        $ref: '#/definitions/UserChoice'
+      fieldType:
+        $ref: '#/definitions/UserDefinedFieldType'
+      promptType:
+        $ref: '#/definitions/UserDefinedFieldPromptType'
+      choices:
+        type: array
+        items:
+          type: string
+      reportableFrom:
+        type: number
+        format: double
+      reportableTo:
+        type: number
+        format: double
+      decimalPlaces:
+        type: integer
+        format: int32
+      defaultValue:
+        type: string
+      dateTime:
+        type: boolean
+
+  UserDefinedFieldType:
+    type: string
+    enum:
+      - N
+      - B
+      - L
+      - A
+      - D
+      - S
+      - Z
+      - IN
+      - R
+      - RM
+      - TQ
+      - C
+      - T
+    x-enumNames:
+      - NUMERIC
+      - CHECK_BOX
+      - CHOICE_FIELD
+      - USER_DEFINED_CHOICE
+      - DATE
+      - SHORT_TEXT
+      - MULTILINE_TEXT
+      - INSTOTUTIONS
+      - BROWSER
+      - MULTI_SELECTION_BROWSER
+      - TQC
+      - CALCULATED_FIELD
+      - RTF
+
+  UserDefinedFieldValue:
+    title: User Defined Field value model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      stringValue:
+        type: string
+      position:
+        type: integer
+        format: int32
+      data:
+        type: string
+
+  Visit:
+    title: Visit model
+    properties:
+      recid:
+        $ref: 'commons.yaml#/definitions/recid'
+      admittedOn:
+        type: string
+        format: date-time
+      dischargedOn:
+        type: string
+        format: date-time
+      billingNumber:
+        type: string
+      clinic:
+        type: string
+      clinicName:
+        type: string
+      room:
+        type: string
+      bed:
+        type: string
+      attendingDoctor:
+        type: string
+      attendingDoctorFirstName:
+        type: string
+      attendingDoctorLastName:
+        type: string
+      admittingDoctor:
+        type: string
+      admittingDoctorFirstName:
+        type: string
+      admittingDoctorLastName:
+        type: string
+      consultingDoctor:
+        type: string
+      consultingDoctorFirstName:
+        type: string
+      consultingDoctorLastName:
+        type: string
+      primaryDiagnosis:
+        type: string
+      primaryDiagnosisName:
+        type: string
+      secondaryDiagnosis:
+        type: string
+      secondaryDiagnosisName:
+        type: string
+      tertiaryDiagnosis:
+        type: string
+      tertiaryDiagnosisName:
+        type: string
+      clinicContact:
+        type: string
+      clinicContactPhone:
+        type: string
+      clinicContactPhoneExt:
+        type: string
+      chartNumber:
+        type: string
+      type:
+        type: string
+      visitSubtype:
+        type: string
+      admissionType:
+        type: string
+      visitNumber:
+        type: string
+      medicalService:
+        type: string
+      comment:
+        type: string
+      secondaryID:
+        type: string
+      secondaryFirstName:
+        type: string
+      secondaryLastName:
+        type: string
+
+  VisitsBatch:
+    title: Visit batch model
+    properties:
+      visits:
+        type: array
+        items:
+          $ref: '#/definitions/Visit'
+      hasMoreItems:
+        type: boolean
+
+  VisitBriefInfo:
+    title: Visit Brief Info model
+    properties:
+      billingNumber:
+        type: string
+      admissionDateTime:
+        type: string
+        format: date-time
+      visitClinic:
+        type: string
+      attendingDoctor:
+        type: string
+      patientType:
+        type: string
+      comment:
+        type: string
+      dischargeDateTime:
+        type: string
+        format: date-time
+
+  VisitHeader:
+    title: Visit header model
+    properties:
+      billingNumber:
+        type: string
+      admissionDateTime:
+        type: string
+        format: date-time
+      clinicName:
+        type: string
+      doctorFirstName:
+        type: string
+      doctorLastName:
+        type: string
+      patientType:
+        type: string
+
+  VisitOrderInfo:
+    title: Visit order info model
+    properties:
+      orderNumber:
+        type: string
+      priority:
+        type: string
+      billingNumber:
+        type: string
+      orderingPhysician:
+        $ref: '#/definitions/Physician'
+      orderedDT:
+        type: string
+        format: date-time
+      orderedTests:
+        type: string

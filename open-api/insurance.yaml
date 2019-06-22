@@ -15,11 +15,11 @@ paths:
           type: string
           required: true
         - name: billing-number
-          descrpiption: visit billing number
+          description: visit billing number
           in: query
           type: string
         - name: items-count
-          descrpiption: limits number of search results
+          description: limits number of search results
           type: string
           in: query
       responses:

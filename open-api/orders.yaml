@@ -93,3 +93,20 @@ paths:
       tags:
         - orders
 
+  /redirect-tests:
+    post:
+      summary: Redirect tests
+      operationId: redirectTests
+      parameters:
+        - name: testRedirectionOrder
+          in: body
+          schema:
+            $ref: 'model.yaml#/definitions/TestRedirectionOrder'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: 'model.yaml#/definitions/TestRedirectionOrder'
+      tags:
+        - orders
+
