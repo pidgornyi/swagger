@@ -67,7 +67,6 @@ parameters:
     
 
 
-
 paths:
   /setup/clinics:
     get:
@@ -3328,6 +3327,96 @@ definitions:
       CheckMedicalNecessity:
         type: boolean
 
+  RequisitionTest:
+    title: Test model
+    allOf:
+      - $ref: '#/definitions/BaseEntity'
+      - type: "object"
+        properties:
+          caseIdentifier:
+            type: integer
+            format: int64
+          testCode:
+            type: string
+          testName:
+            type: string
+          testCodeVersion:
+            type: string
+          testType:
+            $ref: '#/definitions/TestType'
+          #      testStatus:
+          #        $ref: '#/definitions/TestStatus'
+          extensionNumber:
+            type: integer
+            format: int32
+          performingDepartmentCode:
+            type: string
+          performingWorkstationCode:
+            type: string
+          parentId:
+            type: integer
+            format: int64
+          components:
+            type: array
+            items:
+              $ref: '#/definitions/RequisitionTest'
+          parentOrderNumber:
+            type: string
+          isCancelled:
+            type: boolean
+          cancellationReason:
+            type: string
+          cancellationComment:
+            type: string
+          testPriority:
+            $ref: '#/definitions/Priority'
+          reportToDoctors:
+            type: array
+            items:
+              $ref: '#/definitions/SetupPhysician'
+          orderingDoctors:
+            type: array
+            items:
+              $ref: '#/definitions/SetupPhysician'
+          position:
+            type: integer
+            format: int64
+          duplicationTest:
+            type: integer
+            format: int64
+          absorptionTest:
+            type: integer
+            format: int64
+          parentSwapped:
+            type: boolean
+          reflexPanel:
+            type: integer
+            format: int64
+          requisitionReflexPanel:
+            type: integer
+            format: int64
+          systemType:
+            type: string
+          micReflexStatus:
+            type: string
+          cancelBy:
+            type: string
+          testLevelIndications:
+            type: array
+            items:
+              $ref: '#/definitions/Indication'
+          mediaList:
+            type: array
+            items:
+              $ref: '#/definitions/Media'
+          diagnoses:
+            type: array
+            items:
+              $ref: '#/definitions/Diagnosis'
+          redirectionTest:
+            type: integer
+            format: int64
+
   RequisitionTube:
     title: Tube model
     allOf:
@@ -3640,8 +3729,11 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/ResultRangeCondition'
-      links:
+      links:   #TODO: Map<RangeLinkType, List<String>> links;
         type: object
+#        properties:
+#          type: object
+#            $ref: '#/definitions/RangeLinkType'
         additionalProperties:
           type: array
           items:
@@ -3764,96 +3856,6 @@ definitions:
         type: boolean
       collectionTimes:
         type: string
-
-  RequisitionTest:
-    title: Test model
-    allOf:
-      - $ref: '#/definitions/BaseEntity'
-      - type: "object"
-        properties:
-          caseIdentifier:
-            type: integer
-            format: int64
-          testCode:
-            type: string
-          testName:
-            type: string
-          testCodeVersion:
-            type: string
-          testType:
-            $ref: '#/definitions/TestType'
-          #      testStatus:
-          #        $ref: '#/definitions/TestStatus'
-          extensionNumber:
-            type: integer
-            format: int32
-          performingDepartmentCode:
-            type: string
-          performingWorkstationCode:
-            type: string
-          parentId:
-            type: integer
-            format: int64
-          components:
-            type: array
-            items:
-              $ref: '#/definitions/RequisitionTest'
-          parentOrderNumber:
-            type: string
-          isCancelled:
-            type: boolean
-          cancellationReason:
-            type: string
-          cancellationComment:
-            type: string
-          testPriority:
-            $ref: '#/definitions/Priority'
-          reportToDoctors:
-            type: array
-            items:
-              $ref: '#/definitions/SetupPhysician'
-          orderingDoctors:
-            type: array
-            items:
-              $ref: '#/definitions/SetupPhysician'
-          position:
-            type: integer
-            format: int64
-          duplicationTest:
-            type: integer
-            format: int64
-          absorptionTest:
-            type: integer
-            format: int64
-          parentSwapped:
-            type: boolean
-          reflexPanel:
-            type: integer
-            format: int64
-          requisitionReflexPanel:
-            type: integer
-            format: int64
-          systemType:
-            type: string
-          micReflexStatus:
-            type: string
-          cancelBy:
-            type: string
-          testLevelIndications:
-            type: array
-            items:
-              $ref: '#/definitions/Indication'
-          mediaList:
-            type: array
-            items:
-              $ref: '#/definitions/Media'
-          diagnoses:
-            type: array
-            items:
-              $ref: '#/definitions/Diagnosis'
-          redirectionTest:
-            type: integer
-            format: int64
 
   TestCodeVersionWithStatus:
     title: Test code version with status model
@@ -4138,7 +4140,7 @@ definitions:
       fieldValues:
         type: array
         items:
-          $ref: '#/definitions/UserDefinedFieldOwnerType'
+          $ref: '#/definitions/UserDefinedFieldValue'
       variations:
         type: array
         items:
