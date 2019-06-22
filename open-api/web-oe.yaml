@@ -11,6 +11,7 @@ basePath: "/gcm/web/app/oe"
 produces:
   - "application/json"
 
+
 tags:
   - name: setup
     description: Setup  service
@@ -47,186 +48,1548 @@ tags:
   - name: mrn validator
     description: MRN validator service
 
+
+parameters:
+  value:
+    in: query
+    name: value
+    type: string
+    description: free text criteria
+  itemsCount:
+    in: query
+    name: itemsCount
+    description: limits number of search results
+    type: integer
+    format: int32
+    default: 20
+  employeeValue:
+    name: value
+    description: employee code, firstName or lastName
+    type: string
+    in: query
+    
+    
 paths:
   /setup/clinics:
-    $ref: 'setup.yaml#/paths/~1clinics'
+    get:
+      summary: Get active clinics where any part of code or name corresponds to the given free text criteria
+      operationId: getClinics
+      parameters:
+        - $ref: '#/parameters/value'
+        - name: code
+          in: query
+          description: clinic code
+          type: string
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Clinic'
+      tags:
+        - setup
+
   /setup/patient-clients:
-    $ref: 'setup.yaml#/paths/~1patient-clients'
+    get:
+      summary: Get extramural or outreach clinics witch suit search criteria
+      operationId: getPatientClients
+      parameters:
+        - name: "value"
+          in: query
+          description: clinic code/name search criteria
+          type: string
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Clinic'
+      tags:
+        - setup
+
   /setup/visit-clinics:
-    $ref: 'setup.yaml#/paths/~1visit-clinics'
+    get:
+      summary: Get clinics by att doc and code/name criteria, if doc is not set - returns all clinics by code/name
+      operationId: getClinicsAvailableForVisit
+      parameters:
+        - name: value
+          in: query
+          description: clinic code/name search criteria
+          type: string
+        - name: attDoc
+          in: query
+          description: attending doctor code to narrow clinic choice
+          type: string
+        - name: patientClient
+          in: query
+          description: extramural or outreach clinic set on patient
+          type: string
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Clinic'
+      tags:
+        - setup
+
   /setup/physicians:
-    $ref: 'setup.yaml#/paths/~1physicians'
+    get:
+      summary: Get active physicians where any part of code or name corresponds to the given free text criteria
+      operationId: getPhysicians
+      parameters:
+        - $ref: '#/parameters/value'
+        - name: code
+          in: query
+          description: code
+          type: string
+        - name: clinic
+          in: query
+          description: clinic code to filter attending doctors, full match
+          type: string
+        - name: role
+          in: query
+          description: doctor role code, full match
+          type: string
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PhysicianSetup'
+      tags:
+        - setup
+
   /setup/diagnoses:
-    $ref: 'setup.yaml#/paths/~1diagnoses'
+    get:
+      summary: Get active diagnoses where any part of code or name corresponds to the given free text criteria
+      operationId: getDiagnoses
+      parameters:
+        - $ref: '#/parameters/value'
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Diagnosis'
+      tags:
+        - setup
+
   /setup/insurancecarriers:
-    $ref: 'setup.yaml#/paths/~1insurancecarriers'
+    get:
+      summary: Get a list of InsuranceCarrierInfo objects that have only 'code' and 'name' fields.
+      operationId: getInsurances
+      parameters:
+        - name: code_or_name
+          description: free text criteria. It is a part of Insurance Carrier code or name.
+          in: query
+          type: string
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/InsuranceCarrierInfo'
+      tags:
+        - setup
+
   /setup/testdefinitions:
-    $ref: 'setup.yaml#/paths/~1testdefinitions'
+    get:
+      summary: Get active testDefinitions where any part of ID or name corresponds to the given free text criteria
+      operationId: getTestDefinitions
+      parameters:
+        - $ref: '#/parameters/value'
+        - name: testTypes
+          description: types of tests for filtering
+          in: query
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TestDefinitionSetup'
+      tags:
+        - setup
+
   /setup/indications:
-    $ref: 'setup.yaml#/paths/~1indications'
+    get:
+      summary: Get active indications
+      operationId: getIndications
+      parameters:
+        - $ref: '#/parameters/value'
+        - name: primary
+          in: query
+          type: boolean
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/IndicationSetup'
+      tags:
+        - setup
+
   /setup/priorities:
-    $ref: 'setup.yaml#/paths/~1priorities'
+    get:
+      summary: Get active priorities
+      operationId: getPriorities
+      parameters:
+        - $ref: '#/parameters/value'
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Priority'
+      tags:
+        - setup
+
   /setup/body-sites:
-    $ref: 'setup.yaml#/paths/~1body-sites'
+    get:
+      summary: Get bodysites
+      operationId: getBodySites
+      parameters:
+        - $ref: '#/parameters/value'
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BodySite'
+      tags:
+        - setup
+
   /setup/specimens:
-    $ref: 'setup.yaml#/paths/~1specimens'
+    get:
+      summary: Get a list of specimens where any part of code or name corresponds to the given value
+      operationId: getSpecimens
+      parameters:
+        - $ref: '#/parameters/value'
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SetupSpecimen'
+      tags:
+        - setup
+
   /setup/reasons:
-    $ref: 'setup.yaml#/paths/~1reasons'
+    get:
+      summary: Get correspond reasons for categories. If category is empty return all reasons
+      operationId: getReasons
+      parameters:
+        - name: categories
+          description: choice codes, can be empty
+          in: query
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Reason'
+      tags:
+        - setup
+
   /setup/test-sources:
-    $ref: 'setup.yaml#/paths/~1test-sources'
+    get:
+      summary: Get a list of test code versions with preferable, acceptable specimens and tubes.
+      operationId: getTestSources
+      parameters:
+        - name: test-code-versions
+          description: test code versions
+          in: query
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TestSources'
+      tags:
+        - setup
+
   /setup/micro-medias:
-    $ref: 'setup.yaml#/paths/~1micro-medias'
+    get:
+      operationId: getGetMicroMedias
+      parameters:
+        - name: code_or_name
+          description: free text criteria. It is a part of Insurance Carrier code or name.
+          in: query
+          type: string
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MicroMedia'
+      tags:
+        - setup
+
   /setup/drugs:
-    $ref: 'setup.yaml#/paths/~1drugs'
+    get:
+      operationId: getDrugs
+      parameters:
+        - name: code_or_name
+          description: free text criteria. It is a part of Drug code or name.
+          in: query
+          type: string
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Drug'
+      tags:
+        - setup
+
   /setup/test-ordering-keypads:
-    $ref: 'setup.yaml#/paths/~1test-ordering-keypads'
+    get:
+      description: List of tests ordering keypads
+      operationId: getTestOrderingKeypad
+      parameters:
+        - name: dcKeypad
+          description: Requisition requestng doctor keypad code
+          in: query
+          type: string
+        - name: clKeypad
+          description: Requisition clinic keypad code
+          in: query
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TestDefinitionSetup' #List<OrderingKeypad<TestDefinition>>
+      tags:
+        - setup
+
   /setup/specimen-ordering-keypads:
-    $ref: 'setup.yaml#/paths/~1specimen-ordering-keypads'
+    get:
+      description: List of specimens ordering keypads
+      operationId: getSpecimenOrderingKeypad
+      parameters:
+        - name: dcKeypad
+          description: Requisition requestng doctor keypad code
+          in: query
+          type: string
+        - name: clKeypad
+          description: Requisition clinic keypad code
+          in: query
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SetupSpecimen' #List<OrderingKeypad<Specimen>>
+      tags:
+        - setup
+
   /setup/call-request-recipients:
-    $ref: 'setup.yaml#/paths/~1call-request-recipients'
+    get:
+      summary: Recipients for call request
+      operationId: getCallRequestRecipients
+      parameters:
+        - name: value
+          description: free text criteria
+          in: query
+          type: string
+          required: true
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Recipient'
+      tags:
+        - setup
+
   /setup/qualities:
-    $ref: 'setup.yaml#/paths/~1qualities'
+    get:
+      summary: List of qualities
+      operationId: getQualities
+      parameters:
+        - name: value
+          description: free text criteria
+          in: query
+          type: string
+          required: true
+        - name: type
+          description: Quality type
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Quality'
+      tags:
+        - setup
+
   /setup/bodysite-result-keypad:
-    $ref: 'setup.yaml#/paths/~1bodysite-result-keypad'
+    get:
+      summary: bodySite result ResulKeypad
+      operationId: getBodySiteKeypad
+      parameters:
+        - name: specType
+          description: specimen type, can be empty
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ResulKeypad'
+      tags:
+        - setup
+
   /setup/insurance-group:
-    $ref: 'setup.yaml#/paths/~1insurance-group'
+    get:
+      summary: active insurance groups
+      operationId: getInsuranceGroups
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/InsuranceGroup'
+      tags:
+        - setup
 
   /setup/employees/collectors:
-    $ref: 'setup-employee.yaml#/paths/~1collectors'
-  /setup/employees/receivers:
-    $ref: 'setup-employee.yaml#/paths/~1receivers'
-  /setup/employees/for-media-plating:
-    $ref: 'setup-employee.yaml#/paths/~1for-media-plating'
-  /setup/employees/residents:
-    $ref: 'setup-employee.yaml#/paths/~1residents'
-  /setup/employees/pathologists:
-    $ref: 'setup-employee.yaml#/paths/~1pathologists'
+    get:
+      summary: Get a list of collecting employees
+      operationId: getCollectingEmployees
+      parameters:
+        - $ref: '#/parameters/employeeValue'
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Employee'
+      tags:
+        - employee setup
 
-  /setup/choices/countries:
-    $ref: 'setup-choices.yaml#/paths/~1countries'
+  /setup/employees/receivers:
+    get:
+      summary: Get a list of receiving employees
+      operationId: getReceivingEmployees
+      parameters:
+        - $ref: '#/parameters/employeeValue'
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Employee'
+      tags:
+        - employee setup
+
+  /setup/employees/for-media-plating:
+    get:
+      summary: Get a list of plating employees
+      operationId: getPlatingEmployees
+      parameters:
+        - $ref: '#/parameters/employeeValue'
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Employee'
+      tags:
+        - employee setup
+
+  /setup/employees/residents:
+    get:
+      summary: Get a list of residents
+      operationId: getResidents
+      parameters:
+        - $ref: '#/parameters/employeeValue'
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Employee'
+      tags:
+        - employee setup
+
+  /setup/employees/pathologists:
+    get:
+      summary: Get a list of pathologists
+      operationId: getPathologists
+      parameters:
+        - $ref: '#/parameters/employeeValue'
+        - $ref: '#/parameters/itemsCount'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Employee'
+      tags:
+        - employee setup
+
+
+  /setup/choices/setup/choices/countries:
+    get:
+      operationId: getCountries
+      summary: Get required countries
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/languages:
-    $ref: 'setup-choices.yaml#/paths/~1languages'
+    get:
+      operationId: getLanguages
+      summary: Get required languages
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/relation-to-insured:
-    $ref: 'setup-choices.yaml#/paths/~1relation-to-insured'
+    get:
+      operationId: getRelationshipsToInsured
+      summary: Get relationships to insured
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/relation-to-emergency:
-    $ref: 'setup-choices.yaml#/paths/~1relation-to-emergency'
+    get:
+      operationId: getRelationshipsToEmergency
+      summary: Get required relationships to emergency
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/maritals:
-    $ref: 'setup-choices.yaml#/paths/~1maritals'
+    get:
+      operationId: getMaritals
+      summary: Get required maritals
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/ethnicities:
-    $ref: 'setup-choices.yaml#/paths/~1ethnicities'
+    get:
+      operationId: getEthnicities
+      summary: Get required ethnicities
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/sex:
-    $ref: 'setup-choices.yaml#/paths/~1sex'
+    get:
+      operationId: getSex
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/races:
-    $ref: 'setup-choices.yaml#/paths/~1races'
+    get:
+      operationId: getRaces
+      summary: Get required races
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/species:
-    $ref: 'setup-choices.yaml#/paths/~1species'
+    get:
+      operationId: getSpecies
+      summary: Get required species
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/religions:
-    $ref: 'setup-choices.yaml#/paths/~1religions'
+    get:
+      operationId: getReligions
+      summary: Get required religions
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/patient-types:
-    $ref: 'setup-choices.yaml#/paths/~1patient-types'
+    get:
+      operationId: getPatientTypes
+      summary: Get required patient types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/admission-types:
-    $ref: 'setup-choices.yaml#/paths/~1admission-types'
+    get:
+      operationId: getAdmissionTypes
+      summary: Get required admission types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/draw-types:
-    $ref: 'setup-choices.yaml#/paths/~1draw-types'
+    get:
+      operationId: getDrawTypes
+      summary: Get required draw types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/proffesional-suffixes:
-    $ref: 'setup-choices.yaml#/paths/~1proffesional-suffixes'
+    get:
+      operationId: getProffesionalSuffixes
+      summary: Get required proffesional suffixes
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/counties:
-    $ref: 'setup-choices.yaml#/paths/~1counties'
+    get:
+      operationId: getCounties
+      summary: Get required counties
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/employments:
-    $ref: 'setup-choices.yaml#/paths/~1employments'
+    get:
+      operationId: getEmployments
+      summary: Get required employment types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/family-plans:
-    $ref: 'setup-choices.yaml#/paths/~1family-plans'
+    get:
+      operationId: getFamilyPlans
+      summary: Get active family plan types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
+
   /setup/choices/payments:
-    $ref: 'setup-choices.yaml#/paths/~1payments'
+    get:
+      operationId: getPayments
+      summary: Get active payment types
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Choice'
+      tags:
+        - choice
 
   /tsearch/single-test:
-    $ref: 'test-catalog-setup.yaml#/paths/~1single-test'
-  /tsearch/tests:
-    $ref: 'test-catalog-setup.yaml#/paths/~1tests'
+    get:
+      operationId: getTestSetupForCatalog
+      parameters:
+        - name: code
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/CatalogTestSetup'
+      tags:
+        - test catalog setup
 
-  /insurance/patient-insurances:
-    $ref: 'insurance.yaml#/paths/~1patient-insurances'
+  /tsearch/tests:
+    get:
+      operationId: getTestSetups
+      parameters:
+        - name: code
+          in: query
+          type: string
+          required: true
+        - name: type
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/TestSearchResult'
+      tags:
+        - test catalog setup
+
+
+  /insurance/patient-insurances/patient-insurances:
+    get:
+      operationId: getPatientInsurances
+      description: active insurances from Patient or Visit levels
+      parameters:
+        - name: mrn
+          description: patient mrn
+          in: query
+          type: string
+          required: true
+        - name: billing-number
+          description: visit billing number
+          in: query
+          type: string
+        - name: items-count
+          description: limits number of search results
+          type: string
+          in: query
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Insurance'
+      tags:
+        - insurance
+
 
   /medical-necessity:
-    $ref: 'medical-necessity.yaml#/paths/~1'
+    get:
+      operationId: readMedicalNecessity
+      parameters:
+        - name: order-number
+          type: string
+          in: query
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/MedicalNecessity'
+      tags:
+        - medical necessity
+
   /medical-necessity/calculate:
-    $ref: 'medical-necessity.yaml#/paths/~1calculate'
+    post:
+      operationId: calculateMedicalNecessity
+      parameters:
+        - name: medicalNecessity
+          in: body
+          schema:
+            $ref: '#/definitions/MedicalNecessity'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/MedicalNecessity'
+      tags:
+        - medical necessity
+
 
   /options/order-entry:
-    $ref: 'options.yaml#/paths/~1order-entry'
+    get:
+      operationId: getRequisitionOptions
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/RequisitionOptions'
+      tags:
+        - options
+
   /options/patient-maintenance:
-    $ref: 'options.yaml#/paths/~1patient-maintenance'
+    get:
+      operationId: getPatientMaintenanceOptions
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PatientMaintenanceOptions'
+      tags:
+        - options
+
 
   /orders:
-    $ref: 'orders.yaml#/paths/~1'
+    put:
+      summary: Save order
+      operationId: save
+      parameters:
+        - name: dtoOrder
+          in: body
+          schema:
+            $ref: '#/definitions/Case'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/OperationResult'
+      tags:
+        - orders
+
   /orders/preprocess:
-    $ref: 'orders.yaml#/paths/~1preprocess'
+    post:
+      summary: Preprocess order
+      operationId: preprocessOrder
+      parameters:
+        - name: dtoRequisition
+          in: body
+          schema:
+            $ref: '#/definitions/Case'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ProcessResult'
+      tags:
+        - orders
+
   /orders/{number}:
-    $ref: 'orders.yaml#/paths/~1{number}'
+    get:
+      summary: open order
+      operationId: openOrder
+      parameters:
+        - name: number
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ProcessResult'
+      tags:
+        - orders
+
   /orders/{number}/details:
-    $ref: 'orders.yaml#/paths/~1{number}~1details'
+    get:
+      summary: Get order detailed info
+      operationId: getOrderDetailedInfo
+      parameters:
+        - name: number
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/OrderDetailedInfo'
+      tags:
+        - orders
+
   /orders/{number}/move:
-    $ref: 'orders.yaml#/paths/~1{number}~1move'
+    post:
+      summary: Move order
+      operationId: orderMoveToVisit
+      parameters:
+        - name: number
+          in: path
+          type: string
+          required: true
+        - name: billing
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ResultOperation'
+      tags:
+        - orders
+
   /orders/redirect-tests:
-    $ref: 'orders.yaml#/paths/~1redirect-tests'
+    post:
+      summary: Redirect tests
+      operationId: redirectTests
+      parameters:
+        - name: testRedirectionOrder
+          in: body
+          schema:
+            $ref: '#/definitions/TestRedirectionOrder'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/TestRedirectionOrder'
+      tags:
+        - orders
+
 
   /patients:
-    $ref: 'patient.yaml#/paths/~1'
+    put:
+      summary: Save patient
+      operationId: savePatient
+      parameters:
+        - name: patientsToSave
+          in: body
+          schema:
+            $ref: '#/definitions/PatientInfo'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ProcessPatientResult'
+      tags:
+        - patient
+
   /patients/{mrn}:
-    $ref: 'patient.yaml#/paths/~1{mrn}'
+    get:
+      summary: Get patient info
+      operationId: getPatientInfo
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PatientInfo'
+      tags:
+        - patient
+
   /patients/{mrn}/orders:
-    $ref: 'patient.yaml#/paths/~1{mrn}~1orders'
-  /{mrn}/orders/per-visit:
-    $ref: 'patient.yaml#/paths/~1{mrn}~1orders~1per-visit'
-  /{mrn}/requisitions:
-    $ref: 'patient.yaml#/paths/~1{mrn}~1requisitions'
-  /{mrn}/requisitions/initiate:
-    $ref: 'patient.yaml#/paths/~1{mrn}~1requisitions~1initiate'
-  /{mrn}/visits:
-    $ref: 'patient.yaml#/paths/~1{mrn}~1visits'
-  /{mrn}/visits/available:
-    $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1available'
-  /{mrn}/visits/{billing}/move:
-    $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1{billing}~1move'
-  /{mrn}/visits/range:
-    $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1range'
-  /{mrn}/visits/count:
-    $ref: 'patient.yaml#/paths/~1{mrn}~1visits~1count'
+    get:
+      summary: Get patient orders
+      operationId: getPatientOrders
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ReleasedOrders'
+      tags:
+        - patient
+
+  /patients/{mrn}/orders/per-visit:
+    get:
+      summary: Get patient orders per visit
+      operationId: getOrdersInfo
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/VisitOrderInfo'
+      tags:
+        - patient
+
+  /patients/{mrn}/requisitions:
+    get:
+      summary: Get patient requisitions
+      operationId: getPatientRequisitions
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PatientRequisitions'
+      tags:
+        - patient
+
+  /patients/{mrn}/requisitions/initiate:
+    get:
+      summary: Initiate requisition
+      operationId: initiateRequisition
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Case'
+      tags:
+        - patient
+
+  /patients/{mrn}/visits:
+    get:
+      summary: Get all visits
+      operationId: getAllVisits
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/VisitBriefInfo'
+      tags:
+        - patient
+
+  /patients/{mrn}/visits/available:
+    get:
+      summary: Get available visits
+      operationId: getAvailableVisits
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/VisitBriefInfo'
+      tags:
+        - patient
+
+  /patients/{mrn}/visits/{billing}/move:
+    post:
+      summary: Get available visits
+      operationId: moveVisitToPatient
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+        - name: billing
+          in: path
+          type: string
+          required: true
+        - name: mrn
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: boolean
+      tags:
+        - patient
+
+  /patients/{mrn}/visits/range:
+    get:
+      summary: Get visits range
+      operationId: getVisitsRange
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+        - name: from
+          in: query
+          type: string
+          required: false
+        - name: count
+          in: query
+          type: string
+          required: false
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/VisitsBatch'
+      tags:
+        - patient
+
+  /patients/{mrn}/visits/count:
+    get:
+      summary: Get visits count
+      operationId: getVisitsCount
+      parameters:
+        - name: mrn
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: integer
+            format: int32
+      tags:
+        - patient
+
 
   /requisitions:
-    $ref: 'requisition.yaml#/paths/~1'
+    put:
+      summary: Save requisition
+      operationId: save
+      parameters:
+        - name: dtoRequisition
+          in: body
+          schema:
+            $ref: '#/definitions/Case'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ProcessResult'
+      tags:
+        - requisition
+
   /requisitions/preprocess:
-    $ref: 'requisition.yaml#/paths/~1preprocess'
+    post:
+      summary: preprocess requisition
+      operationId: preprocessRequisition
+      parameters:
+        - name: dtoRequisition
+          in: body
+          schema:
+            $ref: '#/definitions/Case'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ProcessResult'
+      tags:
+        - requisition
+
   /requisitions/release:
-    $ref: 'requisition.yaml#/paths/~1release'
+    put:
+      summary: release requisition
+      operationId: release
+      parameters:
+        - name: requisitionList
+          in: body
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Case'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/OperationResult'
+      tags:
+        - requisition
+
   /requisitions/merge:
-    $ref: 'requisition.yaml#/paths/~1merge'
+    post:
+      summary: merge requisition
+      operationId: mergeRequisitions
+      parameters:
+        - name: requisitionsParts
+          in: body
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RequisitionPart'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ProcessResult'
+      tags:
+        - requisition
+
   /requisitions/{number}/details:
-    $ref: 'requisition.yaml#/paths/~1{number}~1details'
+    get:
+      summary: get requisition detailed info
+      operationId: getRequisitionDetailedInfo
+      parameters:
+        - name: number
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/OrderDetailedInfo'
+      tags:
+        - requisition
+
 
   /search/pm:
-    $ref: 'search.yaml#/paths/~1pm'
+    get:
+      summary: search patient data
+      operationId: searchPatientData
+      parameters:
+        - name: search-criteria
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/SingleSearchResults'
+      tags:
+        - search
+
   /search/ord:
-    $ref: 'search.yaml#/paths/~1ord'
+    get:
+      summary: search patient order data
+      operationId: searchPatientOrderData
+      parameters:
+        - name: search-criteria
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/SingleSearchResults'
+      tags:
+        - search
+
   /search/advanced:
-    $ref: 'search.yaml#/paths/~1advanced'
+    get:
+      summary: search advanced patient order data
+      operationId: searchAdvancedPatientData
+      parameters:
+        - name: lastName
+          type: string
+          in: query
+        - name: firstName
+          type: string
+          in: query
+        - name: dob
+          type: string
+          in: query
+        - name: mrn
+          type: string
+          in: query
+        - name: ssn
+          type: string
+          in: query
+        - name: chartNumber
+          type: string
+          in: query
+        - name: orderNumber
+          type: string
+          in: query
+        - name: billingNumber
+          type: string
+          in: query
+        - name: clientCode
+          type: string
+          in: query
+        - name: externalPatId
+          type: string
+          in: query
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PatientData'
+      tags:
+        - search
+
 
   /visits/{billing}/header:
-    $ref: 'visits.yaml#/paths/~1{billing}~1header'
+    get:
+      summary: Get single visit header
+      operationId: getSingleVisitHeader
+      tags:
+        - visit
+      parameters:
+        - name: billing
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/VisitHeader'
+
   /visits/{billing}/merge:
-    $ref: 'visits.yaml#/paths/~1{billing}~1merge'
+    post:
+      summary: merge visits
+      operationId: mergeVisits
+      tags:
+        - visit
+      parameters:
+        - name: billing
+          in: path
+          type: string
+          required: true
+        - name: billing
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: boolean
 
   /user-defined-field/test-level:
-    $ref: 'user-defined-field.yaml#/paths/~1test-level'
+    get:
+      summary: read testLevel user defined field
+      operationId: readTestLevelUserDefinedField
+      tags:
+        - user defined field
+      parameters:
+        - name: testCodeVersions
+          in: query
+          required: true
+          type: array
+          items:
+            type: string
+        - name: promptTypes
+          in: query
+          required: true
+          type: array
+          items:
+            type: string
+        - name: ownerId
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: ownerType
+          in: query
+          required: false
+          type: string
+      #          enum: '#/definitions/UserDefinedFieldOwnerType'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/UserDefinedField'
+
 
   /user-defined-field-setup:
-    $ref: 'user-defined-field-setup.yaml#/paths/~1'
+    get:
+      summary: read testLevel user defined field
+      operationId: readUserDefinedFieldSetupByTest
+      tags:
+        - user defined field setup
+      parameters:
+        - name: testCodeVersions
+          in: query
+          required: true
+          type: array
+          items:
+            type: string
+        - name: promptTypes
+          in: query
+          required: true
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/UserDefinedFieldSetup'
 
   /validator/billing/is-available:
-    $ref: 'billing-validator.yaml#/paths/~1is-available'
+    get:
+      summary: is billing available
+      operationId: isAvailableBilling
+      tags:
+        - billing validator
+      parameters:
+        - name: billing
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: boolean
+
 
   /validator/mrn/is-available:
-    $ref: 'mrn-validator.yaml#/paths/~1is-available'
+    get:
+      summary: is mrn available
+      operationId: isAvailableMRN
+      tags:
+        - mrn validator
+      parameters:
+        - name: mrn
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: boolean
+
+x-common-columns:
+  recid:
+    title: record identifier
+    type: integer
+    format: int64
 
 definitions:
   AbnStatus:
@@ -276,7 +1639,7 @@ definitions:
     title: Antibiotic model
     properties:
       recid:
-        $ref: 'commons.yaml#/definitions/recid'
+        $ref: '#/x-common-columns/recid'
       code:
         type: string
       name:
@@ -296,7 +1659,7 @@ definitions:
     title: Base Entity model
     properties:
       recid:
-        $ref: 'commons.yaml#/definitions/recid'
+        $ref: '#/x-common-columns/recid'
       requisitionId:
         type: integer
         format: int64
@@ -900,7 +2263,7 @@ definitions:
     title:  Mic model
     properties:
       recid:
-        $ref: 'commons.yaml#/definitions/recid'
+        $ref: '#/x-common-columns/recid'
       comment:
         type: string
 
@@ -966,7 +2329,7 @@ definitions:
     title:  Quality model
     properties:
       recid:
-        $ref: 'commons.yaml#/definitions/recid'
+        $ref: '#/x-common-columns/recid'
       code:
         type: string
       isAbnModifier:
@@ -979,7 +2342,7 @@ definitions:
     title:  Note model
     properties:
       recid:
-        $ref: 'commons.yaml#/definitions/recid'
+        $ref: '#/x-common-columns/recid'
       text:
         title: Note's text
         type: string
@@ -2586,7 +3949,7 @@ definitions:
     title: User Defined Field model
     properties:
       recid:
-        $ref: 'commons.yaml#/definitions/recid'
+        $ref: '#/x-common-columns/recid'
       orderRecid:
         type: integer
         format: int64
@@ -2668,7 +4031,7 @@ definitions:
     title: User Defined Field setup model
     properties:
       recid:
-        $ref: 'commons.yaml#/definitions/recid'
+        $ref: '#/x-common-columns/recid'
       code:
         type: string
       refCode:
@@ -2736,7 +4099,7 @@ definitions:
     title: User Defined Field value model
     properties:
       recid:
-        $ref: 'commons.yaml#/definitions/recid'
+        $ref: '#/x-common-columns/recid'
       stringValue:
         type: string
       position:
@@ -2749,7 +4112,7 @@ definitions:
     title: Visit model
     properties:
       recid:
-        $ref: 'commons.yaml#/definitions/recid'
+        $ref: '#/x-common-columns/recid'
       admittedOn:
         type: string
         format: date-time

@@ -2,6 +2,11 @@
 order/Physician => Physician
 setup/Physician => PhysicianSetup
 
+TestDefinition => TestDefinitionSetup, TestDefinitionCatalog
+
+catalog.model.SpecimenSetup => CatalogSpecimenSetup
+requisiotion.Specimen => RequisitionSpecimen
+
 #2
 Dictionary(String id, String name) => constructor removed
 	
@@ -32,6 +37,7 @@ public Diagnosis[] testLevelDiagnoses = new Diagnosis[4]; => List<Diagnosis> , -
  
 #7
 OrderingKeypad<TSetup>
+#List<OrderingKeypad<TestDefinition>>
 
 #8
 Case
@@ -46,6 +52,14 @@ public Collection<Message> messages;
 
 OperationResult release(@RequestBody Case[] requisitionList);
 ProcessResult mergeRequisitions(@RequestBody RequisitionPart[] requisitionsParts);
+
+TestDefinitionCatalog
+   private Collection<TestSetupIdentifier> components;
+   private Collection<TestSetupIdentifier> partOfPanels;
+   private Collection<TestSetupIdentifier> sameOeCategoryTests;
+   private Collection<TestResultFieldSetup> resultFields;
+TestDefinitionCatalog
+   private Collection<TestSpecialCasesSetup> specialCases;
 
 #9
 TestStatus - enum with name-value-description
@@ -71,6 +85,11 @@ BillingValidator => BillingValidatorService
 #14
 Fix RestSpringFactory
 
+#15
+Check for model duplications in deff folders
 
+#16
+ResultRangeSetup
+private Map<RangeLinkType, List<String>> links; => Map<String, ...> 
 
 
