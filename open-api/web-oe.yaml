@@ -86,7 +86,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Clinic'
+              $ref: '#/definitions/SetupClinic'
       tags:
         - setup
 
@@ -106,7 +106,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Clinic'
+              $ref: '#/definitions/SetupClinic'
       tags:
         - setup
 
@@ -134,7 +134,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Clinic'
+              $ref: '#/definitions/SetupClinic'
       tags:
         - setup
 
@@ -163,7 +163,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/PhysicianSetup'
+              $ref: '#/definitions/SetupPhysician'
       tags:
         - setup
 
@@ -1761,15 +1761,15 @@ definitions:
       visit:
         $ref: '#/definitions/VisitBriefInfo'
       orderingClinic:
-        $ref: '#/definitions/Clinic'
+        $ref: '#/definitions/SetupClinic'
       orderingLocation:
         $ref: '#/definitions/Location'
       orderingPhysician:
-        $ref: '#/definitions/PhysicianSetup'
+        $ref: '#/definitions/SetupPhysician'
       reportToDoctors:
         type: array
         items:
-          $ref: '#/definitions/PhysicianSetup'
+          $ref: '#/definitions/SetupPhysician'
       auxNumber:
         type: string
       priority:
@@ -1785,7 +1785,7 @@ definitions:
       testList:
         type: array
         items:
-          $ref: '#/definitions/Test'
+          $ref: '#/definitions/RequisitionTest'
       specimenList:
         type: array
         items:
@@ -1994,7 +1994,7 @@ definitions:
         type: integer
         format: int64
 
-  Clinic:
+  SetupClinic:
     title: Clinic setup model
     properties:
       code:
@@ -2608,9 +2608,9 @@ definitions:
       orderStatus:
         type: string
       orderingClinic:
-        $ref: '#/definitions/Clinic'
+        $ref: '#/definitions/OrderClinic'
       orderingPhysicians:
-        $ref: '#/definitions/Physician'
+        $ref: '#/definitions/OrderPhysician'
       spesimenCollectedDateTime:
         type: string
         format: date-time
@@ -2624,7 +2624,7 @@ definitions:
       orderedTubes:
         type: array
         items:
-          $ref: '#/definitions/Tube'
+          $ref: '#/definitions/OrderTube'
       uncollected:
         type: boolean
 
@@ -2694,6 +2694,22 @@ definitions:
       priorityName:
         type: string
 
+  OrderClinic:
+    title: Order clinic model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
+  OrderPhysician:
+    title: Physician model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+
   OrderTest:
     title:  Order test model
     properties:
@@ -2701,6 +2717,16 @@ definitions:
         type: string
       isCancelled:
         type: boolean
+
+  OrderTube:
+    title: Tube model
+    properties:
+      recId:
+        type: string
+      type:
+        type: string
+      aliquoted:
+        type: string
 
   PatientAlert:
     title:  Patient Alert model
@@ -2977,36 +3003,6 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/RequisitionPart'
-
-  Physician:
-    title: Physician model
-    properties:
-      code:
-        type: string
-      name:
-        type: string
-
-  PhysicianSetup:
-    title: Physician setup model
-    properties:
-      id:
-        type: string
-      title:
-        $ref: '#/definitions/Dictionary'
-      upin:
-        type: string
-      npi:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      middleName:
-        type: string
-      active:
-        type: boolean
-      orderingKeypad:
-        type: string
 
   PolicyHolderInfo:
     title: Policy Holder Info model
@@ -3332,19 +3328,94 @@ definitions:
       CheckMedicalNecessity:
         type: boolean
 
-  ResultDeltaSetup:
-    title: ResulDelta setup model
-    x-codegen-accessors: true
-    properties:
-      deltaTime:
-        type: integer
-        format: int32
-      deltaUnit:
-        type: string
-      deltaRules:
-        type: array
-        items:
-          $ref: '#/definitions/DeltaRule'
+  RequisitionTube:
+    title: Tube model
+    allOf:
+      - $ref: '#/definitions/BaseEntity'
+      - type: "object"
+        properties:
+          caseIdentifier:
+            type: integer
+            format: int64
+          reqTubeId:
+            type: integer
+            format: int64
+          tubeType:
+            type: string
+          tubeName:
+            type: string
+          aliquotes:
+            type: array
+            items:
+              $ref: '#/definitions/RequisitionTube'
+          destinationDepId:
+            type: integer
+            format: int64
+          destinationDepCode:
+            type: string
+          currentDepCode:
+            type: string
+          requestingDepCode:
+            type: string
+          allRequestingDepCodes:
+            type: string
+          protocol:
+            type: string
+          plannedBy:
+            type: string
+          routingProtocol:
+            type: string
+          firstAction:
+            type: string
+          attachedTestsIds:
+            type: array
+            items:
+              type: integer
+              format: int64
+          qualities:
+            type: array
+            items:
+              $ref: '#/definitions/Quality'
+          comment:
+            type: string
+          instruction:
+            type: string
+          capacity:
+            type: number
+            format: double
+          temperature:
+            type: string
+          status:
+            type: string
+          receivedDate:
+            type: string
+            format: 'date-time'
+          receivedBy:
+            type: string
+          alqParentId:
+            type: string
+          alqIsPlanned:
+            type: string
+          lastActionCode:
+            type: string
+          isRecollect:
+            type: boolean
+          barcode:
+            type: string
+          isLabelPrinted:
+            type: boolean
+          unit:
+            type: string
+          externalNumber:
+            type: string
+          initialVolume:
+            type: number
+            format: double
+          collectionInstructions:
+            description: Collection instructions from all tests current tube
+            type: array
+            items:
+              $ref: '#/definitions/CodedEntity'
 
   RequisitionSpecimen:
     title: Requisition specimen model
@@ -3379,7 +3450,7 @@ definitions:
           tubeList:
             type: array
             items:
-              $ref: '#/definitions/Tube'
+              $ref: '#/definitions/RequisitionTube'
           drawType:
             type: string
           drawTypeName:
@@ -3407,6 +3478,20 @@ definitions:
             $ref: '#/definitions/CodedEntity'
           drawTypeData:
             $ref: '#/definitions/CodedEntity'
+
+  ResultDeltaSetup:
+    title: ResulDelta setup model
+    x-codegen-accessors: true
+    properties:
+      deltaTime:
+        type: integer
+        format: int32
+      deltaUnit:
+        type: string
+      deltaRules:
+        type: array
+        items:
+          $ref: '#/definitions/DeltaRule'
 
   ResulKeypad:
     title: ResulKeypad model
@@ -3592,6 +3677,28 @@ definitions:
         items:
           $ref: '#/definitions/BodySite'
 
+  SetupPhysician:
+    title: Physician setup model
+    properties:
+      id:
+        type: string
+      title:
+        $ref: '#/definitions/Dictionary'
+      upin:
+        type: string
+      npi:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      active:
+        type: boolean
+      orderingKeypad:
+        type: string
+
   SetupSpecimen:
     title: Setup specimen model
     properties:
@@ -3658,10 +3765,10 @@ definitions:
       collectionTimes:
         type: string
 
-  Test:
+  RequisitionTest:
     title: Test model
     allOf:
-      - $ref: '#/definitions/ProcessResult'
+      - $ref: '#/definitions/BaseEntity'
       - type: "object"
         properties:
           caseIdentifier:
@@ -3690,7 +3797,7 @@ definitions:
           components:
             type: array
             items:
-              $ref: '#/definitions/Test'
+              $ref: '#/definitions/RequisitionTest'
           parentOrderNumber:
             type: string
           isCancelled:
@@ -3704,11 +3811,11 @@ definitions:
           reportToDoctors:
             type: array
             items:
-              $ref: '#/definitions/PhysicianSetup'
+              $ref: '#/definitions/SetupPhysician'
           orderingDoctors:
             type: array
             items:
-              $ref: '#/definitions/PhysicianSetup'
+              $ref: '#/definitions/SetupPhysician'
           position:
             type: integer
             format: int64
@@ -3777,7 +3884,7 @@ definitions:
       testList:
         type: array
         items:
-          $ref: '#/definitions/Test'
+          $ref: '#/definitions/RequisitionTest'
       specimenList:
         type: array
         items:
@@ -3966,16 +4073,6 @@ definitions:
       - ICR
       - MICROBIOLOGY
       - MIC_PANEL
-
-  Tube:
-    title: Tube model
-    properties:
-      recId:
-        type: string
-      type:
-        type: string
-      aliquoted:
-        type: string
 
   TubeSetup:
     title: Tube setup model
@@ -4310,7 +4407,7 @@ definitions:
       billingNumber:
         type: string
       orderingPhysician:
-        $ref: '#/definitions/Physician'
+        $ref: '#/definitions/OrderPhysician'
       orderedDT:
         type: string
         format: date-time
