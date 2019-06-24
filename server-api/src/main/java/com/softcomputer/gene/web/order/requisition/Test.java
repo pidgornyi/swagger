@@ -15,7 +15,8 @@ public class Test extends BaseEntity{
     public TestType testType;
     public TestStatus testStatus;
     public Integer extensionNumber;
-    public Long performingDepId;
+    public String performingDepartmentCode;
+    public String performingWorkstationCode;
     public Long parentId;
     public List<Test> components;
     public String parentOrderNumber;
@@ -36,4 +37,6 @@ public class Test extends BaseEntity{
     public String cancelBy;
     public List<Indication> testLevelIndications;
     public List<Media> mediaList;
-    public List<Diagnosis> diagnoses;}
+    public List<Diagnosis> diagnoses;
+    public Long redirectionTest;
+}

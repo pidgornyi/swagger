@@ -12,6 +12,7 @@ public class UserDefinedField {
     public Long visitRecid;
     public UserDefinedFieldOwnerType ownerType;
     public Long ownerRecid;
+    public List<String> testCodeVersions;
     public List<UserDefinedFieldValue> fieldValues;
     public List<UserDefinedField> variations;
 }

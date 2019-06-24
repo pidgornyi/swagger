@@ -17,7 +17,7 @@ import java.util.List;
 public class ResulKeypad {
     public String code;
     public String name;
-    public List<ResulKeypadLevel> levelslevels;
+    public List<ResulKeypadLevel> levels;
 	public boolean activeWhenFocused;
     public boolean displayAsDropDown;
 }

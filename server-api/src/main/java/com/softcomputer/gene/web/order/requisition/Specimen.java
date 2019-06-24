@@ -21,6 +21,7 @@ public class Specimen extends BaseEntity {
     public String drawType;
     public String drawTypeName;
     public String labToCollect;
+    public String keypadCode;
     public String bodySite;
     public String bodySiteName;
     public Boolean isToBeCollectedDate;

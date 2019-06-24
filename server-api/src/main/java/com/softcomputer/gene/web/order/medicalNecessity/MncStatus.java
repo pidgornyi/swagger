@@ -6,7 +6,8 @@ public enum MncStatus {
     FAILED_FREQUENT("FF"),
     FAILED_STATUTORY("FS"),
     PASSED("P"),
-    PROBLEM("E");
+    PROBLEM("E"),
+    NOT_REQUIRED("N");
 
     private final String value;
 

@@ -26,6 +26,8 @@ tags:
     description: Medical Necessity Service
   - name: options
     description: Options Service
+  - name: security options
+    description: Security options Service
   - name: order
     description: Order Service
   - name: patient
@@ -999,6 +1001,35 @@ paths:
         - options
 
 
+  /options/security/order-entry:
+    get:
+      summary: Get order entry options
+      operationId: getOrderEntryOptions
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: string
+      tags:
+        - security options
+
+  /options/security/patient-maintenance:
+    get:
+      summary: Get patient maintenance options
+      operationId: getPatientMaintenanceOptions
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: string
+      tags:
+        - security options
+
+
   /orders:
     put:
       summary: Save order
@@ -1014,7 +1045,7 @@ paths:
           schema:
             $ref: '#/definitions/OperationResult'
       tags:
-        - orders
+        - order
 
   /orders/preprocess:
     post:
@@ -1031,7 +1062,7 @@ paths:
           schema:
             $ref: '#/definitions/ProcessResult'
       tags:
-        - orders
+        - order
 
   /orders/{number}:
     get:
@@ -1048,7 +1079,7 @@ paths:
           schema:
             $ref: '#/definitions/ProcessResult'
       tags:
-        - orders
+        - order
 
   /orders/{number}/details:
     get:
@@ -1065,7 +1096,7 @@ paths:
           schema:
             $ref: '#/definitions/OrderDetailedInfo'
       tags:
-        - orders
+        - order
 
   /orders/{number}/move:
     post:
@@ -1086,7 +1117,7 @@ paths:
           schema:
             $ref: '#/definitions/ResultOperation'
       tags:
-        - orders
+        - order
 
   /orders/redirect-tests:
     post:
@@ -1103,7 +1134,7 @@ paths:
           schema:
             $ref: '#/definitions/TestRedirectionOrder'
       tags:
-        - orders
+        - order
 
 
   /patients:
@@ -1828,6 +1859,16 @@ definitions:
         items:
           $ref: '#/definitions/MedicalNecessityItem'
 
+  CannedMessage:
+    title: Canned message model
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      plainText:
+        type: string
+
   CatalogSpecimenSetup:
     title: Specimen setup model
     x-codegen-accessors: true
@@ -1836,6 +1877,23 @@ definitions:
         type: string
       name:
         type: string
+
+  CannedMessageType:
+    type: string
+    enum:
+      - Visit Comment
+      - Patient Comment
+      - Insurance Comment
+      - Order Comment
+      - Clinical Info
+      - Tube Comment
+    x-enumNames:
+      - VisitComment
+      - PatientComment
+      - InsuranceComment
+      - OrderComment
+      - ClinicalInfo
+      - TubeComment
 
   CatalogTestDefinition:
     title: Catalog TestDefinition model
@@ -2597,6 +2655,14 @@ definitions:
               type: string
               $ref: '#/definitions/PrintItem'
 
+  OperationType:
+    type: string
+    enum:
+      - NONE
+      - UPDATE
+      - ADD
+      - DELETE
+
   OrderBriefInfo:
     title:  Order Brief Info model
     properties:
@@ -2729,6 +2795,22 @@ definitions:
       aliquoted:
         type: string
 
+  PanelItem:
+    title:  Panel item model
+    properties:
+      value:
+        type: string
+      displayValue:
+        type: string
+
+  PanelType:
+    type: string
+    enum:
+      - KB
+      - BP
+      - MIC
+      - ID
+
   PatientAlert:
     title:  Patient Alert model
     properties:
@@ -2745,6 +2827,41 @@ definitions:
         type: boolean
       text:
         type: string
+
+  PatientBriefInfo:
+    title:  Patient brief info model
+    properties:
+      id:
+        type: string
+      mrn:
+        type: string
+      ssn:
+        type: string
+      dateOfBirth:
+        type: string
+        format: date
+      age:
+        type: string
+      sex:
+        $ref: '#/definitions/Dictionary'
+      lastName:
+        type: string
+      firstName:
+        type: string
+      middleName:
+        type: string
+      chartNumber:
+        type: string
+      locationGroupName:
+        type: string
+      clientId:
+        type: string
+      eso:
+        $ref: '#/definitions/Dictionary'
+      isPrivate:
+        type: boolean
+      address:
+        $ref: '#/definitions/AddressInfo'
 
   PatientData:
     title:  Patient data model
@@ -2964,51 +3081,106 @@ definitions:
           isGlobal: true
       G_AE_DEF_EMPTYDOC:
         type: string
+        x-optionInfo:
+          valueType: string
+          isGlobal: true
       G_ALLOW_EDIT_MED_SERVICE:
         type: boolean
+        x-optionInfo:
+          isGlobal: true
       G_LOWERCASE_PAT:
         type: boolean
+        x-optionInfo:
+          type: boolean
       G_REQ_ATT_PHYS:
         type: boolean
+        x-optionInfo:
+          isGlobal: true
       G_PARTIAL_SSN:
         type: boolean
+        x-optionInfo:
+          type: boolean
       HCNTitle:
         type: boolean
+        x-optionInfo:
+          optionType: parameter
       EthnicityAsEthnicGroup:
         type: boolean
+        x-optionInfo:
+          optionType: parameter
       EnterNewMRN:
         type: boolean
+        x-optionInfo:
+          optionType: parameter
       Multiethnicity:
         type: boolean
+        x-optionInfo:
+          optionType: parameter
       EnterNewBillNum:
         type: boolean
+        x-optionInfo:
+          optionType: parameter
       CanEditChartNumber:
         type: boolean
+        x-optionInfo:
+          optionType: parameter
       CheckSumUsedInAcc:
         type: boolean
+        x-optionInfo:
+          optionType: parameter
+          isGlobal: true
       SSNMask:
         type: string
+        x-optionInfo:
+          valueType: string
+          optionType: parameter
       TimeFormatOnScreens:
         type: string
+        x-optionInfo:
+          valueType: string
+          optionType: parameter
       DateFormatOnScreens:
         type: string
+        x-optionInfo:
+          valueType: string
+          optionType: parameter
       AgeInDaysNum:
         type: integer
         format: int32
+        x-optionInfo:
+          valueType: number
+          optionType: parameter
       AgeInMonthsNum:
         type: integer
         format: int32
+        x-optionInfo:
+          valueType: number
+          optionType: parameter
       AgeInWeeksNum:
         type: integer
         format: int32
+        x-optionInfo:
+          valueType: number
+          optionType: parameter
       PhoneMask:
         type: string
+        x-optionInfo:
+          valueType: string
+          optionType: parameter
       StateMask:
         type: string
+        x-optionInfo:
+          valueType: string
+          optionType: parameter
       ProvinceTitle:
         type: boolean
+        x-optionInfo:
+          optionType: parameter
       ProvinceMask:
         type: string
+        x-optionInfo:
+          valueType: string
+          optionType: parameter
 
   PatientRequisitions:
     title: Patient Requisitions model
@@ -3141,6 +3313,19 @@ definitions:
       richComment:
         type: string
 
+  QualityType:
+    type: string
+    enum:
+      - T
+      - N
+      - Q
+      - M
+    x-enumNames:
+      - TubeQuality
+      - SpecimenQuality
+      - RequisitionQuality
+      - MediaQuality
+
   # It's used in ResultRangeSetup.links. For now swagger codegen doesn't support Map<Enum, ...> generation
   RangeLinkType:
     type: string
@@ -3267,6 +3452,52 @@ definitions:
         type: string
       name:
         type: string
+
+  ResulKeypadActionReflex:
+    title: Resul Keypad Action Reflex model
+    properties:
+      comment:
+        type: string
+      cannedMsg:
+        type: string
+
+  ResulKeypadActionReflexIsolate:
+    title: Resul Keypad Action Reflex model
+    properties:
+      organism:
+        type: string
+      comment:
+        type: string
+      quantitation:
+        type: string
+      workupCode:
+        type: string
+      workupName:
+        type: string
+      workupComment:
+        type: string
+      cannedMsg:
+        type: string
+      workupCannedMsg:
+        type: string
+      quantCannedMsg:
+        type: string
+      KbPanels:
+        type: array
+        items:
+          $ref: '#/definitions/PanelItem'
+      BpPanels:
+        type: array
+        items:
+          $ref: '#/definitions/PanelItem'
+      MicPanels:
+        type: array
+        items:
+          $ref: '#/definitions/PanelItem'
+      IdPanels:
+        type: array
+        items:
+          $ref: '#/definitions/PanelItem'
 
   RecipientType:
     type: string

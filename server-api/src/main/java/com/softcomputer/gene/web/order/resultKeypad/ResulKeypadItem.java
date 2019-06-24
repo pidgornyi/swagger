@@ -21,4 +21,5 @@ public class ResulKeypadItem {
     public boolean addKeyText;
     public String separator;
     public String separatorManual;
+    public String nextKeypadCode;
 }

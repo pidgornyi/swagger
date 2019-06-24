@@ -68,6 +68,7 @@ public class TestDefinition
    private String referenceLabFee;
    private String hospitalCharge;
    private String mnemonic;
+   private List<String> workstations;
 
    public String getCode()
    {
@@ -567,5 +568,15 @@ public class TestDefinition
    public void setMnemonic(String mnemonic)
    {
       this.mnemonic = mnemonic;
+   }
+
+   public List<String> getWorkstations()
+   {
+      return workstations;
+   }
+
+   public void setWorkstations(List<String> workstations)
+   {
+      this.workstations = workstations;
    }
 }

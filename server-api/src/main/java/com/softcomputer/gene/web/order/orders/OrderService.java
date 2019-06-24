@@ -13,6 +13,8 @@ package com.softcomputer.gene.web.order.orders;
 import com.softcomputer.gene.web.order.requisition.Case;
 import com.softcomputer.gene.web.order.requisition.OperationResult;
 import com.softcomputer.gene.web.order.requisition.ProcessResult;
+import com.softcomputer.gene.web.order.requisition.testRedirection.Order;
+import com.softcomputer.gene.web.order.requisition.testRedirection.TestRedirectionData;
 import com.softcomputer.gene.web.order.visit.ResultOperation;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,8 @@ public interface OrderService {
     ResultOperation orderMoveToVisit(@PathVariable("number") String number,
                                      @RequestParam(value = "billing") String billingNumber);
 
+    @RequestMapping(value = "/redirect-tests", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    com.softcomputer.gene.web.order.requisition.testRedirection.Order redirectTests(@RequestBody com.softcomputer.gene.web.order.requisition.testRedirection.Order testRedirectionOrder);
 }
 
 

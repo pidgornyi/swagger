@@ -22,6 +22,9 @@ public class PatientMaintenanceOptions {
     @OptionInfo(code = "G_OE_PAT_SEC_ID", valueType = ValueType.Boolean, optionType = OptionType.Option)
     public boolean G_OE_PAT_SEC_ID;
 
+    @OptionInfo(code = "G_OE_PAT_CLIENT", valueType = ValueType.Boolean, optionType = OptionType.Option)
+    public boolean G_OE_PAT_CLIENT;
+
     @OptionInfo(code = "G_OE_SRCH_PAT_EXT_ID", valueType = ValueType.Boolean, optionType = OptionType.Option)
     public boolean G_OE_SRCH_PAT_EXT_ID;
 

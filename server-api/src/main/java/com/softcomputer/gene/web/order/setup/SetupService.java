@@ -21,10 +21,7 @@ import com.softcomputer.gene.web.order.resultKeypad.ResulKeypad;
 import com.softcomputer.gene.web.order.setup.model.*;
 import com.softcomputer.gene.web.order.setup.model.callrequest.Recipient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.softcomputer.wbc.util.http.CacheControl;
 
@@ -228,4 +225,10 @@ public interface SetupService {
      */
     @RequestMapping(value = "/insurance-groups", method = RequestMethod.GET)
     List<InsuranceGroup> getInsuranceGroups();
+
+    @RequestMapping(value = "departments/redirection", method = RequestMethod.POST)
+    List<Department> getDepartmentsByTestCodeVersions(@RequestBody TestCodeVersionWithStatus[] testCodeVersionsAndStatus);
+
+    @RequestMapping(value = "workstations/redirection", method = RequestMethod.POST)
+    List<Workstation> getWorkstationsByTestCodeVersions(@RequestBody TestCodeVersionWithStatus[] testCodeVersionsAndStatus);
 }
