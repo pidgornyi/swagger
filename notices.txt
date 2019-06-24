@@ -104,13 +104,13 @@ BillingValidator => BillingValidatorService
 #14
 Fix RestSpringFactory
 
-#15
-Check for model duplications in deff folders
+	#15 -done
+	Check for model duplications in deff folders
 
 
 #16
 ResultRangeSetup
 private Map<RangeLinkType, List<String>> links; => Map<String, ...> 
 
-#17
-check for BaseEntity extended
+	#17 - done
+	check for BaseEntity extended
