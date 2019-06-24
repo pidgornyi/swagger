@@ -4,6 +4,9 @@
 public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
 
   {{#vars}}
+  {{#vendorExtensions.x-optionInfo}}
+  @OptionInfo(code = "{{{code}}}", valueType = {{{valueTypeEnum}}}, optionType = {{{optionTypeEnum}}}{{#CustomSetter}}, CustomSetter = {{.}}{{/CustomSetter}}{{#isGlobal}}, isGlobal = {{{isGlobal}}}{{/isGlobal}})
+  {{/vendorExtensions.x-optionInfo}}
   {{#isContainer}}
   {{#vendorExtensions.x-codegen-accessors}}private{{/vendorExtensions.x-codegen-accessors}}{{^vendorExtensions.x-codegen-accessors}}public{{/vendorExtensions.x-codegen-accessors}} {{{datatypeWithEnum}}} {{name}}{{#required}} = {{{defaultValue}}}{{/required}}{{^required}} = null{{/required}};
   {{/isContainer}}

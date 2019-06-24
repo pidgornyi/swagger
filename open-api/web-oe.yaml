@@ -64,7 +64,6 @@ parameters:
     description: employee code, firstName or lastName
     type: string
     in: query
-    
 
 
 paths:
@@ -1625,13 +1624,6 @@ paths:
             type: boolean
 
 
-x-common-columns:
-  recid:
-    title: record identifier
-    type: integer
-    format: int64
-
-
 definitions:
   AbnStatus:
     type: string
@@ -1680,7 +1672,9 @@ definitions:
     title: Antibiotic model
     properties:
       recid:
-        $ref: '#/x-common-columns/recid'
+        title: record identifier
+        type: integer
+        format: int64
       code:
         type: string
       name:
@@ -1700,7 +1694,9 @@ definitions:
     title: Base Entity model
     properties:
       recid:
-        $ref: '#/x-common-columns/recid'
+        title: record identifier
+        type: integer
+        format: int64
       requisitionId:
         type: integer
         format: int64
@@ -2455,7 +2451,9 @@ definitions:
     title:  Mic model
     properties:
       recid:
-        $ref: '#/x-common-columns/recid'
+        title: record identifier
+        type: integer
+        format: int64
       comment:
         type: string
 
@@ -2521,7 +2519,9 @@ definitions:
     title:  Quality model
     properties:
       recid:
-        $ref: '#/x-common-columns/recid'
+        title: record identifier
+        type: integer
+        format: int64
       code:
         type: string
       isAbnModifier:
@@ -2534,7 +2534,9 @@ definitions:
     title:  Note model
     properties:
       recid:
-        $ref: '#/x-common-columns/recid'
+        title: record identifier
+        type: integer
+        format: int64
       text:
         title: Note's text
         type: string
@@ -2926,27 +2928,40 @@ definitions:
     properties:
       G_DOB_HOUR_MIN:
         type: boolean
-        x-codegen-option-info:
+        x-optionInfo:
           valueType: boolean
-          optionType: option
-          customSetter: MicroSourceGroupRuleSetter.class
-          isGlobal: true
       G_OE_PAT_SEC_ID:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_OE_PAT_CLIENT:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_OE_SRCH_PAT_EXT_ID:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_PRE_MRN:
         type: string
+        x-optionInfo:
+          valueType: string
       G_REQ_PAT_NAME:
         type: string
+        x-optionInfo:
+          valueType: string
       G_DOB_REQ:
         type: string
+        x-optionInfo:
+          valueType: string
       G_PRE_BILLING:
         type: string
+        x-optionInfo:
+          valueType: string
       G_REQ_ADM_PHYS:
         type: boolean
+        x-optionInfo:
+          isGlobal: true
       G_AE_DEF_EMPTYDOC:
         type: string
       G_ALLOW_EDIT_MED_SERVICE:
@@ -3126,6 +3141,7 @@ definitions:
       richComment:
         type: string
 
+  # It's used in ResultRangeSetup.links. For now swagger codegen doesn't support Map<Enum, ...> generation
   RangeLinkType:
     type: string
     enum:
@@ -3280,52 +3296,105 @@ definitions:
     properties:
       G_REQ_REQ_DR:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_DEF_REQ_DR:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_NOT_UPD_ORD_DOC:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_TEST_ORDDR_UPD:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_DEF_COLBY:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_DEF_RECBY:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_VALID_COLBY:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_DEF_COLDT:
         type: string
+        x-optionInfo:
+          valueType: string
       G_DEF_RECDT:
         type: string
+        x-optionInfo:
+          valueType: string
       DateFormatOnScreens:
         type: string
+        x-optionInfo:
+          valueType: string
+          optionType: parameter
       TimeFormatOnScreens:
         type: string
+        x-optionInfo:
+          valueType: string
+          optionType: parameter
       G_DEF_COL_EXPECT:
         type: array
         items:
           $ref: '#/definitions/SpecimenCollectionScheduleOption'
+        x-optionInfo:
+          valueType: custom
+          optionType: custom
+          CustomSetter: SpecimenCollectionScheduleOptionsSetter.class
       G_AUTO_SPEC_LAB:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_AUTO_MLABEL_SHOW_DLG_OE:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_DONT_CANCEL_RFLX:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_VAL_PLATE_BY:
         type: string
+        x-optionInfo:
+          valueType: string
       G_DEF_PLATETECH:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_DEF_PLATEDATE:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_DEF_PLATETIME:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_AE_FILTER_NON_ACCEPTABLE:
         type: boolean
+        x-optionInfo:
+          valueType: boolean
       G_AE_SOURCE_MIC:
         type: string
+        x-optionInfo:
+          valueType: custom
+          optionType: custom
+          CustomSetter: MicroSourceGroupRuleSetter.class
       UsedWordInsteadOfDuplicate:
         type: string
+        x-optionInfo:
+          valueType: string
+          optionType: parameter
       CheckMedicalNecessity:
         type: boolean
+        x-optionInfo:
+          optionType: parameter
 
   RequisitionTest:
     title: Test model
@@ -3344,8 +3413,8 @@ definitions:
             type: string
           testType:
             $ref: '#/definitions/TestType'
-          #      testStatus:
-          #        $ref: '#/definitions/TestStatus'
+          testStatus:
+            $ref: '#/definitions/TestStatus'
           extensionNumber:
             type: integer
             format: int32
@@ -3862,8 +3931,8 @@ definitions:
     properties:
       testCodeVersion:
         type: string
-#      testStatus:
-#        $ref: '#/definitions/TestStatus' #TestStatus enum
+      testStatus:
+        $ref: '#/definitions/TestStatus' #TestStatus enum
 
   TestRedirectionData:
     title: Test redirection data model
@@ -4023,6 +4092,84 @@ definitions:
         type: integer
         format: int64
 
+  TestStatus:
+    type: string
+    enum:
+      - N
+      - I
+      - Y
+      - C
+      - E
+      - R
+      - H
+      - F
+#      - I
+      - S
+      - A
+      - V
+      - J
+      - K
+      - Q
+      - W
+      - L
+      - M
+      - D
+      - Z
+      - O
+      - B
+      - X
+      - P
+    x-enumNames:
+      - NEW
+      - IN_PROCESS
+      - IN_PROCESS_REV
+      - COMPLETED
+      - RESULTED
+      - CANCELLED
+      - HOLD
+      - SIGNOUT
+#      - INCOMPLETED
+      - SENDOUT
+      - PENDING_FOR_SECOND_ANALYSIS
+      - PENDING_FOR_ANALYSISREVIEW
+      - PENDING_FOR_INTERPRETATION
+      - PENDING_FOR_INTERPRETATIONREVIEW
+      - PENDING_FOR_QA
+      - PENDING_FOR_SIGNOUT
+      - INTERPRETATION_IN_PROCESS
+      - PROCESS_AND_HOLD
+      - REPORT_DEACTIVATED
+      - REPORT_RELEASEHOLD
+      - COLLECTED
+      - IN_LAB
+      - DUPLICATE
+      - MIC_LAB_VERIFIED
+    x-enumDescription:
+      - New
+      - In Process
+      - In Process
+      - Completed
+      - Resulted
+      - Canceled
+      - Hold
+      - Report Signed out
+#      - In Process
+      - Sent Out
+      - Pending for Second Analysis
+      - Pending for Analysis Review
+      - Pending for Interpretation
+      - Pending for Interpretation Review
+      - Pending for QA
+      - Pending for Sign Out
+      - Interpretation in Process
+      - Process & Hold
+      - Report Deactivated
+      - Report Release Hold
+      - Collected
+      - In-Lab
+      - Duplicate
+      - Completed
+
   TestTubeAttach:
     title: Test tube attach model
     properties:
@@ -4111,7 +4258,9 @@ definitions:
     title: User Defined Field model
     properties:
       recid:
-        $ref: '#/x-common-columns/recid'
+        title: record identifier
+        type: integer
+        format: int64
       orderRecid:
         type: integer
         format: int64
@@ -4197,7 +4346,9 @@ definitions:
     title: User Defined Field setup model
     properties:
       recid:
-        $ref: '#/x-common-columns/recid'
+        title: record identifier
+        type: integer
+        format: int64
       code:
         type: string
       refCode:
@@ -4265,7 +4416,9 @@ definitions:
     title: User Defined Field value model
     properties:
       recid:
-        $ref: '#/x-common-columns/recid'
+        title: record identifier
+        type: integer
+        format: int64
       stringValue:
         type: string
       position:
@@ -4278,7 +4431,9 @@ definitions:
     title: Visit model
     properties:
       recid:
-        $ref: '#/x-common-columns/recid'
+        title: record identifier
+        type: integer
+        format: int64
       admittedOn:
         type: string
         format: date-time

@@ -10,13 +10,13 @@ import io.swagger.models.Tag;
 import io.swagger.models.parameters.BodyParameter;
 import io.swagger.models.parameters.FormParameter;
 import io.swagger.models.parameters.Parameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenConfig {
+  protected static final Logger LOGGER = LoggerFactory.getLogger(JavaGeneGenerator.class);
 //  public static final String CONFIG_PACKAGE = "configPackage";
   public static final String BASE_PACKAGE = "basePackage";
   public static final String SINGLE_CONTENT_TYPES = "singleContentTypes";
@@ -26,6 +26,7 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
   public static final String PRODUCT_VERSION = "productVersion";
   public static final String BUILD_FINAL_NAME = "buildFinalName";
   public static final String CODEGEN_ACCESSORS = "x-codegen-accessors";
+  public static final String CODEGEN_OPTION_INFO = "x-optionInfo";
 
 //  private String configPackage = "com.softcomputer.gene.web.api.configuration";
   private String basePackage = "com.softcomputer.gene.web.api";
@@ -139,6 +140,9 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     }
 
     importMapping.put("CacheControl", "com.softcomputer.wbc.util.http.CacheControl");
+    importMapping.put("OptionInfo", "com.softcomputer.wbc.security.options.OptionInfo");
+    importMapping.put("OptionType", "com.softcomputer.wbc.security.options.OptionType");
+    importMapping.put("ValueType", "com.softcomputer.wbc.security.options.ValueType");
   }
 
   public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
@@ -147,6 +151,28 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
 
     if (model.vendorExtensions.containsKey(CODEGEN_ACCESSORS)) {
       property.vendorExtensions.putIfAbsent(CODEGEN_ACCESSORS, model.vendorExtensions.containsKey(CODEGEN_ACCESSORS));
+    }
+    if (property.vendorExtensions.containsKey(CODEGEN_OPTION_INFO)) {
+      model.imports.add("OptionInfo");
+      model.imports.add("OptionType");
+      model.imports.add("ValueType");
+
+      Map<String, Object> optionInfo = (Map<String, Object>) property.vendorExtensions.get(CODEGEN_OPTION_INFO);
+      optionInfo.putIfAbsent("code", property.name);
+
+      String optionType  = initialCaps((String)optionInfo.getOrDefault("optionType", "Option"));
+      if ( Arrays.asList("Option", "Parameter", "Custom").contains(optionType) ) {
+        optionInfo.put("optionTypeEnum", "OptionType." + optionType);
+      } else {
+        LOGGER.error("WRONG OptionInfo optionType: " + optionType);
+      }
+
+      String valueType  = initialCaps((String)optionInfo.getOrDefault("valueType", "Boolean"));
+      if ( Arrays.asList("String", "Number", "Boolean", "Custom").contains(valueType) ) {
+        optionInfo.put("valueTypeEnum", "ValueType." + valueType);
+      } else {
+        LOGGER.error("WRONG OptionInfo valueType: " + valueType);
+      }
     }
   }
 
@@ -329,9 +355,15 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
         int index = 0;
         for (Map<String, String> enumVar : enumVars) {
           if(cm.vendorExtensions.containsKey("x-enumNames")) {
-            Object enumName = ((List)cm.vendorExtensions.get("x-enumNames")).get(index++);
+            Object enumName = ((List)cm.vendorExtensions.get("x-enumNames")).get(index);
             enumVar.put("x-enumName", (String)enumName);
           }
+          if(cm.vendorExtensions.containsKey("x-enumDescription")) {
+            Object description = ((List)cm.vendorExtensions.get("x-enumDescription")).get(index);
+            enumVar.put("x-enumDescription", toEnumValue(description.toString(), "string"));
+            cm.vendorExtensions.put("hasDescription", true);
+          }
+          index++;
         }
       }
     }

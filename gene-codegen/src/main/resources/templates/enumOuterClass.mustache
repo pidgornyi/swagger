@@ -3,18 +3,26 @@
  */
 public enum {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}} {
   {{#allowableValues}}{{#enumVars}}
-  {{#x-enumName}}{{{x-enumName}}}{{/x-enumName}}{{^x-enumName}}{{{name}}}{{/x-enumName}}({{{value}}}){{^-last}},
+  {{#x-enumName}}{{{x-enumName}}}{{/x-enumName}}{{^x-enumName}}{{{name}}}{{/x-enumName}}({{{value}}}{{#x-enumDescription}}, {{{.}}}{{/x-enumDescription}}){{^-last}},
   {{/-last}}{{#-last}};{{/-last}}{{/enumVars}}{{/allowableValues}}
 
-  private {{{dataType}}} value;
+  private {{{dataType}}} value;{{#vendorExtensions.hasDescription}}
+  private String description;{{/vendorExtensions.hasDescription}}
 
-  {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}}({{{dataType}}} value) {
-    this.value = value;
+  {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}}({{{dataType}}} value{{#vendorExtensions.hasDescription}}, String description{{/vendorExtensions.hasDescription}}) {
+    this.value = value;{{#vendorExtensions.hasDescription}}
+    this.description = description;{{/vendorExtensions.hasDescription}}
   }
 
   public String toString() {
     return String.valueOf(value);
   }
+  {{#vendorExtensions.hasDescription}}
+
+  public String getDescription() {
+    return description;
+  }
+  {{/vendorExtensions.hasDescription}}
 
   public static {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}} fromValue(String text) {
     for ({{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}} b : {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}}.values()) {
