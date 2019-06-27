@@ -3,6 +3,9 @@ info:
   version: 4.1.12-02-SNAPSHOT
   title: LIS Web OE Api
   description: "Contracts for WEB OE rest services"
+  x-logo:
+    url: https://www.softcomputer.com/common/images/SCC_logo_.png
+    href: ./app
 host: "lv3.isd.dp.ua:7701"
 basePath: "/gcm/web/app/oe"
 produces:
@@ -10,6 +13,12 @@ produces:
 
 
 tags:
+  - name: order
+    description: Order Service
+  - name: patient
+    description: Patients Service
+  - name: requisition
+    description: Requisition Service
   - name: setup
     description: Setup  service
     x-cache-control: 300
@@ -20,6 +29,7 @@ tags:
     x-cache-control: 86400
   - name: test catalog setup
     description: Test catalog setup services
+    x-codegen-bean-name: WOE.TestCatalogSetupService
   - name: insurance
     description: Insurance services
   - name: medical necessity
@@ -28,20 +38,16 @@ tags:
     description: Options Service
   - name: security options
     description: Security options Service
-  - name: order
-    description: Order Service
-  - name: patient
-    description: Patients Service
   - name: visit
     description: Visit Service
-  - name: requisition
-    description: Requisition Service
   - name: search
     description: Search Service
   - name: user defined field
     description: User defined field Service
+    x-codegen-bean-name: WOE.UserDefinedFieldService
   - name: user defined field setup
     description: User defined field setup Service
+    x-codegen-bean-name: WOE.UserDefinedFieldSetupService
   - name: billing validator
     description: Billing validator service
   - name: mrn validator
@@ -396,7 +402,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/SetupTestDefinition' #List<OrderingKeypad<TestDefinition>>
+              $ref: '#/definitions/OrderingKeypadTestDefinition'
       tags:
         - setup
 
@@ -419,7 +425,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/SetupSpecimen' #List<OrderingKeypad<Specimen>>
+              $ref: '#/definitions/OrderingKeypadSpecimen'
       tags:
         - setup
 
@@ -1078,6 +1084,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/ProcessResult'
+          x-codegen-response-entity: true
       tags:
         - order
 
@@ -1168,6 +1175,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/PatientInfo'
+          x-codegen-response-entity: true
       tags:
         - patient
 
@@ -1236,6 +1244,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/Case'
+          x-codegen-response-entity: true
       tags:
         - patient
 
@@ -2761,6 +2770,52 @@ definitions:
       priorityName:
         type: string
 
+  OrderingKeypad:
+    title: Ordering keypad model
+    properties:
+      name:
+        type: string
+      setup:
+        type: object
+      position:
+        type: integer
+        format:
+          int64
+      hotkey:
+        type: string
+      orderable:
+        type: boolean
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/OrderingKeypad'
+
+  OrderingKeypadTestDefinition:
+    title: Ordering keypad Test definition model
+    allOf:
+      - $ref: '#/definitions/OrderingKeypad'
+      - type: "object"
+        properties:
+          setup:
+            $ref: '#/definitions/SetupTestDefinition'
+          items:
+            type: array
+            items:
+              $ref: '#/definitions/SetupTestDefinition'
+
+  OrderingKeypadSpecimen:
+    title: Ordering keypad specimen model
+    allOf:
+      - $ref: '#/definitions/OrderingKeypad'
+      - type: "object"
+        properties:
+          setup:
+            $ref: '#/definitions/SetupSpecimen'
+          items:
+            type: array
+            items:
+              $ref: '#/definitions/SetupSpecimen'
+
   OrderClinic:
     title: Order clinic model
     properties:
@@ -3578,7 +3633,7 @@ definitions:
         x-optionInfo:
           valueType: custom
           optionType: custom
-          CustomSetter: SpecimenCollectionScheduleOptionsSetter.class
+          CustomSetter: com.softcomputer.gene.web.oe.model.SpecimenCollectionScheduleOptionsSetter.class
       G_AUTO_SPEC_LAB:
         type: boolean
         x-optionInfo:
@@ -3616,7 +3671,7 @@ definitions:
         x-optionInfo:
           valueType: custom
           optionType: custom
-          CustomSetter: MicroSourceGroupRuleSetter.class
+          CustomSetter: com.softcomputer.gene.web.oe.model.MicroSourceGroupRuleSetter.class
       UsedWordInsteadOfDuplicate:
         type: string
         x-optionInfo:

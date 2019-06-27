@@ -2,39 +2,27 @@ package com.softcomputer.gene.codegen;
 
 import io.swagger.codegen.*;
 import io.swagger.codegen.languages.AbstractJavaCodegen;
-import io.swagger.codegen.languages.SpringCodegen;
-import io.swagger.models.Operation;
-import io.swagger.models.Path;
-import io.swagger.models.Swagger;
 import io.swagger.models.Tag;
-import io.swagger.models.parameters.BodyParameter;
-import io.swagger.models.parameters.FormParameter;
-import io.swagger.models.parameters.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.*;
 
 public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenConfig {
-  protected static final Logger LOGGER = LoggerFactory.getLogger(JavaGeneGenerator.class);
-//  public static final String CONFIG_PACKAGE = "configPackage";
+  public static final Logger LOGGER = LoggerFactory.getLogger(JavaGeneGenerator.class);
   public static final String BASE_PACKAGE = "basePackage";
+  public static final String FACTORY_PACKAGE = "factoryPackage";
   public static final String SINGLE_CONTENT_TYPES = "singleContentTypes";
-  public static final String ARTIFACT_NAME = "artifactName";
-  public static final String WBC_VERSION = "wbcVersion";
-  public static final String WGCM_VERSION = "wgcmVersion";
-  public static final String PRODUCT_VERSION = "productVersion";
-  public static final String BUILD_FINAL_NAME = "buildFinalName";
   public static final String CODEGEN_ACCESSORS = "x-codegen-accessors";
   public static final String CODEGEN_OPTION_INFO = "x-optionInfo";
+  public static final String CODEGEN_CACHE_CONTROL = "x-cache-control";
+  public static final String CODEGEN_BEAN_NAME = "x-codegen-bean-name";
+  public static final String CODEGEN_ENUM_NAMES = "x-enumNames";
+  public static final String CODEGEN_ENUM_DESCRIPTIONS = "x-enumDescription";
 
-//  private String configPackage = "com.softcomputer.gene.web.api.configuration";
   private String basePackage = "com.softcomputer.gene.web.api";
-  private String artifactName = "REST API";
-  private String buildFinalName = "web-rest-api";
-  private String wbcVersion = null;
-  private String wgcmVersion = null;
-  private String productVersion = null;
+  private String factoryPackage = "com.softcomputer.gene.web";
   private boolean singleContentTypes = true;
 
 
@@ -61,21 +49,14 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     this.artifactId = "api";
     this.artifactDescription = "Contracts for WEB rest services";
 
-//    additionalProperties.put(CONFIG_PACKAGE, configPackage);
     additionalProperties.put(BASE_PACKAGE, basePackage);
-//    this.additionalProperties.put("jackson", "true");
-
-    reservedWords.remove("case"); // Case model is the key entity in the api
+    additionalProperties.put(FACTORY_PACKAGE, factoryPackage);
 
     setDateLibrary("joda");
 
-//    cliOptions.add(new CliOption(CONFIG_PACKAGE, "configuration package for generated code"));
-    cliOptions.add(new CliOption(BASE_PACKAGE, "base package (invokerPackage) for generated code"));
-    cliOptions.add(new CliOption(ARTIFACT_NAME, "Artifact name in generated pom.xml"));
-    cliOptions.add(new CliOption(WBC_VERSION, "WBC version in generated pom.xml"));
-    cliOptions.add(new CliOption(WGCM_VERSION, "WGCM version in generated pom.xml"));
-    cliOptions.add(new CliOption(PRODUCT_VERSION, "product version in generated pom.xml"));
-    cliOptions.add(new CliOption(BUILD_FINAL_NAME, "project.build.finalName in generated pom.xml"));
+    reservedWords.remove("case"); // Case model is the key entity in the api
+
+    cliOptions.add(new CliOption(FACTORY_PACKAGE, "configuration factory package for generated Spring factory "));
     cliOptions.add(CliOption.newBoolean(SINGLE_CONTENT_TYPES, "Whether to select only one produces/consumes content-type by operation."));
   }
 
@@ -92,45 +73,12 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     this.apiDocTemplateFiles.clear();
     this.apiTestTemplateFiles.clear();
 
-    SupportingFile pom = new SupportingFile("pom.mustache", "", "pom.xml");
-    this.supportingFiles.add(pom);
-
-//    if (additionalProperties.containsKey(CONFIG_PACKAGE)) {
-//      this.setConfigPackage((String) additionalProperties.get(CONFIG_PACKAGE));
-//    }
-
     if (additionalProperties.containsKey(BASE_PACKAGE)) {
       this.setBasePackage((String) additionalProperties.get(BASE_PACKAGE));
     }
 
-    if (this.additionalProperties.containsKey(ARTIFACT_NAME)) {
-      this.setArtifactName((String)this.additionalProperties.get(ARTIFACT_NAME));
-    } else {
-      this.additionalProperties.put(ARTIFACT_NAME, this.artifactName);
-    }
-
-    if (this.additionalProperties.containsKey(WBC_VERSION)) {
-      this.setWbcVersion((String)this.additionalProperties.get(WBC_VERSION));
-    } else {
-      this.additionalProperties.put(WBC_VERSION, this.wbcVersion);
-    }
-
-    if (this.additionalProperties.containsKey(WGCM_VERSION)) {
-      this.setWgcmVersion((String)this.additionalProperties.get(WGCM_VERSION));
-    } else {
-      this.additionalProperties.put(WGCM_VERSION, this.wgcmVersion);
-    }
-
-    if (this.additionalProperties.containsKey(PRODUCT_VERSION)) {
-      this.setProductVersion((String)this.additionalProperties.get(PRODUCT_VERSION));
-    } else {
-      this.additionalProperties.put(PRODUCT_VERSION, this.productVersion);
-    }
-
-    if (this.additionalProperties.containsKey(BUILD_FINAL_NAME)) {
-      this.setBuildFinalName((String)this.additionalProperties.get(BUILD_FINAL_NAME));
-    } else {
-      this.additionalProperties.put(BUILD_FINAL_NAME, this.buildFinalName);
+    if (additionalProperties.containsKey(FACTORY_PACKAGE)) {
+      this.setFactoryPackage((String) additionalProperties.get(FACTORY_PACKAGE));
     }
 
     if (this.additionalProperties.containsKey(SINGLE_CONTENT_TYPES)) {
@@ -143,9 +91,14 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     importMapping.put("OptionInfo", "com.softcomputer.wbc.security.options.OptionInfo");
     importMapping.put("OptionType", "com.softcomputer.wbc.security.options.OptionType");
     importMapping.put("ValueType", "com.softcomputer.wbc.security.options.ValueType");
+
+    apiTemplateFiles.put("apiController.mustache", "BaseImpl.java");
+    supportingFiles.add(new SupportingFile("restSpringFactory.mustache",
+        (sourceFolder + File.separator + factoryPackage).replace(".", java.io.File.separator), "RestSpringFactory.java"));
   }
 
   public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
+    super.postProcessModelProperty(model, property);
     model.imports.remove("ApiModel");
     model.imports.remove("ApiModelProperty");
 
@@ -185,33 +138,13 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
     }
   }
 
-  public void setArtifactName(String artifactName) {
-    this.artifactName = artifactName;
-  }
-
-  public void setWbcVersion(String wbcVersion) {
-    this.wbcVersion = wbcVersion;
-  }
-
-  public void setWgcmVersion(String wgcmVersion) {
-    this.wgcmVersion = wgcmVersion;
-  }
-
-  public void setProductVersion(String productVersion) {
-    this.productVersion = productVersion;
-  }
-
-  public void setBuildFinalName(String buildFinalName) {
-    this.buildFinalName = buildFinalName;
+  public void setFactoryPackage(String factoryPackage) {
+    this.factoryPackage = factoryPackage;
   }
 
   public void setSingleContentTypes(boolean singleContentTypes) {
     this.singleContentTypes = singleContentTypes;
   }
-
-//  public void setConfigPackage(String configPackage) {
-//    this.configPackage = configPackage;
-//  }
 
   public void setBasePackage(String basePackage) {
     this.basePackage = basePackage;
@@ -229,6 +162,12 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
             if ("0".equals(resp.code)) {
               resp.code = "200";
             }
+
+            Boolean responseEntityWrapper = (Boolean) resp.vendorExtensions.get("x-codegen-response-entity");
+            if (Boolean.TRUE.equals(responseEntityWrapper)) {
+              operation.vendorExtensions.put("responseEntity", true);
+            }
+
             doDataTypeAssignment(resp.dataType, new DataTypeAssigner() {
               @Override
               public void setReturnType(final String returnType) {
@@ -260,9 +199,12 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
         if (tags != null) {
           for (final Tag tag : tags) {
             for (Map.Entry<String, Object> tagExtension: tag.getVendorExtensions().entrySet()) {
-              if (tagExtension.getKey().equals("x-cache-control")) {
+              if (tagExtension.getKey().equals(CODEGEN_CACHE_CONTROL)) {
                 operations.putIfAbsent("hasCacheControl", true);
                 operations.putIfAbsent("cacheControl", tagExtension.getValue());
+              }
+              if (tagExtension.getKey().equals(CODEGEN_BEAN_NAME)) {
+                operations.putIfAbsent("springBeanName", tagExtension.getValue());
               }
             }
           }
@@ -354,17 +296,35 @@ public class JavaGeneGenerator extends AbstractJavaCodegen implements CodegenCon
         List<Map<String, String>> enumVars = (List<Map<String, String>>) allowableValues.get("enumVars");
         int index = 0;
         for (Map<String, String> enumVar : enumVars) {
-          if(cm.vendorExtensions.containsKey("x-enumNames")) {
-            Object enumName = ((List)cm.vendorExtensions.get("x-enumNames")).get(index);
+          if(cm.vendorExtensions.containsKey(CODEGEN_ENUM_NAMES)) {
+            Object enumName = ((List)cm.vendorExtensions.get(CODEGEN_ENUM_NAMES)).get(index);
             enumVar.put("x-enumName", (String)enumName);
           }
-          if(cm.vendorExtensions.containsKey("x-enumDescription")) {
-            Object description = ((List)cm.vendorExtensions.get("x-enumDescription")).get(index);
-            enumVar.put("x-enumDescription", toEnumValue(description.toString(), "string"));
+          if(cm.vendorExtensions.containsKey(CODEGEN_ENUM_DESCRIPTIONS)) {
+            Object description = ((List)cm.vendorExtensions.get(CODEGEN_ENUM_DESCRIPTIONS)).get(index);
+            enumVar.put(CODEGEN_ENUM_DESCRIPTIONS, toEnumValue(description.toString(), "string"));
             cm.vendorExtensions.put("hasDescription", true);
           }
           index++;
         }
+      }
+    }
+    return objs;
+  }
+
+  @Override
+  public Map<String, Object> postProcessSupportingFileData(Map<String, Object> objs) {
+    Map<String, Object> apis = (Map<String, Object>) objs.get("apiInfo");
+    List<Object> allOperations = (List<Object>) apis.get("apis");
+    for (int i = 0; i < allOperations.size(); i++) {
+      Map<String, Object> operation = (Map<String, Object>) allOperations.get(i);
+      String className =  (String) operation.get("classname");
+      operation.put("factoryMethodName", camelize(className, true));
+
+      Map<String, Object> operationsMap = (Map<String, Object>) operation.get("operations");
+      String springBeanName = (String) operationsMap.get("springBeanName");
+      if (springBeanName != null) {
+        operation.put("springBeanName", springBeanName);
       }
     }
     return objs;
