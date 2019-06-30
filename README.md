@@ -86,7 +86,68 @@ Name conflicts should be resolved mannually
 | setup.model.TestDefinition | SetupTestDefinition |
 | catalog.model.TestDefinition | CatalogTestDefinition |
 
+### Generics
+There is no way to define a generic type in OpenAPI.  
+The simplest workaround is using allOf and $ref at the same time. Generated code requires mannual adjustment of all dependants.
+**Example:**
+```
+  OrderingKeypadTestDefinition:
+    title: Ordering keypad Test definition model
+    allOf:
+      - $ref: '#/definitions/OrderingKeypad'
+      - type: "object"
+        properties:
+          setup:
+            $ref: '#/definitions/SetupTestDefinition'
+          items:
+            type: array
+            items:
+              $ref: '#/definitions/SetupTestDefinition'
+```
 
+| Code with generics | Result |
+| --- | --- |
+| OrderingKeypad\<TestDefinition\> | OrderingKeypadTestDefinition |
+| OrderingKeypad\<Specimen\> | OrderingKeypadSpecimen |
+
+### Types
+OpenAPI defines the following **basic types**:
+* string (this includes dates and files)
+* number
+* integer
+* boolean
+* array
+* object
+An optional format keyword serves as a hint for the codegen tool to use a specific type:
+
+| Type | Format | Description |
+| --- | --- | --- |
+| number | float | Floating-point numbers |
+| number | double | Floating-point numbers with double precision |
+| string | date | joda.LocalDate |
+| string | date-time | joda.DateTime |
+| array |  | List\<T\> |
+| object + additionalProperties |  | Map<string, T>
+
+Language specific types should be replaced, or codegen tool should be adjusted
+* Short => Integer
+* Collection => List
+* Array => List
+
+*Note: Map<notStringType, ..> for the time being is not supported*
+
+### Others
+* Some models have constructor. It's not generated, so dependents should be adjusted.  
+```
+VisitsBatch(List<Visit> visits, boolean hasMoreItems) {}
+```
+* Some models have specific property initialization. It's not generated
+```
+public Diagnosis[] testLevelDiagnoses = new Diagnosis[4];
+public List<PanelItem> KbPanels = Collections.emptyList();
+```
+* Exisiting api can have additional not generated files.  
+Example: `MicroSourceGroupRuleSetter.java`, `SpecimenCollectionScheduleOptionsSetter.java`, `RecipientAssembler.java`
 
 
 ## Useful Links
