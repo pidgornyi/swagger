@@ -150,9 +150,9 @@ public List<PanelItem> KbPanels = Collections.emptyList();
 Example: `MicroSourceGroupRuleSetter.java`, `SpecimenCollectionScheduleOptionsSetter.java`, `RecipientAssembler.java`
 
 
-## Useful Links
+## Useful Links  
+[Swagger.IO](https://swagger.io/)  
 [Open API Map](http://openapi-map.apihandyman.io/?version=2.0)  
 [Open API Spec](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)  
-[Swagger.IO](https://swagger.io/)  
 [David Norman - How To Make Swagger Codegen Work For Your Team](https://medium.com/capital-one-tech/how-to-make-swagger-codegen-work-for-your-team-32194f7d97e4)
 
