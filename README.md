@@ -69,7 +69,9 @@ tags:
 ### Existing code inconsistency
 **Example:** All interfaces have names with "Service" suffix. BUT couple files don't follow this rule - "MrnValidator", "BillingValidator". 
 
-**Example2:** Base java enum implementation has methods `toString()` and `fromValue()`. A few enums have different names for the same methods - `value()`, `getValue()`, `getByValue()`. Another ones introduce some custom logic like `in()` method.
+**Example2:** Base java enum implementation has methods `toString()` and `fromValue()`. A few enums have different names for the same methods - `value()`, `getValue()`, `getByValue()`. Another ones introduce some specific functionality like `in()` method.
+
+**Example3:** Models may have properties starting from the uppercase character.
 
 I see no reason for codegeneration logic adjustments in these cases, so they should be renamed upon introduction.
 
