@@ -119,7 +119,7 @@ OpenAPI defines the following **basic types**:
 * integer
 * boolean
 * array
-* object
+* object  
 An optional format keyword serves as a hint for the codegen tool to use a specific type:
 
 | Type | Format | Description |
