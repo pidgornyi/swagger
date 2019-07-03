@@ -2,7 +2,7 @@
 # Swagger Codegen for GENE
 
 ## Overview
-Swagger Codegen doesn't have the generator that suits Gene project right out of the box. We existing code base, so we need to generate the sources in the same way to correspond existing dependencies and introduce minimal changes )) 
+Swagger Codegen doesn't have the generator that suits Gene project right out of the box. We have got existing code base, so we need to generate the sources in the same way to correspond existing dependencies and introduce minimal changes )) 
 This task brings us out of the scope of a configuration of existing code generation libraries and templates customization.
 This project builds a library for [Swagger Codegen](https://github.com/swagger-api/swagger-codegen).
 
