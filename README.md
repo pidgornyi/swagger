@@ -73,7 +73,7 @@ tags:
 
 **Example3:** Models may have properties starting from the uppercase character.
 
-I see no reason for codegeneration logic adjustments in these cases, so they should be renamed upon introduction.
+I see no reason for codegeneration logic adjustments in these cases, so they should be adjusted upon introduction.
 
 ### Schema Object namespaces
 Namespaces are not supported. There were some efforts on this, but for the time being it's too raw to be introduced. For more details you can see [GitHub ticket](https://github.com/OAI/OpenAPI-Specification/issues/578)
